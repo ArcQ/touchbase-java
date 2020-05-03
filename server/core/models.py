@@ -9,7 +9,7 @@ class GenericModel(models.Model):
         abstract = True
 
 
-class User(models.Model):
+class User(GenericModel):
     name = models.CharField(max_length=255)
     score = models.IntegerField(default=0)
 
@@ -17,7 +17,7 @@ class User(models.Model):
         return self.name
 
 
-class Base(GenericModel):
+class TBase(GenericModel):
     name = models.CharField(max_length=255)
     score = models.IntegerField(default=0)
     users = models.ManyToManyField(User)
@@ -26,4 +26,4 @@ class Base(GenericModel):
 class Message(GenericModel):
     content = models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    base = models.ForeignKey(Base, on_delete=models.CASCADE)
+    t_base = models.ForeignKey(TBase, on_delete=models.CASCADE)

@@ -17,10 +17,10 @@ from django.contrib import admin
 from django.urls import include, path
 from django.urls import include, path
 from rest_framework import routers
-from core.views import BaseViewSet
+from core.views import TBaseViewSet
 
 router = routers.SimpleRouter()
-router.register(r'bases', BaseViewSet)
+router.register(r'bases', TBaseViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
