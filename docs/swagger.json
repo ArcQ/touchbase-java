@@ -1,0 +1,227 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Touchbase API",
+        "description": "Touchbase Core Api",
+        "version": "v1"
+    },
+    "basePath": "/",
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "Basic": {
+            "type": "basic"
+        }
+    },
+    "security": [
+        {
+            "Basic": []
+        }
+    ],
+    "paths": {
+        "/bases/": {
+            "get": {
+                "operationId": "bases_list",
+                "description": "A simple ViewSet for listing or retrieving bases.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/TBase"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "bases"
+                ]
+            },
+            "post": {
+                "operationId": "bases_create",
+                "description": "A simple ViewSet for listing or retrieving bases.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TBase"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/TBase"
+                        }
+                    }
+                },
+                "tags": [
+                    "bases"
+                ]
+            },
+            "parameters": []
+        },
+        "/bases/{id}/": {
+            "get": {
+                "operationId": "bases_read",
+                "description": "A simple ViewSet for listing or retrieving bases.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/TBase"
+                        }
+                    }
+                },
+                "tags": [
+                    "bases"
+                ]
+            },
+            "put": {
+                "operationId": "bases_update",
+                "description": "A simple ViewSet for listing or retrieving bases.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TBase"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/TBase"
+                        }
+                    }
+                },
+                "tags": [
+                    "bases"
+                ]
+            },
+            "patch": {
+                "operationId": "bases_partial_update",
+                "description": "A simple ViewSet for listing or retrieving bases.",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/TBase"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/TBase"
+                        }
+                    }
+                },
+                "tags": [
+                    "bases"
+                ]
+            },
+            "delete": {
+                "operationId": "bases_delete",
+                "description": "A simple ViewSet for listing or retrieving bases.",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "bases"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this t base.",
+                    "required": true,
+                    "type": "integer"
+                }
+            ]
+        }
+    },
+    "definitions": {
+        "User": {
+            "required": [
+                "name",
+                "score"
+            ],
+            "type": "object",
+            "properties": {
+                "name": {
+                    "title": "Name",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1
+                },
+                "score": {
+                    "title": "Score",
+                    "type": "string",
+                    "format": "decimal"
+                }
+            }
+        },
+        "TBase": {
+            "required": [
+                "name",
+                "score",
+                "users"
+            ],
+            "type": "object",
+            "properties": {
+                "name": {
+                    "title": "Name",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1
+                },
+                "score": {
+                    "title": "Score",
+                    "type": "string",
+                    "format": "decimal"
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/User"
+                    }
+                },
+                "created_at": {
+                    "title": "Created at",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true,
+                    "x-nullable": true
+                },
+                "updated_at": {
+                    "title": "Updated at",
+                    "type": "string",
+                    "format": "date-time",
+                    "readOnly": true,
+                    "x-nullable": true
+                }
+            }
+        }
+    }
+}
