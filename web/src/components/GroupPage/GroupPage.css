@@ -1,0 +1,24 @@
+.GroupPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.GroupPage img {
+  width: 20em;
+}
+
+.GroupPage-name {
+  font-size: 2em;
+  padding: 0.5rem;
+}
+
+.GroupPage-points {
+  font-size: 5em;
+  padding: 1rem;
+}
+
+.yellow {
+  color: rgb(255, 217, 0);
+}
