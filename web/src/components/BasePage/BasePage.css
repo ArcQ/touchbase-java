@@ -1,20 +1,20 @@
-.GroupPage {
+.BasePage {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-.GroupPage img {
+.BasePage img {
   width: 20em;
 }
 
-.GroupPage-name {
+.BasePage-name {
   font-size: 2em;
   padding: 0.5rem;
 }
 
-.GroupPage-points {
+.BasePage-score {
   font-size: 5em;
   padding: 1rem;
 }
