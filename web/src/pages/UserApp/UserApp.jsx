@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import axios from 'axios';
 
 import NavGroups from '../../components/NavGroups/NavGroups';
 import GroupPage from '../../components/GroupPage/GroupPage';
@@ -33,6 +34,12 @@ class UserApp extends Component {
       groups: groups,
       selectedGroup: 0,
     };
+  }
+
+  componentDidMount() {
+    axios.get('https://alannatai.github.io/bases/').then((res) => {
+      console.log('res', res);
+    });
   }
 
   handleGroupClick = (selected) => {
