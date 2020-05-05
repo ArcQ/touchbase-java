@@ -24,14 +24,16 @@ SECRET_KEY = 'trs#80a8951mm^68@a8+dk1yf!3$jt4!kk%z9zu@01k3$0g%4a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["touchbase-bitfvu56tq-uc.a.run.app"]
+ALLOWED_HOSTS = ["localhost", "touchbase-bitfvu56tq-uc.a.run.app"]
 
 # Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth',
     'django.contrib.contenttypes', 'django.contrib.sessions',
-    'django.contrib.messages', 'django.contrib.staticfiles', 'rest_framework', 'core'
+    'django.contrib.messages', 'django.contrib.staticfiles', 'rest_framework',
+    'drf_yasg',
+    'core'
 ]
 
 MIDDLEWARE = [
@@ -117,3 +119,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Swagger
+SWAGGER_SETTINGS = {
+   'DEFAULT_INFO': 'server.urls.api_info',
+}
