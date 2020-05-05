@@ -33,13 +33,14 @@ class UserApp extends Component {
     this.state = {
       bases: bases,
       selectedBase: 0,
+      isLoaded: false,
     };
   }
 
   componentDidMount() {
     const config = {
       headers: {
-        Origin: 'http://localhost:3000/',
+        'Content-Type': 'application/json',
       },
     };
     axios
@@ -49,8 +50,12 @@ class UserApp extends Component {
         if (res) {
           this.setState({
             bases: res.data,
+            isLoaded: true,
           });
         }
+        this.setState({
+          isLoaded: true,
+        });
       })
       .catch((error) => console.log('Authorization failed : ' + error.message));
   }
@@ -62,20 +67,23 @@ class UserApp extends Component {
   };
 
   render() {
-    return (
-      <div className='UserApp'>
-        <NavBases
-          bases={this.state.bases}
-          selectedBase={this.state.selectedBase}
-          handleBaseClick={this.handleBaseClick}
-        />
-        <BasePage
-          bases={this.state.bases}
-          selectedBase={this.state.selectedBase}
-        />
-        <Route></Route>
-      </div>
-    );
+    if (this.state.isLoaded) {
+      return (
+        <div className='UserApp'>
+          <NavBases
+            bases={this.state.bases}
+            selectedBase={this.state.selectedBase}
+            handleBaseClick={this.handleBaseClick}
+          />
+          <BasePage
+            bases={this.state.bases}
+            selectedBase={this.state.selectedBase}
+          />
+          <Route></Route>
+        </div>
+      );
+    }
+    return <div className='loader'></div>;
   }
 }
 
