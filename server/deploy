@@ -1,5 +1,6 @@
 #!/bin/bash
 pipenv run python manage.py generate_swagger swagger.json
+mv swagger.json ../docs
 
 db_credentials=$(heroku pg:credentials:url DATABASE -a touchbase-dev | grep dbname)
 
