@@ -1,0 +1,39 @@
+.NavGroups {
+  background-color: rgb(240, 240, 240);
+  width: 7em;
+  height: 100vh;
+}
+
+.NavGroupsItem {
+  height: 7em;
+  width: 7em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.NavGroupsItem:hover {
+  background-color: rgb(248, 248, 248);
+}
+
+.circle-icon {
+  border-radius: 50%;
+  border-style: none;
+}
+
+.NavGroups img {
+  width: 5em;
+  height: auto;
+}
+
+/* .image-cropper {
+  width: 6em;
+  height: 6em;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+} */
+
+#selected {
+  background-color: white;
+}
