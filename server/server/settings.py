@@ -24,7 +24,7 @@ SECRET_KEY = 'trs#80a8951mm^68@a8+dk1yf!3$jt4!kk%z9zu@01k3$0g%4a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["touchbase-bitfvu56tq-uc.a.run.app"]
+ALLOWED_HOSTS = ["localhost", "touchbase-bitfvu56tq-uc.a.run.app"]
 
 # Application definition
 
