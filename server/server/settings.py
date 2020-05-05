@@ -24,14 +24,14 @@ SECRET_KEY = 'trs#80a8951mm^68@a8+dk1yf!3$jt4!kk%z9zu@01k3$0g%4a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "touchbase-bitfvu56tq-uc.a.run.app"]
 
 # Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth',
     'django.contrib.contenttypes', 'django.contrib.sessions',
-    'django.contrib.messages', 'django.contrib.staticfiles', 'rest_framework'
+    'django.contrib.messages', 'django.contrib.staticfiles', 'rest_framework', 'core'
 ]
 
 MIDDLEWARE = [
@@ -69,12 +69,12 @@ WSGI_APPLICATION = 'server.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'touchbase',
-        'USER': 'postgres',
-        'PASSWORD': 'pw123',
-        'HOST': '0.0.0.0',
-        'PORT': '5432',
+        'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql_psycopg2'),
+        'NAME': os.environ.get('DB_NAME', 'touchbase'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'pw123'),
+        'HOST': os.environ.get('DB_HOST', '0.0.0.0'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
@@ -105,7 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EST'
 
 USE_I18N = True
 
