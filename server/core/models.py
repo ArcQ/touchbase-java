@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User as DjangoUser
 
 
 class GenericModel(models.Model):
@@ -9,21 +10,16 @@ class GenericModel(models.Model):
         abstract = True
 
 
-class User(GenericModel):
-    name = models.CharField(max_length=255)
+class User(GenericModel, DjangoUser):
     score = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.name
+        return self.username
 
 
 class TBase(GenericModel):
-    name = models.CharField(max_length=255)
     score = models.IntegerField(default=0)
     users = models.ManyToManyField(User)
-
-
-class Message(GenericModel):
-    content = models.CharField(max_length=255)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    t_base = models.ForeignKey(TBase, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='created_by')
+    owned_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='owned_by')
+    image_url = models.URLField(max_length=255, default='https://source.unsplash.com/random/1000x1000')
