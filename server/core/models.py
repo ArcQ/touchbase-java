@@ -23,3 +23,4 @@ class TBase(GenericModel):
     created_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='created_by')
     owned_by = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='owned_by')
     image_url = models.URLField(max_length=255, default='https://source.unsplash.com/random/1000x1000')
+
