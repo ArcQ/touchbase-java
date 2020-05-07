@@ -1,9 +1,31 @@
 from rest_framework import serializers
-from core.models import TBase
+from core.models import TBase, User
 
-class UserSerializer(serializers.Serializer):
-    name = serializers.CharField(required=True, allow_blank=False, max_length=255)
+
+class BaseSerializer(serializers.ModelSerializer):
+    created_at       = serializers.SerializerMethodField()
+    updated_at      = serializers.SerializerMethodField()
+
+    class Meta:
+        fields = ('created_at, updated_at')
+
+
+class UserSerializer(BaseSerializer):
+
+    username = serializers.CharField(required=True, allow_blank=False, max_length=30)
+    first_name = serializers.CharField(required=True, allow_blank=False, max_length=30)
+    last_name = serializers.CharField(required=True, allow_blank=False, max_length=150)
+    email = serializers.EmailField(required=True, allow_blank=False, max_length=150)
     score = serializers.DecimalField(max_digits=9, decimal_places=4)
+    password = serializers.CharField(required=False, write_only=True, help_text=('Write-only field used to change the password.'))
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'score', 'password')
+        extra_kwargs = {
+            'last_login': {'read_only': True}
+        }
+
 
 class TBaseSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True, allow_blank=False, max_length=255)
@@ -17,10 +39,4 @@ class TBaseSerializer(serializers.ModelSerializer):
         fields = ("name", "score", "users", "created_at", "updated_at")
         read_only_fields = ("created_at", "update_at")
 
-    def create(self, validated_data):
-        users = validated_data.pop('users')
-        album = Album.objects.create(**validated_data)
-        for track_data in tracks_data:
-            Track.objects.create(album=album, **track_data)
-        return album
 

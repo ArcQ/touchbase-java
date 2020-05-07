@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path, re_path
 from rest_framework import routers
-from core.views import TBaseViewSet
+from core.views import TBaseViewSet, OwnProfileViewSet, ProfileViewSet
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -32,11 +32,18 @@ api_info = openapi.Info(
 
 schema_view = get_schema_view(
    public=True,
-   permission_classes=(permissions.AllowAny,),
+   permission_classes=[permissions.AllowAny],
 )
 
 router = routers.SimpleRouter()
-router.register(r'bases', TBaseViewSet)
+router.register(r'^bases', TBaseViewSet)
+# router.register(r'^users/me/$', MyProfileViewSet.as_view(
+#     {'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'delete'}), name='myprofile')
+# router.register(r'^users/', ProfileViewSet.as_view(
+#     {'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'delete'}), name='myprofile')
+
+router.register(r'^users/me/$', OwnProfileViewSet)
+router.register(r'^users', ProfileViewSet)
 
 urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
