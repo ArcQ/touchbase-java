@@ -32,9 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth',
     'django.contrib.contenttypes', 'django.contrib.sessions',
     'django.contrib.messages', 'django.contrib.staticfiles', 'rest_framework',
-    'drf_yasg',
-    'corsheaders',
-    'core'
+    'drf_yasg', 'corsheaders', 'social_django', 'core'
 ]
 
 MIDDLEWARE = [
@@ -74,12 +72,18 @@ WSGI_APPLICATION = 'server.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql_psycopg2'),
-        'NAME': os.environ.get('DB_NAME', 'touchbase'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'pw123'),
-        'HOST': os.environ.get('DB_HOST', '0.0.0.0'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
+        'ENGINE':
+        os.environ.get('DB_ENGINE', 'django.db.backends.postgresql_psycopg2'),
+        'NAME':
+        os.environ.get('DB_NAME', 'touchbase'),
+        'USER':
+        os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD':
+        os.environ.get('DB_PASSWORD', 'pw123'),
+        'HOST':
+        os.environ.get('DB_HOST', '0.0.0.0'),
+        'PORT':
+        os.environ.get('DB_PORT', '5432'),
     }
 }
 
@@ -125,15 +129,24 @@ STATIC_URL = '/static/'
 
 # Swagger
 SWAGGER_SETTINGS = {
-   'DEFAULT_INFO': 'server.urls.api_info',
+    'DEFAULT_INFO': 'server.urls.api_info',
 }
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000'
-]
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
     ]
+}
+
+SOCIAL_AUTH_TRAILING_SLASH = False  # Remove trailing slash from routes
+SOCIAL_AUTH_AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN', 'localhost:3000')
+SOCIAL_AUTH_AUTH0_KEY = os.environ.get('AUTH0_KEY', '')
+SOCIAL_AUTH_AUTH0_SECRET = os.environ.get('AUTH0_SECRET', '')
+
+SOCIAL_AUTH_AUTH0_SCOPE = ['openid', 'profile', 'email']
+
+AUTHENTICATION_BACKENDS = {
+    'touchbase.auth0backend.Auth0', 'django.contrib.auth.backends.ModelBackend'
 }
