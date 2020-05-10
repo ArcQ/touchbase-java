@@ -4,6 +4,7 @@ from rest_framework.response import Response
 
 from core.models import TBase, User
 from core.serializers import TBaseSerializer, UserSerializer
+from rest_framework.decorators import api_view, permission_classes
 
 
 class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
@@ -16,6 +17,7 @@ class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.AllowAny]
     lookup_field = 'user_id'
     lookup_url_kwarg = 'pk'
+
 
 class OwnProfileViewSet(viewsets.ModelViewSet):
     """
