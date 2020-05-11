@@ -1,0 +1,21 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pdb = "*"
+pdbpp = "*"
+
+[packages]
+fastapi = "*"
+graphene = "*"
+neomodel = "*"
+py2neo = ">=5.0b1"
+pdb = "*"
+
+[requires]
+python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true
