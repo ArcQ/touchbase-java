@@ -7,18 +7,18 @@ from fastapi import FastAPI
 from starlette.graphql import GraphQLApp
 from models import Person
 from settings import graph
+from mapper import map_person
 
 
 class Query(graphene.ObjectType):
-    hello = graphene.String(name=graphene.String(default_value="stranger"))
+    hello = graphene.String(username=graphene.String(default_value="stranger"))
 
     def resolve_hello(self, info, **kwargs):
-        print(info)
         person = Person.match(graph).where(**kwargs)
-        if person is None:
-            return "hi"
+        if (person.count() > 0):
+            return map_person(person.first())
         else:
-            return json.dumps(person.__str__())
+            return None
 
 
 
