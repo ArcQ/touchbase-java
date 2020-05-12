@@ -7,12 +7,12 @@ function NavBases({ bases, selectedBase, selectBase }) {
   //force coding this for now, will refactor
   if (selectedBase) {
     return (
-      <div className='NavBases'>
+      <div className='nav-bases'>
         {bases.map((base) => (
           <div
             key={base.name}
             id={selectedBase.name === base.name ? 'selected' : ''}
-            className='NavBasesItem'
+            className='nav-bases-item'
             onClick={() => selectBase(base)}
           >
             <img className='circle-icon' src={base.icon} alt={base.name} />
@@ -22,11 +22,11 @@ function NavBases({ bases, selectedBase, selectBase }) {
     );
   }
   return (
-    <div className='NavBases'>
+    <div className='nav-bases'>
       {bases.map((base) => (
         <div
           key={base.name}
-          className='NavBasesItem'
+          className='nav-bases-item'
           onClick={() => selectBase(base)}
         >
           <img className='circle-icon' src={base.icon} alt={base.name} />
@@ -35,23 +35,6 @@ function NavBases({ bases, selectedBase, selectBase }) {
     </div>
   );
 }
-
-// const NavBases = ({ bases, selectedBase, handleBaseClick }) => {
-//   return (
-//     <div className='NavBases'>
-//       {bases.map((base, i) => (
-//         <div
-//           key={i}
-//           id={selectedBase === i ? 'selected' : ''}
-//           className='NavBasesItem'
-//           onClick={() => handleBaseClick(i)}
-//         >
-//           <img className='circle-icon' src={base.icon} alt={base.name} />
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
 
 const mapStateToProps = (state) => {
   return {
