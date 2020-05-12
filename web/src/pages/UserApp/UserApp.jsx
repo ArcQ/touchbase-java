@@ -27,64 +27,74 @@ const bases = [
   },
 ];
 
-class UserApp extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      bases: bases,
-      selectedBase: 0,
-      isLoaded: false,
-    };
-  }
-
-  componentDidMount() {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    axios
-      .get('https://touchbase-bitfvu56tq-uc.a.run.app/bases/', config)
-      .then((res) => {
-        console.log('res', res);
-        if (res) {
-          this.setState({
-            bases: res.data,
-            isLoaded: true,
-          });
-        }
-        this.setState({
-          isLoaded: true,
-        });
-      })
-      .catch((error) => console.log('Authorization failed : ' + error.message));
-  }
-
-  handleBaseClick = (selected) => {
-    this.setState({
-      selectedBase: selected,
-    });
-  };
-
-  render() {
-    if (this.state.isLoaded) {
-      return (
-        <div className='UserApp'>
-          <NavBases
-            bases={this.state.bases}
-            selectedBase={this.state.selectedBase}
-            handleBaseClick={this.handleBaseClick}
-          />
-          <BasePage
-            bases={this.state.bases}
-            selectedBase={this.state.selectedBase}
-          />
-          <Route></Route>
-        </div>
-      );
-    }
-    return <div className='loader'></div>;
-  }
+function UserApp() {
+  return (
+    <div className='UserApp'>
+      <NavBases />
+      <BasePage />
+      <Route></Route>
+    </div>
+  );
 }
+
+// class UserApp extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       bases: bases,
+//       selectedBase: 0,
+//       isLoaded: false,
+//     };
+//   }
+
+//   componentDidMount() {
+//     const config = {
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     };
+//     axios
+//       .get('https://touchbase-bitfvu56tq-uc.a.run.app/bases/', config)
+//       .then((res) => {
+//         console.log('res', res);
+//         if (res) {
+//           this.setState({
+//             bases: res.data,
+//             isLoaded: true,
+//           });
+//         }
+//         this.setState({
+//           isLoaded: true,
+//         });
+//       })
+//       .catch((error) => console.log('Authorization failed : ' + error.message));
+//   }
+
+//   handleBaseClick = (selected) => {
+//     this.setState({
+//       selectedBase: selected,
+//     });
+//   };
+
+//   render() {
+//     if (this.state.isLoaded) {
+//       return (
+//         <div className='UserApp'>
+//           <NavBases
+//             bases={this.state.bases}
+//             selectedBase={this.state.selectedBase}
+//             handleBaseClick={this.handleBaseClick}
+//           />
+//           <BasePage
+//             bases={this.state.bases}
+//             selectedBase={this.state.selectedBase}
+//           />
+//           <Route></Route>
+//         </div>
+//       );
+//     }
+//     return <div className='loader'></div>;
+//   }
+// }
 
 export default UserApp;
