@@ -1,4 +1,4 @@
-.UserApp {
+.user-app {
   display: grid;
   grid-template-columns: 8em;
   grid-template-areas: 'nav main';
