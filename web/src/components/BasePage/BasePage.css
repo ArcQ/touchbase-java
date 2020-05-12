@@ -1,20 +1,20 @@
-.BasePage {
+.base-page {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
-.BasePage img {
+.base-page img {
   width: 20em;
 }
 
-.BasePage-name {
+.base-page-name {
   font-size: 2em;
   padding: 0.5rem;
 }
 
-.BasePage-score {
+.base-page-score {
   font-size: 5em;
   padding: 1rem;
 }
