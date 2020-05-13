@@ -4,14 +4,14 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pdb = "*"
 
 [packages]
-fastapi = "*"
-graphene = "*"
 neomodel = "*"
 py2neo = ">=5.0b1"
-pdb = "*"
+starlette = "*"
+uvicorn = "*"
+ariadne = "*"
+python-cypher = "*"
 
 [requires]
 python_version = "3.8"
@@ -20,4 +20,4 @@ python_version = "3.8"
 allow_prereleases = true
 
 [scripts]
-start = "pipenv run python src/server.py"
+start = "pipenv run uvicorn src.main:app --reload"
