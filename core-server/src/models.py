@@ -47,7 +47,7 @@ class Base(BasicModel):
     score = Property(default=0)
     image_url = Property()
 
-    members = RelatedTo(Person)
+    has_member = RelatedTo(Person)
     created_by = RelatedTo(Person)
     owned_by = RelatedTo(Person)
 
