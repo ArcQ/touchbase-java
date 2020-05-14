@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import axios from 'axios';
+import React from 'react';
+import { Route } from 'react-router-dom';
 
 import NavBases from '../../components/NavBases/NavBases';
 import BasePage from '../../components/BasePage/BasePage';
