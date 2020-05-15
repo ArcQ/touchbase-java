@@ -5,11 +5,11 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Produces;
 
-@Controller("/graphql")
-public class GraphQLController {
+@Controller("/base")
+public class BaseController {
     @Get
-    @Produces(MediaType.APPLICATION_GRAPHQL)
-    public String query() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getBases() {
         return "Hello World";
     }
 }

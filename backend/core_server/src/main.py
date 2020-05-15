@@ -37,7 +37,6 @@ def resolve_bases(_, info, **args):
 def resolve_my_bases(_, info, me, **args):
     request = info.context["request"]
     auth_header = request.headers.get("authorization")
-    auth_header
 
     query = Pypher()
     query.MATCH.node('base', labels='Base').rel('r', labels='HAS_MEMBER').node('person', labels='Person')
