@@ -1,3 +1,53 @@
+---
 micronaut:
   application:
-    name: coreapi
+    name: core-api
+
+---
+neo4j:
+  uri: bolt://${NEO4J_HOST:localhost}
+
+---
+datasources.default: {}
+---
+graphql:
+  enabled: true
+  path: /graphql
+  graphql-ws:
+    enabled: true
+    path: /graphql-ws
+    keep-alive-enabled: true
+    keep-alive-interval: 15s
+  graphiql:
+    enabled: true
+    version: 0.13.2
+    path: /graphiql
+    template-path: classpath:graphiql/index.html
+    template-parameters:
+    page-title: GraphiQL
+
+---
+postgres:
+  reactive:
+    client:
+      port: 5432
+      host: localhost
+      database: core-api
+#      user: user
+#      password: password
+#      maxSize: 5
+
+---
+datasources:
+  default:
+    url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+    dialect: H2
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
