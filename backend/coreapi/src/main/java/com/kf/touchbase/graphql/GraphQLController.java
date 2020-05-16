@@ -1,4 +1,4 @@
-package com.kf.touchbase.controllers;
+package com.kf.touchbase.graphql;
 
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;

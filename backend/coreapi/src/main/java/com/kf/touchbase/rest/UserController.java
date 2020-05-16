@@ -1,15 +1,15 @@
-package com.kf.touchbase.controllers;
+package com.kf.touchbase.rest;
 
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Produces;
 
-@Controller("/base")
-public class BaseController {
+@Controller("/user")
+public class UserController {
     @Get
     @Produces(MediaType.APPLICATION_JSON)
-    public String getBases() {
+    public String getUser() {
         return "Hello World";
     }
 }
