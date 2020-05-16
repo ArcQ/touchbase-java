@@ -1,4 +1,4 @@
-package com.kf.touchbase.models.dto;
+package com.kf.touchbase.dto;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
