@@ -13,6 +13,7 @@ import io.micronaut.core.io.ResourceResolver;
 import javax.inject.Singleton;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Map;
 
 @Factory
 public class GraphQLFactory {
@@ -30,7 +31,7 @@ public class GraphQLFactory {
 
         RuntimeWiring runtimeWiring = RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
-                        .dataFetcher("bases", basesFetcher))
+                        .dataFetchers(Map.of("bases", basesFetcher)))
                 .build();
 
         GraphQLSchema graphQLSchema = schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
