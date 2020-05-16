@@ -15,5 +15,6 @@ public class BasesFetcher implements DataFetcher<String> {
             name = "World";
         }
         return String.format("Hello %s!", name);
+        
     }
 }

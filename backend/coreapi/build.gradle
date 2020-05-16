@@ -25,6 +25,7 @@ configurations {
 dependencies {
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     compileOnly "org.mapstruct:mapstruct:$mapstructVersion"
+    compileOnly "org.neo4j:neo4j-ogm-core:3.2.1"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
     annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
@@ -47,6 +48,7 @@ dependencies {
     implementation "javax.annotation:javax.annotation-api"
     runtimeOnly "com.h2database:h2"
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
+    runtimeOnly "org.neo4j:neo4j-ogm-bolt-driver:3.2.1"
     testCompileOnly "org.projectlombok:lombok:$lombokVersion"
     testCompile 'org.assertj:assertj-core:3.9.1'
     testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
