@@ -1,4 +1,4 @@
-package com.kf.touchbase.dto;
+package com.kf.touchbase.models.dto;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -8,8 +8,7 @@ import lombok.Value;
 @ToString
 @EqualsAndHashCode
 public class BaseReq {
-    String uuid;
     String name;
-    double score;
+    Double score;
     String imageUrl;
 }

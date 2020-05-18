@@ -9,18 +9,17 @@ type Person {
   username: String!
   email: String!
   score: Float
-  first_name: String!
-  last_name: String!
-  age: Int
-  in_base: [Base]
-  created: Base
-  owns: Base
+  firstName: String!
+  lastName: String!
+  inBase: [Base]
+  created: [Base]
+  owns: [Base]
 }
 
 type Base {
   uuid: String!
   name: String!
-  score: Int
-  image_url: String
+  score: Float
+  imageUrl: String
   members: Person
 }

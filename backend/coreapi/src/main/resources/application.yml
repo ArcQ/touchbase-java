@@ -2,12 +2,19 @@
 micronaut:
   application:
     name: core-api
+  server:
+    netty:
+      log-level: TRACE
+  neo4j:
+    uri: bolt://${NEO4J_HOST:localhost}
+    username: ${NEO4J_USER:neo4j}
+    password: ${NEO4J_PW:test}
 
 ---
 neo4j:
   uri: bolt://${NEO4J_HOST:localhost}
   username: ${NEO4J_USER:neo4j}
-  password: ${NEO4J_PW:neo4j}
+  password: ${NEO4J_PW:test}
 
 ---
 datasources.default: {}

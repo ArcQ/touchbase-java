@@ -20,7 +20,7 @@ public class GraphQLFactory {
 
     @Bean
     @Singleton
-    public GraphQL graphQL(ResourceResolver resourceResolver, BasesFetcher basesFetcher) {
+    public GraphQL graphQL(ResourceResolver resourceResolver, PersonFetcher personFetcher, BasesFetcher basesFetcher) {
 
         SchemaParser schemaParser = new SchemaParser();
         SchemaGenerator schemaGenerator = new SchemaGenerator();
@@ -31,6 +31,7 @@ public class GraphQLFactory {
 
         RuntimeWiring runtimeWiring = RuntimeWiring.newRuntimeWiring()
                 .type("Query", typeWiring -> typeWiring
+                        .dataFetchers(Map.of("person", personFetcher))
                         .dataFetchers(Map.of("bases", basesFetcher)))
                 .build();
 

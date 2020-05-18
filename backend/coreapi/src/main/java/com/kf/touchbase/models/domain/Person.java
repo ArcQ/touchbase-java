@@ -1,11 +1,11 @@
-package com.kf.touchbase.domain;
+package com.kf.touchbase.models.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import org.neo4j.ogm.annotation.Id;
+import org.neo4j.driver.internal.shaded.reactor.util.annotation.Nullable;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
@@ -18,10 +18,11 @@ import java.util.Set;
 @NoArgsConstructor
 @NodeEntity
 public class Person extends TouchBaseDomain{
-    @Id
     private String email;
-    private double score;
+    private Double score;
+    @Nullable
     private String firstName;
+    @Nullable
     private String lastName;
     private String username;
 
