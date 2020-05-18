@@ -1,4 +1,4 @@
-package com.kf.touchbase.domain;
+package com.kf.touchbase.models.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,7 +19,7 @@ import java.util.Set;
 public class Base extends TouchBaseDomain {
 
     private String name;
-    private double score;
+    private Double score;
     private String imageUrl;
 
     @Relationship(type="HAS_MEMBER", direction = Relationship.INCOMING)

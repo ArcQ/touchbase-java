@@ -10,6 +10,6 @@ public class BaseController {
     @Get
     @Produces(MediaType.APPLICATION_JSON)
     public String getBases() {
-        return "Hello World";
+        return null;
     }
 }
