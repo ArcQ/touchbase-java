@@ -11,7 +11,7 @@ type Person {
   score: Float
   firstName: String!
   lastName: String!
-  inBase: [Base]
+  bases: [Base]
   created: [Base]
   owns: [Base]
 }
