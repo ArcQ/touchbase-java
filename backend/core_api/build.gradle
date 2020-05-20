@@ -1,0 +1,96 @@
+plugins {
+    id "net.ltgt.apt-eclipse" version "0.21"
+    id "com.github.johnrengelman.shadow" version "5.2.0"
+    id "application"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+ext {
+    lombokVersion='1.18.12'
+    mapstructVersion='1.2.0.Final'
+}
+
+version "0.1"
+group "com.kf.touchbase"
+
+repositories {
+    mavenCentral()
+    maven { url "https://jcenter.bintray.com" }
+}
+
+configurations {
+    // for dependencies that are needed for development only
+    developmentOnly 
+}
+
+dependencies {
+    compile "org.projectlombok:lombok:$lombokVersion"
+    compileOnly "org.mapstruct:mapstruct:$mapstructVersion"
+    compile "io.micronaut.configuration:micronaut-neo4j-bolt:2.0.0"
+    compile "io.micronaut:micronaut-inject"
+    compile "org.neo4j:neo4j-ogm:3.2.11"
+    compile "org.neo4j:neo4j-ogm-core:3.2.11"
+    compile "org.neo4j:neo4j-ogm-bolt-driver:3.2.11"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
+    annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut:micronaut-validation"
+    annotationProcessor("io.micronaut.configuration:micronaut-openapi:1.5.0")
+    annotationProcessor "io.micronaut.data:micronaut-data-processor"
+    implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    implementation "io.micronaut:micronaut-inject"
+    implementation "io.micronaut:micronaut-validation"
+    implementation "io.micronaut:micronaut-runtime"
+    implementation "io.micronaut.configuration:micronaut-jdbc-tomcat"
+    implementation "io.swagger.core.v3:swagger-annotations"
+    implementation "io.micronaut:micronaut-http-client"
+    implementation "io.micronaut.graphql:micronaut-graphql"
+    implementation "io.micronaut.configuration:micronaut-postgres-reactive"
+    implementation "io.micronaut:micronaut-http-server-netty"
+    implementation "io.micronaut.data:micronaut-data-hibernate-jpa"
+    implementation "javax.annotation:javax.annotation-api"
+    implementation("io.swagger.core.v3:swagger-annotations")
+    runtimeOnly "com.h2database:h2"
+    runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
+    testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+    testCompile 'org.assertj:assertj-core:3.9.1'
+    testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+    testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "io.micronaut.test:micronaut-test-junit5"
+    testImplementation("org.spockframework:spock-core") {
+        exclude group: "org.codehaus.groovy", module: "groovy-all"
+    }
+    testImplementation "io.micronaut:micronaut-inject-groovy"
+    testImplementation "io.micronaut.test:micronaut-test-spock"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    testRuntimeOnly "org.neo4j.test:neo4j-harness"
+}
+
+test.classpath += configurations.developmentOnly
+
+mainClassName = "com.kf.touchbase.Application"
+// use JUnit 5 platform
+test {
+    useJUnitPlatform()
+}
+tasks.withType(JavaCompile){
+    options.encoding = "UTF-8"
+    options.compilerArgs.add('-parameters')
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+tasks.withType(JavaExec) {
+    classpath += configurations.developmentOnly
+    jvmArgs('-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
+}

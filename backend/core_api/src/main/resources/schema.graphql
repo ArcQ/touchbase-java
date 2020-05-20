@@ -1,0 +1,25 @@
+type Query {
+  person(username: String, me: Boolean): Person
+  people: [Person]
+  base(uuid: String): Base
+  bases(me: Boolean): [Base]
+}
+
+type Person {
+  username: String!
+  email: String!
+  score: Float
+  firstName: String!
+  lastName: String!
+  bases: [Base]
+  created: [Base]
+  owns: [Base]
+}
+
+type Base {
+  uuid: String!
+  name: String!
+  score: Float
+  imageUrl: String
+  members: Person
+}

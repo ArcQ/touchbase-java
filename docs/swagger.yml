@@ -1,0 +1,94 @@
+openapi: 3.0.1
+info:
+  title: core-api
+  version: "0.0"
+paths:
+  /base:
+    get:
+      operationId: getBases
+      parameters: []
+      responses:
+        default:
+          description: getBases default response
+          content:
+            application/json:
+              schema:
+                type: string
+  /person/{username}:
+    get:
+      operationId: getPerson
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: getPerson default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+components:
+  schemas:
+    TouchBaseDomain:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Person:
+      allOf:
+      - $ref: '#/components/schemas/TouchBaseDomain'
+      - type: object
+        properties:
+          email:
+            type: string
+          score:
+            type: number
+            format: double
+          firstName:
+            type: string
+          lastName:
+            type: string
+          username:
+            type: string
+          bases:
+            type: array
+            items:
+              $ref: '#/components/schemas/Base'
+          created:
+            type: array
+            items:
+              $ref: '#/components/schemas/Base'
+          owns:
+            type: array
+            items:
+              $ref: '#/components/schemas/Base'
+    Base:
+      allOf:
+      - $ref: '#/components/schemas/TouchBaseDomain'
+      - type: object
+        properties:
+          name:
+            type: string
+          score:
+            type: number
+            format: double
+          imageUrl:
+            type: string
+          members:
+            type: array
+            items:
+              $ref: '#/components/schemas/Person'
+          creator:
+            $ref: '#/components/schemas/Person'
+          owner:
+            $ref: '#/components/schemas/Person'

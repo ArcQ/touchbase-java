@@ -1,0 +1,38 @@
+version: '3.1'
+
+services:
+  tb-postgres:
+    image: postgres
+    volumes:
+      - ./db_data:/data/db/tb-postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pw123
+      POSTGRES_DB: touchbase
+  tb-neo4j:
+    image: neo4j:latest
+    volumes:
+      - ./data:/data/db/tb-neo4j/data
+      - ./logs:/data/db/tb-neo4j/logs
+      - ./import:/data/db/tb-neo4j/import
+      - ./plugins:/data/db/tb-neo4j/plugins
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      NEO4J_AUTH: neo4j/test
+    ports:
+      - "7687:7687"
+  # server:
+  #   build: .
+  #   links:
+  #     - "db:postgres"
+  #   ports:
+  #     - "8000:80"
+  #   volumes:
+  #     - ".:/app:rw"
+  #     - "./data:/data:rw"
+  #   command: python manage.py runserver 0.0.0.0:80
