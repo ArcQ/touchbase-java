@@ -1,0 +1,25 @@
+.user-app {
+  display: grid;
+  grid-template-columns: 8em;
+  grid-template-areas: 'nav main';
+}
+
+.loader {
+  margin-top: 50vh;
+  margin-left: 50vw;
+  border: 10px solid #f3f3f3;
+  border-top: 10px solid #2e2e2e;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
