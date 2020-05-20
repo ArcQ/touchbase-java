@@ -23,11 +23,12 @@ import java.util.Set;
 public class Person extends TouchBaseDomain{
     private String email;
     private Double score;
+    private String username;
+
     @Nullable
     private String firstName;
     @Nullable
     private String lastName;
-    private String username;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
