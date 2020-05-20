@@ -26,12 +26,18 @@ public class Person extends TouchBaseDomain{
     private String lastName;
     private String username;
 
-    @Relationship(type="IN_BASE")
-    private Set<Base> base;
-
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @Relationship(type="HAS_MEMBER", direction = Relationship.INCOMING)
+    private Set<Base> bases;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @Relationship(type="CREATED_BY", direction = Relationship.INCOMING)
     private Set<Base> created;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @Relationship(type="OWNED_BY", direction = Relationship.INCOMING)
     private Set<Base> owns;
 }

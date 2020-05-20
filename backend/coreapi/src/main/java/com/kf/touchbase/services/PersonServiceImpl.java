@@ -28,7 +28,7 @@ public class PersonServiceImpl extends AbstractDataService<Person> implements Pe
     public Person getByUsername(String username) {
         var session = sessionFactory.openSession();
 		return session.loadAll(
-			getEntityType(), new Filter("username", ComparisonOperator.CONTAINING, username), 0).iterator().next();
+			getEntityType(), new Filter("username", ComparisonOperator.CONTAINING, username), 1).iterator().next();
     }
 
 
