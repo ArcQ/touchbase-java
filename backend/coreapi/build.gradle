@@ -40,7 +40,7 @@ dependencies {
     annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
-    annotationProcessor "io.micronaut.configuration:micronaut-openapi"
+    annotationProcessor("io.micronaut.configuration:micronaut-openapi:1.5.0")
     annotationProcessor "io.micronaut.data:micronaut-data-processor"
     implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
     implementation "io.micronaut:micronaut-inject"
@@ -54,6 +54,7 @@ dependencies {
     implementation "io.micronaut:micronaut-http-server-netty"
     implementation "io.micronaut.data:micronaut-data-hibernate-jpa"
     implementation "javax.annotation:javax.annotation-api"
+    implementation("io.swagger.core.v3:swagger-annotations")
     runtimeOnly "com.h2database:h2"
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
     testCompileOnly "org.projectlombok:lombok:$lombokVersion"
