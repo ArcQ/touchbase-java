@@ -9,6 +9,11 @@ micronaut:
     uri: bolt://${NEO4J_HOST:localhost}
     username: ${NEO4J_USER:neo4j}
     password: ${NEO4J_PW:test}
+  router:
+    static-resources:
+        swagger:
+            paths: classpath:META-INF/swagger
+            mapping: /swagger/**
 
 ---
 neo4j:
@@ -60,3 +65,4 @@ jpa:
       hibernate:
         hbm2ddl:
           auto: update
+

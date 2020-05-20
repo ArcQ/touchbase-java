@@ -1,0 +1,1 @@
+JAVA_TOOL_OPTIONS=-Dmicronaut.openapi.views.spec=redoc.enabled=true ./gradlew --no-daemon clean assemble

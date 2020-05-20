@@ -1,15 +1,22 @@
 package com.kf.touchbase.rest;
 
+import com.kf.touchbase.models.domain.Person;
+import com.kf.touchbase.services.PersonService;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Produces;
+import lombok.RequiredArgsConstructor;
 
-@Controller("/person")
+@RequiredArgsConstructor
+@Controller("/person/")
 public class PersonController {
-    @Get
+
+    private final PersonService personService;
+
+    @Get("{username}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getPerson() {
-        return "Hello World";
+    public Person getPerson(String username) {
+        return personService.getByUsername(username);
     }
 }
