@@ -22,12 +22,18 @@ public class Base extends TouchBaseDomain {
     private Double score;
     private String imageUrl;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @Relationship(type="HAS_MEMBER", direction = Relationship.INCOMING)
     private Set<Person> members;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @Relationship(type="CREATED_BY")
     private Person creator;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @Relationship(type="OWNED_BY")
     private Person owner;
 }

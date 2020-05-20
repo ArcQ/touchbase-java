@@ -17,6 +17,6 @@ public class PersonFetcher implements DataFetcher<Person> {
     @Override
     public Person get(DataFetchingEnvironment env) {
         String username = env.getArgument("username");
-        return personService.getByUsername("arcq");
+        return personService.getByUsername(username);
     }
 }
