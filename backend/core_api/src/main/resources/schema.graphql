@@ -5,6 +5,11 @@ type Query {
   bases(me: Boolean): [Base]
 }
 
+type Mutation {
+  createBase(input: Base): Base
+  updateBase(input: Base): Base
+}
+
 type Person {
   username: String!
   email: String!
@@ -22,4 +27,6 @@ type Base {
   score: Float
   imageUrl: String
   members: Person
+  owner: Person
+  creator: Person
 }

@@ -14,15 +14,31 @@ micronaut:
         swagger:
             paths: classpath:META-INF/swagger
             mapping: /swagger/**
-
+  security:
+    enabled: true
+    login-handler: bearer
+    token:
+      jwt:
+        enabled: true
+        signatures:
+          jwks:
+            auth0:
+              url: ${JWKS_AUTH_URL:https://touchbase-dev.auth0.com}/.well-known/jwks.json
+    intercept-url-map:
+      - pattern: /swagger/**
+        httpMethod: GET
+        access:
+          - isAnonymous()
+  io:
+    watch:
+      paths: src/main
+      restart: true
 ---
 neo4j:
   uri: bolt://${NEO4J_HOST:localhost}
   username: ${NEO4J_USER:neo4j}
   password: ${NEO4J_PW:test}
 
----
-datasources.default: {}
 ---
 graphql:
   enabled: true
@@ -46,10 +62,10 @@ postgres:
     client:
       port: 5432
       host: localhost
-      database: core-api
-#      user: user
-#      password: password
-#      maxSize: 5
+      database: touchbase
+      user: postgres
+      password: "pw123"
+      maxSize: 5
 
 ---
 datasources:
