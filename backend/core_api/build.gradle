@@ -35,6 +35,8 @@ dependencies {
     compile "org.neo4j:neo4j-ogm:3.2.11"
     compile "org.neo4j:neo4j-ogm-core:3.2.11"
     compile "org.neo4j:neo4j-ogm-bolt-driver:3.2.11"
+    compile "io.micronaut:micronaut-security:1.3.2"
+    annotationProcessor "io.micronaut:micronaut-security:1.3.2"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
     annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")

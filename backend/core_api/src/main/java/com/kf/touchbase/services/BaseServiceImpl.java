@@ -3,6 +3,9 @@ package com.kf.touchbase.services;
 import com.kf.touchbase.models.domain.Base;
 import org.neo4j.ogm.session.SessionFactory;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class BaseServiceImpl extends AbstractDataService<Base> implements BaseService {
     public BaseServiceImpl(SessionFactory sessionFactory) {
         super(sessionFactory);

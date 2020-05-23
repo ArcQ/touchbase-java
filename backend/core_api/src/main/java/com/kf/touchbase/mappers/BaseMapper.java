@@ -5,7 +5,7 @@ import com.kf.touchbase.models.dto.BaseReq;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "jsr330", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BaseMapper {
 
     Base baseReqToBase(BaseReq base);

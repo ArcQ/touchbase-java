@@ -1,14 +1,14 @@
 package com.kf.touchbase.models.dto;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
+import lombok.*;
 
-@Value
+@Data
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class BaseReq {
-    String name;
-    Double score;
-    String imageUrl;
+    private String name;
+    private Double score;
+    private String imageUrl;
 }
