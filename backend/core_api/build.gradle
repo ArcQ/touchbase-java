@@ -1,3 +1,9 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
 plugins {
     id "net.ltgt.apt-eclipse" version "0.21"
     id "com.github.johnrengelman.shadow" version "5.2.0"
@@ -9,13 +15,13 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
+version "0.1"
+group "com.kf.touchbase"
+
 ext {
     lombokVersion='1.18.12'
     mapstructVersion='1.2.0.Final'
 }
-
-version "0.1"
-group "com.kf.touchbase"
 
 repositories {
     mavenCentral()
@@ -24,7 +30,7 @@ repositories {
 
 configurations {
     // for dependencies that are needed for development only
-    developmentOnly 
+    developmentOnly
 }
 
 dependencies {

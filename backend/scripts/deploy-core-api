@@ -1,24 +1,35 @@
 #!/bin/bash
-pipenv run python manage.py generate_swagger swagger.json
+
+#Dev Build Only For Now
+
+# build docs
+cd core_api
+JAVA_TOOL_OPTIONS=-Dmicronaut.openapi.views.spec=redoc.enabled=true ./gradlew --no-daemon clean assemble
+cp build/classes/java/main/META-INF/swagger/core-api-0.0.yml ../../docs/swagger.yml
+
 mv swagger.json ../docs
-cd ../docs
+cd ../../docs
 redoc-cli bundle swagger.json
 mv redoc-static.html index.html
 
 cd -
 
 db_credentials=$(heroku pg:credentials:url DATABASE -a touchbase-dev | grep dbname)
+gradle_version=$(gradle properties -q | grep "version:" | awk '{print $2}')
 
 echo "DB_NAME=$(echo $db_credentials | sed 's/^.*\dbname=\([^ ]*\) .*/\1/')
 DB_USER=$(echo $db_credentials | sed 's/^.*\user=\([^ ]*\) .*/\1/')
 DB_PASSWORD=$(echo $db_credentials | sed 's/^.*\password=\([^ ]*\) .*/\1/')
 DB_HOST=$(echo $db_credentials | sed 's/^.*\host=\([^ ]*\) .*/\1/')
-DB_PORT=$(echo $db_credentials | sed 's/^.*\port=\([^ ]*\) .*/\1/')" > .env
+DB_PORT=$(echo $db_credentials | sed 's/^.*\port=\([^ ]*\) .*/\1/')
+NEO4J_HOST=$(heroku config:get GRAPHENEDB_URL -a touchbase-dev)
+NEO4J_USER=$(heroku config:get GRAPHENEDB_BOLT_USER -a touchbase-dev)
+NEO4J_PW=$(heroku config:get GRAPHENEDB_BOLT_PASSWORD -a touchbase-dev)" > .env
 docker build -t gcr.io/touchbase-276115/touchbase:latest -f Dockerfile .
 
 docker push gcr.io/touchbase-276115/touchbase:latest
 
-/* gcloud builds submit --tag gcr.io/touchbase-276115/touchbase */
+# gcloud builds submit --tag gcr.io/touchbase-276115/touchbase
 
 gcloud beta run deploy touchbase --image gcr.io/touchbase-276115/touchbase --platform managed
 

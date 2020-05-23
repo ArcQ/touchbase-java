@@ -13,7 +13,25 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                type: array
+                items:
+                  $ref: '#/components/schemas/Base'
+    post:
+      operationId: postBase
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaseReq'
+        required: true
+      responses:
+        default:
+          description: postBase default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Base'
   /person/{username}:
     get:
       operationId: getPerson
@@ -44,34 +62,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    Person:
-      allOf:
-      - $ref: '#/components/schemas/TouchBaseDomain'
-      - type: object
-        properties:
-          email:
-            type: string
-          score:
-            type: number
-            format: double
-          firstName:
-            type: string
-          lastName:
-            type: string
-          username:
-            type: string
-          bases:
-            type: array
-            items:
-              $ref: '#/components/schemas/Base'
-          created:
-            type: array
-            items:
-              $ref: '#/components/schemas/Base'
-          owns:
-            type: array
-            items:
-              $ref: '#/components/schemas/Base'
     Base:
       allOf:
       - $ref: '#/components/schemas/TouchBaseDomain'
@@ -92,3 +82,56 @@ components:
             $ref: '#/components/schemas/Person'
           owner:
             $ref: '#/components/schemas/Person'
+    Person:
+      allOf:
+      - $ref: '#/components/schemas/TouchBaseDomain'
+      - type: object
+        properties:
+          username:
+            type: string
+          email:
+            type: string
+          score:
+            type: number
+            format: double
+          userDetails:
+            $ref: '#/components/schemas/UserDetails'
+          firstName:
+            type: string
+          lastName:
+            type: string
+          bases:
+            type: array
+            items:
+              $ref: '#/components/schemas/Base'
+          created:
+            type: array
+            items:
+              $ref: '#/components/schemas/Base'
+          owns:
+            type: array
+            items:
+              $ref: '#/components/schemas/Base'
+    UserDetails:
+      type: object
+      properties:
+        username:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        authenticated:
+          type: boolean
+        message:
+          type: string
+    BaseReq:
+      type: object
+      properties:
+        name:
+          type: string
+        score:
+          type: number
+          format: double
+        imageUrl:
+          type: string
