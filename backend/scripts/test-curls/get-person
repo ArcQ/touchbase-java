@@ -1,0 +1,5 @@
+ENDPOINTS_HOST=touchbase-bitfvu56tq-uc.a.run.app
+
+curl --request GET \
+   --header "content-type:application/json" \
+   "https://${ENDPOINTS_HOST}/api/v1/person/arcq"

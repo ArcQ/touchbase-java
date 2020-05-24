@@ -1,0 +1,34 @@
+${rest-routes}
+
+host: touchbase-bitfvu56tq-uc.a.run.app
+schemes:
+  - https
+produces:
+  - application/json
+x-google-backend:
+  address: https://touchbase-bitfvu56tq-uc.a.run.app
+  protocol: h2
+
+
+
+  /graphql:
+    post:
+      description: "graphql http-post endpoint"
+      operationId: "graphql-post"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "graphql-response"
+          schema:
+            type: object
+      security:
+       - auth0_jwt: []
+securityDefinitions:
+  auth0_jwt:
+    authorizationUrl: "https://knotfive.auth0.com/authorize"
+    flow: "implicit"
+    type: "oauth2"
+    x-google-issuer: "https://knotfive.auth0.com/"
+    x-google-jwks_uri: "https://knotfive.auth0.com/.well-known/jwks.json"
+    x-google-audiences: "{YOUR_API_IDENTIFIER}"

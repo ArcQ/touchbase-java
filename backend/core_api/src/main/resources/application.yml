@@ -5,10 +5,6 @@ micronaut:
   server:
     netty:
       log-level: TRACE
-  neo4j:
-    uri: bolt://${NEO4J_HOST:localhost}
-    username: ${NEO4J_USER:neo4j}
-    password: ${NEO4J_PW:test}
   router:
     static-resources:
         swagger:
@@ -38,6 +34,8 @@ neo4j:
   uri: bolt://${NEO4J_HOST:localhost}
   username: ${NEO4J_USER:neo4j}
   password: ${NEO4J_PW:test}
+  encryption:
+    level: ${NEO4J_ENCRYPTION_LEVEL:NONE}
 
 ---
 graphql:
@@ -81,4 +79,3 @@ jpa:
       hibernate:
         hbm2ddl:
           auto: update
-
