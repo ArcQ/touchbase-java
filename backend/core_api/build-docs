@@ -1,3 +1,0 @@
-JAVA_TOOL_OPTIONS=-Dmicronaut.openapi.views.spec=redoc.enabled=true ./gradlew --no-daemon clean assemble
-cp build/classes/java/main/META-INF/swagger/core-api-0.0.yml ../../docs/swagger.yml
-serve ../../docs

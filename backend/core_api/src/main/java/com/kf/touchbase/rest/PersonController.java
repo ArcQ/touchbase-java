@@ -11,7 +11,7 @@ import io.micronaut.security.rules.SecurityRule;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Controller("/person/")
+@Controller("/api/v1/person/")
 @Secured(SecurityRule.IS_ANONYMOUS)
 public class PersonController {
 

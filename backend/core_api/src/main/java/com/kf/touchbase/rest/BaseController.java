@@ -12,7 +12,7 @@ import io.micronaut.security.rules.SecurityRule;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Controller("/base/")
+@Controller("/api/v1/base/")
 @Secured(SecurityRule.IS_AUTHENTICATED)
 public class BaseController {
 

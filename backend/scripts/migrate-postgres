@@ -1,9 +1,0 @@
-#!/bin/bash
-db_credentials=$(heroku pg:credentials:url DATABASE -a touchbase-dev)
-
-DB_NAME=$(echo $db_credentials | sed 's/^.*\dbname=\([^ ]*\) .*/\1/') \
-DB_USER=$(echo $db_credentials | sed 's/^.*\user=\([^ ]*\) .*/\1/') \
-DB_PASSWORD=$(echo $db_credentials | sed 's/^.*\password=\([^ ]*\) .*/\1/') \
-DB_HOST=$(echo $db_credentials | sed 's/^.*\host=\([^ ]*\) .*/\1/') \
-DB_PORT=$(echo $db_credentials | sed 's/^.*\port=\([^ ]*\) .*/\1/') \
-pipenv run python manage.py migrate

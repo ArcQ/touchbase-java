@@ -26,5 +26,21 @@ CREATE (b)-[r1:HAS_MEMBER]->(p)
 RETURN b;
 
 //find all of user's bases
-MATCH (b:Base {name:"base1"})-[r:HAS_MEMBER]-(p:Person { username: "arcq" })
+MATCH (b:Base)-[r:HAS_MEMBER]-(p:Person { username: "arcq" })
 RETURN b;
+
+
+MATCH (p:Person { username: "arcq" })
+MATCH (b:Base {name:"base2"})
+DELETE (b)-[r1:HAS_MEMBER]->(p)
+DELETE (b)-[r2:CREATED_BY]->(p)
+DELETE (b)-[r3:OWNED_BY]->(p)
+RETURN b;
+
+//delete all duplicate relationships
+MATCH (a)-[r]->(b)
+WITH a, b, COLLECT(r) AS rr
+WHERE SIZE(rr) > 1
+WITH rr
+LIMIT 100000
+FOREACH (r IN TAIL(rr) | DELETE r);
