@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller("/api/v1/person/")
-@Secured(SecurityRule.IS_ANONYMOUS)
+@Secured(SecurityRule.IS_AUTHENTICATED)
 public class PersonController {
 
     private final PersonService personService;
@@ -26,6 +26,7 @@ public class PersonController {
 
     @Get("{username}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Secured(SecurityRule.IS_ANONYMOUS)
     public Person getPerson(String username) {
         return personService.getByUsername(username);
     }
