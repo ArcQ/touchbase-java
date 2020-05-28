@@ -21,7 +21,6 @@ public class BaseController {
 
     @Get
     @Produces(MediaType.APPLICATION_JSON)
-    @Secured(SecurityRule.IS_AUTHENTICATED)
     public Iterable<Base> getBases() {
         return baseService.findAll();
     }

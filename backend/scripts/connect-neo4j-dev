@@ -2,4 +2,4 @@ NEO4J_HOST=$(heroku config:get GRAPHENEDB_BOLT_URL -a touchbase-dev | sed   's/b
 NEO4J_USER=$(heroku config:get GRAPHENEDB_BOLT_USER -a touchbase-dev)
 NEO4J_PW=$(heroku config:get GRAPHENEDB_BOLT_PASSWORD -a touchbase-dev)
 
-cypher-shell -a NEO4J_HOST -u NEO4J_USER -p NEO4J_PW --encryption=true
+cypher-shell -a $NEO4J_HOST -u $NEO4J_USER -p $NEO4J_PW --encryption=true
