@@ -25,6 +25,13 @@ public class PersonServiceImpl extends AbstractDataService<Person> implements Pe
         return Person.class;
     }
 
+    @Override
+    public Person getByAuthId(String authId) {
+        var session = sessionFactory.openSession();
+        return session.loadAll(
+                getEntityType(), new Filter("authId", ComparisonOperator.CONTAINING, authId), 1).iterator().next();
+    }
+
     public Person getByUsername(String username) {
         var session = sessionFactory.openSession();
 		return session.loadAll(

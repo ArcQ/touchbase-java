@@ -1,1 +1,0 @@
-cypher-shell -a bolt://hobby-ajoclflhhkojgbkenbjiacel.dbs.graphenedb.com:24787 -u core-api-user -p b.TPn2WHrECU2P.3ZbaqYGPI7LKAnVP --encryption=true
