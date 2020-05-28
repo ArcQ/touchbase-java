@@ -8,4 +8,6 @@ public interface PersonService {
     Person getByUsername(String username);
 
     Class<Person> getEntityType();
+
+    Person getByAuthId(String name);
 }

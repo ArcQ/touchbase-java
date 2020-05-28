@@ -2,7 +2,6 @@ package com.kf.touchbase.models.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import io.micronaut.security.authentication.UserDetails;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -26,7 +25,6 @@ public class Person extends TouchBaseDomain {
     private String username;
     private String email;
     private Double score;
-    private UserDetails userDetails;
 
     @Nullable
     private String firstName;

@@ -7,13 +7,12 @@ import com.kf.touchbase.services.BaseServiceImpl;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 import io.micronaut.security.annotation.Secured;
-import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller("/api/v1/base/")
-@Secured(SecurityRule.IS_AUTHENTICATED)
+@Secured(SecurityRule.IS_ANONYMOUS)
 public class BaseController {
 
     private final BaseServiceImpl baseService;
@@ -29,7 +28,7 @@ public class BaseController {
 
     @Post
     @Produces(MediaType.APPLICATION_JSON)
-    public Base postBase(Authentication authentication, @Body BaseReq baseReq) {
+    public Base postBase(@Body BaseReq baseReq) {
         Base base = baseMapper.baseReqToBase(baseReq);
         return baseService.createOrUpdate(base);
     }

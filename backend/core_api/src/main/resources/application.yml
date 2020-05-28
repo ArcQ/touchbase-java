@@ -12,14 +12,16 @@ micronaut:
             mapping: /swagger/**
   security:
     enabled: true
-    login-handler: bearer
     token:
+      enabled: true
       jwt:
         enabled: true
         signatures:
           jwks:
             auth0:
-              url: ${JWKS_AUTH_URL:https://touchbase-dev.auth0.com}/.well-known/jwks.json
+              url: https://${JWKS_AUTH_URL:touchbase-dev.auth0.com}/.well-known/jwks.json
+        bearer:
+          enabled: true
     intercept-url-map:
       - pattern: /swagger/**
         httpMethod: GET
@@ -66,13 +68,6 @@ postgres:
       maxSize: 5
 
 ---
-datasources:
-  default:
-    url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
-    driverClassName: org.h2.Driver
-    username: postgres
-    password: 'pw123'
-    dialect: H2
 jpa:
   default:
     properties:
