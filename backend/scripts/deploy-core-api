@@ -31,39 +31,39 @@ docker push gcr.io/$PROJECT_ID/touchbase:latest
 
 gcloud beta run deploy touchbase --image gcr.io/$PROJECT_ID/touchbase --platform managed --allow-unauthenticated --project $PROJECT_ID
 
-gcloud run deploy touchbase-esp \
-    --image="gcr.io/endpoints-release/endpoints-runtime-serverless:2" \
-    --allow-unauthenticated \
-    --platform managed \
-    --project=$PROJECT_ID
+#gcloud run deploy touchbase-esp \
+#    --image="gcr.io/endpoints-release/endpoints-runtime-serverless:2" \
+#    --allow-unauthenticated \
+#    --platform managed \
+#    --project=$PROJECT_ID
 
 
-#############################################
-# 3. deploy esp as cloud run container
-# Extensible Service Proxy that routes to
-# cloud run backends
-#############################################
-gcloud endpoints services deploy openapi-run.yml --project $PROJECT_ID
+##############################################
+## 3. deploy esp as cloud run container
+## Extensible Service Proxy that routes to
+## cloud run backends
+##############################################
+#gcloud endpoints services deploy openapi-run.yml --project $PROJECT_ID
 
-# Service Configuration [2020-05-25r0] uploaded for service [touchbase-bitfvu56tq-uc.a.run.app]
-CONFIG_ID=$(gcloud endpoints configs list --service=$CLOUD_RUN_HOSTNAME --format="value(id)" | sed -n '1p')
+## Service Configuration [2020-05-25r0] uploaded for service [touchbase-bitfvu56tq-uc.a.run.app]
+#CONFIG_ID=$(gcloud endpoints configs list --service=$CLOUD_RUN_HOSTNAME --format="value(id)" | sed -n '1p')
 
-# curl https://raw.githubusercontent.com/GoogleCloudPlatform/esp-v2/master/docker/serverless/gcloud_build_image > gcloud_build_image
-# chmod +x gcloud_build_image
+## curl https://raw.githubusercontent.com/GoogleCloudPlatform/esp-v2/master/docker/serverless/gcloud_build_image > gcloud_build_image
+## chmod +x gcloud_build_image
 
-../scripts/gcloud_build_image -s $CLOUD_RUN_HOSTNAME \
-    -c $CONFIG_ID -p $PROJECT_ID
+#../scripts/gcloud_build_image -s $CLOUD_RUN_HOSTNAME \
+#    -c $CONFIG_ID -p $PROJECT_ID
 
-gcloud run deploy touchbase-esp \
-  --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$CLOUD_RUN_HOSTNAME-$CONFIG_ID" \
-  --allow-unauthenticated \
-  --platform managed \
-  --project=$PROJECT_ID
+#gcloud run deploy touchbase-esp \
+#  --image="gcr.io/$PROJECT_ID/endpoints-runtime-serverless:$CLOUD_RUN_HOSTNAME-$CONFIG_ID" \
+#  --allow-unauthenticated \
+#  --platform managed \
+#  --project=$PROJECT_ID
 
-gcloud run services add-iam-policy-binding touchbase \
-  --member "serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
-  --role "roles/run.invoker" \
-  --platform managed \
-  --project $PROJECT_ID
+#gcloud run services add-iam-policy-binding touchbase \
+#  --member "serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+#  --role "roles/run.invoker" \
+#  --platform managed \
+#  --project $PROJECT_ID
 
-#rm openapi-run.yml
+##rm openapi-run.yml
