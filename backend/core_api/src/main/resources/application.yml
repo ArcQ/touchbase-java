@@ -19,7 +19,7 @@ micronaut:
         signatures:
           jwks:
             auth0:
-              url: https://${JWKS_AUTH_URL:touchbase-dev.auth0.com}/.well-known/jwks.json
+              url: https://${JWKS_AUTH_URL:cognito-idp.us-east-1.amazonaws.com/us-east-1_HnccgMQBx}/.well-known/jwks.json
         bearer:
           enabled: true
     intercept-url-map:
