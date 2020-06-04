@@ -21,12 +21,11 @@ public class PersonController {
     @Get("me")
     @Produces(MediaType.APPLICATION_JSON)
     public Person getMe(Authentication authentication) {
-        return personService.getByAuthId(authentication.getName());
+        return personService.getByUsername((String) authentication.getAttributes().get("username"));
     }
 
     @Get("{username}")
     @Produces(MediaType.APPLICATION_JSON)
-    @Secured(SecurityRule.IS_ANONYMOUS)
     public Person getPerson(String username) {
         return personService.getByUsername(username);
     }
