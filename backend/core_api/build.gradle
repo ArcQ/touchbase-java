@@ -41,6 +41,7 @@ dependencies {
     compile "org.neo4j:neo4j-ogm:3.2.11"
     compile "org.neo4j:neo4j-ogm-core:3.2.11"
     compile "org.neo4j:neo4j-ogm-bolt-driver:3.2.11"
+    compile 'commons-beanutils:commons-beanutils:1.9.4'
     annotationProcessor "io.micronaut:micronaut-security-annotations:1.4.0"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
@@ -66,6 +67,7 @@ dependencies {
     implementation("io.swagger.core.v3:swagger-annotations")
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
     testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
     testCompile 'org.assertj:assertj-core:3.9.1'
     testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
     testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")

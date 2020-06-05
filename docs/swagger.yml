@@ -16,6 +16,22 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Base'
+    put:
+      operationId: putBase
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaseReq'
+        required: true
+      responses:
+        default:
+          description: putBase default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Base'
     post:
       operationId: postBase
       parameters: []
@@ -32,6 +48,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Base'
+  /api/v1/person/me:
+    get:
+      operationId: getMe
+      parameters: []
+      responses:
+        default:
+          description: getMe default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
   /api/v1/person/{username}:
     get:
       operationId: getPerson
@@ -44,6 +71,23 @@ paths:
       responses:
         default:
           description: getPerson default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+  /api/v1/person:
+    post:
+      operationId: postPerson
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+        required: true
+      responses:
+        default:
+          description: postPerson default response
           content:
             application/json:
               schema:
@@ -87,6 +131,8 @@ components:
       - $ref: '#/components/schemas/TouchBaseDomain'
       - type: object
         properties:
+          authId:
+            type: string
           username:
             type: string
           email:
@@ -94,8 +140,6 @@ components:
           score:
             type: number
             format: double
-          userDetails:
-            $ref: '#/components/schemas/UserDetails'
           firstName:
             type: string
           lastName:
@@ -112,19 +156,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Base'
-    UserDetails:
-      type: object
-      properties:
-        username:
-          type: string
-        roles:
-          type: array
-          items:
-            type: string
-        authenticated:
-          type: boolean
-        message:
-          type: string
     BaseReq:
       type: object
       properties:

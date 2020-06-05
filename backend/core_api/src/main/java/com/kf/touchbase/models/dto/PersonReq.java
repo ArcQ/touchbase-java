@@ -8,6 +8,8 @@ import lombok.Value;
 @ToString
 @EqualsAndHashCode
 public class PersonReq {
+    //auth provider id (like cognito)
+    String authId;
     String email;
     Double score;
     String firstName;

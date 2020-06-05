@@ -22,6 +22,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Person extends TouchBaseDomain {
 
+    private String authId;
     private String username;
     private String email;
     private Double score;
