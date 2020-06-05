@@ -3,9 +3,7 @@ package com.kf.touchbase.rest;
 import com.kf.touchbase.models.domain.Person;
 import com.kf.touchbase.services.PersonService;
 import io.micronaut.http.MediaType;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.Produces;
+import io.micronaut.http.annotation.*;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
@@ -28,5 +26,11 @@ public class PersonController {
     @Produces(MediaType.APPLICATION_JSON)
     public Person getPerson(String username) {
         return personService.getByUsername(username);
+    }
+
+    @Post("")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Person postPerson(@Body Person person) {
+        return personService.create(person);
     }
 }
