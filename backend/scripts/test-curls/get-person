@@ -1,4 +1,4 @@
-ENDPOINTS_HOST=touchbase-bitfvu56tq-uc.a.run.app
+ENDPOINTS_HOST=touchbase-dev-bitfvu56tq-uk.a.run.app
 
 curl --request GET \
    --header "content-type:application/json" \

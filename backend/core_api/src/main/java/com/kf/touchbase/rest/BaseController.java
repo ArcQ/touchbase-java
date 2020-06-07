@@ -31,16 +31,22 @@ public class BaseController {
     @Produces(MediaType.APPLICATION_JSON)
     public Base postBase(Authentication authentication, @Body BaseReq baseReq) {
         var base = baseMapper.baseReqToBase(baseReq);
-        if (base.getUuid() == null) {
-            return baseService.createBase(AuthUtils.getUsernameFromAuth(authentication), base);
-        }
-        return baseService.updateBase(AuthUtils.getUsernameFromAuth(authentication), base);
+        return baseService.createBase(AuthUtils.getUsernameFromAuth(authentication), base);
     }
 
     @Put
     @Produces(MediaType.APPLICATION_JSON)
-    public Base putBase(Authentication authentication, @Body BaseReq baseReq) {
+    @Secured({"ROLE_ADMIN"})
+    public Base putBase(@Body BaseReq baseReq) {
         var base = baseMapper.baseReqToBase(baseReq);
-        return baseService.updateBase(AuthUtils.getUsernameFromAuth(authentication), base);
+        return baseService.createOrUpdate(base);
     }
+
+    @Put("")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Base patchBase(Authentication authentication, @Body BaseReq baseReq) {
+        var base = baseMapper.baseReqToBase(baseReq);
+        return baseService.patchBase(AuthUtils.getUsernameFromAuth(authentication), base);
+    }
+
 }

@@ -11,7 +11,8 @@ DB_PORT=$(echo $db_credentials | sed 's/^.*\port=\([^ ]*\) .*/\1/')
 NEO4J_HOST=$(heroku config:get GRAPHENEDB_BOLT_URL -a touchbase-dev | sed   's/bolt:\/\///g')
 NEO4J_USER=$(heroku config:get GRAPHENEDB_BOLT_USER -a touchbase-dev)
 NEO4J_PW=$(heroku config:get GRAPHENEDB_BOLT_PASSWORD -a touchbase-dev)
-NEO4J_ENCRYPTION_LEVEL=REQUIRED"
+NEO4J_ENCRYPTION_LEVEL=REQUIRED
+JWKS_AUTH_URL=cognito-idp.us-east-1.amazonaws.com/us-east-1_HnccgMQBx"
 
-gcloud beta run services update touchbase --platform=managed \
+gcloud beta run services update touchbase-dev --platform=managed \
   --update-env-vars=$(echo $env_vars | xargs | sed -e 's/ /,/g')

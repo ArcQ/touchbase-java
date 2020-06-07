@@ -17,7 +17,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Base'
     put:
-      operationId: putBase
+      operationId: patchBase
       parameters: []
       requestBody:
         content:
@@ -27,7 +27,7 @@ paths:
         required: true
       responses:
         default:
-          description: putBase default response
+          description: patchBase default response
           content:
             application/json:
               schema:
@@ -106,22 +106,11 @@ components:
         updatedAt:
           type: string
           format: date-time
-    Base:
+    TouchBaseEntity:
       allOf:
       - $ref: '#/components/schemas/TouchBaseDomain'
       - type: object
         properties:
-          name:
-            type: string
-          score:
-            type: number
-            format: double
-          imageUrl:
-            type: string
-          members:
-            type: array
-            items:
-              $ref: '#/components/schemas/Person'
           creator:
             $ref: '#/components/schemas/Person'
           owner:
@@ -156,6 +145,23 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Base'
+    Base:
+      allOf:
+      - $ref: '#/components/schemas/TouchBaseEntity'
+      - $ref: '#/components/schemas/TouchBaseDomain'
+      - type: object
+        properties:
+          name:
+            type: string
+          score:
+            type: number
+            format: double
+          imageUrl:
+            type: string
+          members:
+            type: array
+            items:
+              $ref: '#/components/schemas/Person'
     BaseReq:
       type: object
       properties:

@@ -1,19 +1,33 @@
 package com.kf.touchbase.utils;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class TouchbaseBeanUtils {
 //    private static Logger logger;
 
-    public static <T> void updateDomain(T origObj, T updateObj, String ...includeFields) {
+    public static List<Field> getAllFieldsTilParent(Class<?> curClass, Class<?> stopParentClass) {
+        List<Field> fields = Arrays.asList(curClass.getDeclaredFields());
+
+        Class<?> parentClass = curClass.getSuperclass();
+
+        if (parentClass != null && parentClass != stopParentClass) {
+            fields.addAll(getAllFieldsTilParent(parentClass, stopParentClass));
+        }
+
+        return fields;
+    }
+
+    public static <T> void mergeInNotNull(T origObj, T updateObj, Class<?> stopParentClass,
+                                          String... includeFields) {
         var errors = new ArrayList<>();
-        Stream.concat(Arrays.stream(origObj.getClass().getDeclaredFields()),
-                Arrays.stream(origObj.getClass().getSuperclass().getDeclaredFields())
-        )
+        List<Field> fields = getAllFieldsTilParent(origObj.getClass(), stopParentClass);
+
+        fields.stream()
                 .filter((field) -> Arrays.asList(includeFields).contains(field.getName()))
                 .forEach((field) -> {
                     if (Modifier.isPrivate(field.getModifiers())) {

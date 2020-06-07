@@ -46,10 +46,10 @@ paths:
             $ref: '#/definitions/BaseReq'
       responses:
         default:
-          description: putBase default response
+          description: patchBase default response
           schema:
             $ref: '#/definitions/Base'
-      operationId: putBase
+      operationId: patchBase
   /api/v1/person:
     post:
       consumes:
@@ -97,10 +97,9 @@ paths:
 definitions:
   Base:
     allOf:
+      - $ref: '#/definitions/TouchBaseEntity'
       - $ref: '#/definitions/TouchBaseDomain'
       - properties:
-          creator:
-            $ref: '#/definitions/Person'
           imageUrl:
             type: string
           members:
@@ -109,8 +108,6 @@ definitions:
             type: array
           name:
             type: string
-          owner:
-            $ref: '#/definitions/Person'
           score:
             format: double
             type: number
@@ -167,5 +164,14 @@ definitions:
         format: uuid
         type: string
     type: object
+  TouchBaseEntity:
+    allOf:
+      - $ref: '#/definitions/TouchBaseDomain'
+      - properties:
+          creator:
+            $ref: '#/definitions/Person'
+          owner:
+            $ref: '#/definitions/Person'
+        type: object
 x-components: {}
 

@@ -1,6 +1,7 @@
 package com.kf.touchbase.utils;
 
 import com.kf.touchbase.models.domain.Person;
+import com.kf.touchbase.models.domain.TouchBaseDomain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +39,7 @@ class TouchbaseBeanUtilsTest {
                 .username("username").build();
 
         // Run the test
-        TouchbaseBeanUtils.updateDomain(person, newPerson, "email", "lastName", "score");
+        TouchbaseBeanUtils.mergeInNotNull(person, newPerson, TouchBaseDomain.class, "email", "lastName", "score");
 
         // Verify the results
         assertThat(result).isEqualToComparingFieldByField(result);
@@ -60,7 +61,7 @@ class TouchbaseBeanUtilsTest {
                 .username("username").build();
 
         // Run the test
-        TouchbaseBeanUtils.updateDomain(person, newPerson, "email", "lastName", "score");
+        TouchbaseBeanUtils.mergeInNotNull(person, newPerson, TouchBaseDomain.class, "email", "lastName", "score");
 
         // Verify the results
         assertThat(result).isEqualToComparingFieldByField(person);
@@ -84,7 +85,7 @@ class TouchbaseBeanUtilsTest {
                 .username("username").build();
 
         // Run the test
-        TouchbaseBeanUtils.updateDomain(person, newPerson);
+        TouchbaseBeanUtils.mergeInNotNull(person, newPerson, TouchBaseDomain.class);
 
         // Verify the results
         assertThat(result).isEqualToComparingFieldByField(person);

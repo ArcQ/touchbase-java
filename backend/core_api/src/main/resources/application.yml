@@ -61,10 +61,10 @@ postgres:
   reactive:
     client:
       port: 5432
-      host: localhost
-      database: touchbase
-      user: postgres
-      password: "pw123"
+      host: ${DB_HOST:localhost}
+      database: ${DB_NAME:touchbase}
+      user: ${DB_USER:postgres}
+      password: ${DB_PASSWORD:pw123}
       maxSize: 5
 
 ---

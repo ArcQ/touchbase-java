@@ -3,7 +3,7 @@
 #Dev Build Only
 PROJECT_ID=touchbase-276115
 PROJECT_NUMBER=834725213934
-CLOUD_RUN_HOSTNAME=touchbase-bitfvu56tq-uc.a.run.app
+CLOUD_RUN_HOSTNAME=touchbase-dev-bitfvu56tq-uk.a.run.app
 
 #############################################
 # 1. build open-api spec and copy to docs
@@ -29,7 +29,7 @@ cd - #/backend/core_api
 docker build -t gcr.io/$PROJECT_ID/touchbase:latest -f Dockerfile .
 docker push gcr.io/$PROJECT_ID/touchbase:latest
 
-gcloud beta run deploy touchbase --image gcr.io/$PROJECT_ID/touchbase --platform managed --allow-unauthenticated --project $PROJECT_ID
+gcloud beta run deploy touchbase-dev --image gcr.io/$PROJECT_ID/touchbase --platform managed --allow-unauthenticated --project $PROJECT_ID
 
 #gcloud run deploy touchbase-esp \
 #    --image="gcr.io/endpoints-release/endpoints-runtime-serverless:2" \
