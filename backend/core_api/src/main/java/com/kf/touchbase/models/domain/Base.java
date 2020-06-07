@@ -19,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "uuid")
 @NodeEntity
-public class Base extends TouchBaseDomain {
+public class Base extends TouchBaseEntity {
 
     private String name;
     private Double score;
@@ -29,14 +29,4 @@ public class Base extends TouchBaseDomain {
     @EqualsAndHashCode.Exclude
     @Relationship(type="HAS_MEMBER", direction = Relationship.INCOMING)
     private Set<Person> members;
-
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @Relationship(type="CREATED_BY")
-    private Person creator;
-
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @Relationship(type="OWNED_BY")
-    private Person owner;
 }

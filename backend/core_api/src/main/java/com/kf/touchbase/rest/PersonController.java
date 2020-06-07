@@ -28,7 +28,7 @@ public class PersonController {
         return personService.getByUsername(username);
     }
 
-    @Post("")
+    @Post
     @Produces(MediaType.APPLICATION_JSON)
     public Person postPerson(@Body Person person) {
         return personService.create(person);

@@ -7,7 +7,7 @@ import org.neo4j.ogm.session.SessionFactory;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-abstract class AbstractDataService<T extends TouchBaseDomain> implements DataService<T> {
+public abstract class AbstractDataService<T extends TouchBaseDomain> implements DataService<T> {
     protected final SessionFactory sessionFactory;
 
     protected static final int DEPTH_LIST = 0;
@@ -16,7 +16,7 @@ abstract class AbstractDataService<T extends TouchBaseDomain> implements DataSer
     @Override
     public Iterable<T> findAll() {
         var session = sessionFactory.openSession();
-		return session.loadAll(getEntityType(), DEPTH_LIST);
+        return session.loadAll(getEntityType(), DEPTH_LIST);
     }
 
     @Override
