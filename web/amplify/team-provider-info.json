@@ -1,0 +1,20 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-touchbase-dev-185019-authRole",
+            "UnauthRoleArn": "arn:aws:iam::670564539270:role/amplify-touchbase-dev-185019-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::670564539270:role/amplify-touchbase-dev-185019-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-touchbase-dev-185019-deployment",
+            "UnauthRoleName": "amplify-touchbase-dev-185019-unauthRole",
+            "StackName": "amplify-touchbase-dev-185019",
+            "StackId": "arn:aws:cloudformation:us-east-1:670564539270:stack/amplify-touchbase-dev-185019/4479e9c0-a911-11ea-9671-120022ae60fd",
+            "AmplifyAppId": "d2lk93e44i45du"
+        },
+        "categories": {
+            "auth": {
+                "touchbase9a62064a": {}
+            }
+        }
+    }
+}
