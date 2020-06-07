@@ -61,6 +61,18 @@ class AbstractEntityDataServiceTest {
     }
 
     @Test
+    void testFindIfOwnerId() {
+        // Setup
+        Mockito.when(session.load(Base.class, uuid, 1)).thenReturn(entity);
+
+        // Run the test
+        Base result = (Base) abstractEntityDataServiceUnderTest.findIfOwnerId("person1", entity.getUuid(), Base.class);
+
+        // Verify the results
+        assertThat(result).isEqualTo(entity);
+    }
+
+    @Test
     void testFindIfOwner_ThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> {
             abstractEntityDataServiceUnderTest.findIfOwner("person2", entity);

@@ -17,12 +17,6 @@ public class PersonServiceImpl extends AbstractDataService<Person> implements Pe
     }
 
     @Override
-    public Iterable<Person> findAll() {
-        var session = sessionFactory.openSession();
-        return session.loadAll(Person.class, 1);
-    }
-
-    @Override
     public Class<Person> getEntityType() {
         return Person.class;
     }
