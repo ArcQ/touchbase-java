@@ -1,8 +1,8 @@
 package com.kf.touchbase.rest;
 
-import com.kf.touchbase.models.domain.Success;
 import com.kf.touchbase.mappers.BaseMapper;
 import com.kf.touchbase.models.domain.Base;
+import com.kf.touchbase.models.domain.Success;
 import com.kf.touchbase.models.dto.BaseReq;
 import com.kf.touchbase.services.BaseServiceImpl;
 import com.kf.touchbase.utils.AuthUtils;
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller("/api/v1/base/")
 @Secured(SecurityRule.IS_AUTHENTICATED)
-public class BaseController {
+public class BaseJoinController {
 
     private final BaseServiceImpl baseService;
 
@@ -33,33 +33,6 @@ public class BaseController {
     public Base postBase(Authentication authentication, @Body BaseReq baseReq) {
         var base = baseMapper.baseReqToBase(baseReq);
         return baseService.createBase(AuthUtils.getUsernameFromAuth(authentication), base);
-    }
-
-    @Put
-    @Produces(MediaType.APPLICATION_JSON)
-    @Secured({"ROLE_ADMIN"})
-    public Base putBase(@Body BaseReq baseReq) {
-        var base = baseMapper.baseReqToBase(baseReq);
-        return baseService.createOrUpdate(base);
-    }
-
-    @Put
-    @Produces(MediaType.APPLICATION_JSON)
-    public Base patchBase(Authentication authentication, @Body BaseReq baseReq) {
-        var base = baseMapper.baseReqToBase(baseReq);
-        return baseService.patchBase(AuthUtils.getUsernameFromAuth(authentication), base);
-    }
-
-    @Post("{baseId}/user/{username}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Base addUserToBaseAsOwner(Authentication authentication, String baseId, String username) {
-        return baseService.addUserToBaseAsOwner(AuthUtils.getUsernameFromAuth(authentication), username, baseId);
-    }
-
-    @Delete("{baseId}/user/{username}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Base removeUserFromBaseAsOwner(Authentication authentication, String baseId, String username) {
-        return baseService.deleteUserFromBaseAsOwner(AuthUtils.getUsernameFromAuth(authentication), username, baseId);
     }
 
     @Delete("{baseId}")

@@ -24,6 +24,7 @@ public class Base extends TouchBaseEntity {
     private String name;
     private Double score;
     private String imageUrl;
+    private boolean isActive = true;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

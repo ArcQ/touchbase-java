@@ -1,12 +1,15 @@
 package com.kf.touchbase.services;
 
 import com.kf.touchbase.models.domain.Base;
+import com.kf.touchbase.models.domain.Person;
+import com.kf.touchbase.models.domain.Success;
 import com.kf.touchbase.models.domain.TouchBaseDomain;
 import com.kf.touchbase.utils.TouchbaseBeanUtils;
 import org.neo4j.ogm.session.SessionFactory;
 
 import javax.inject.Singleton;
 import java.util.Collections;
+import java.util.UUID;
 
 @Singleton
 public class BaseServiceImpl extends AbstractEntityDataService<Base> implements BaseService {
@@ -18,6 +21,7 @@ public class BaseServiceImpl extends AbstractEntityDataService<Base> implements 
         this.personService = personService;
     }
 
+    @Override
     public Base createBase(String creatorUsername, Base newBase) {
         var creator = personService.getByUsername(creatorUsername);
         newBase.setCreator(creator);
@@ -27,8 +31,9 @@ public class BaseServiceImpl extends AbstractEntityDataService<Base> implements 
         return null;
     }
 
-    public Base patchBase(String username, Base updateBase) {
-        Base existingBase = findIfOwner(username, updateBase);
+    @Override
+    public Base patchBase(String ownerUserName, Base updateBase) throws SecurityException {
+        Base existingBase = findIfOwner(ownerUserName, updateBase);
         TouchbaseBeanUtils.mergeInNotNull(
                 existingBase, updateBase, TouchBaseDomain.class, "email", "name", "score", "imageUrl",
                 "owner");
@@ -37,9 +42,29 @@ public class BaseServiceImpl extends AbstractEntityDataService<Base> implements 
     }
 
     @Override
-    public Iterable<Base> findAll() {
-        var session = sessionFactory.openSession();
-        return session.loadAll(Base.class, 1);
+    public Base addUserToBaseAsOwner(String ownerUsername, String addUsername, String baseId) throws SecurityException {
+        Base existingBase = findIfOwnerId(ownerUsername, UUID.fromString(baseId), Base.class);
+        Person person = personService.getByUsername(addUsername);
+        existingBase.getMembers().add(person);
+        createOrUpdate(existingBase);
+        return null;
+    }
+
+    @Override
+    public Base deleteUserFromBaseAsOwner(String ownerUsername, String addUsername, String baseId) throws SecurityException {
+        Base existingBase = findIfOwnerId(ownerUsername, UUID.fromString(baseId), Base.class);
+        Person person = personService.getByUsername(addUsername);
+        existingBase.getMembers().remove(person);
+        createOrUpdate(existingBase);
+        return null;
+    }
+
+    @Override
+    public Success makeBaseInactive(String ownerUsername, String baseId) throws SecurityException {
+        Base existingBase = findIfOwnerId(ownerUsername, UUID.fromString(baseId), Base.class);
+        existingBase.setActive(false);
+        createOrUpdate(existingBase);
+        return null;
     }
 
     @Override

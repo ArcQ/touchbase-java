@@ -3,6 +3,8 @@ package com.kf.touchbase.services;
 import com.kf.touchbase.models.domain.TouchBaseEntity;
 import org.neo4j.ogm.session.SessionFactory;
 
+import java.util.UUID;
+
 abstract class AbstractEntityDataService<T extends TouchBaseEntity> extends AbstractDataService<T> implements DataService<T> {
 
     public AbstractEntityDataService(SessionFactory sessionFactory) {
@@ -10,19 +12,24 @@ abstract class AbstractEntityDataService<T extends TouchBaseEntity> extends Abst
     }
 
     public T findIfOwner(String username, T entity) throws SecurityException {
-        T foundEntity = find(entity.getUuid());
+        return findIfOwnerId(username, entity.getUuid(), (Class<T>) entity.getClass());
+    }
+
+    public T findIfOwnerId(String username, UUID entityId, Class<T> clazz) throws SecurityException {
+        T foundEntity = find(entityId);
         if (foundEntity == null) {
             throw new IllegalArgumentException(String.format("User %s tried to access entity of " +
                             "type %s with id of %s but it doesn't exist", username,
-                    entity.getClass().getName(), entity.getUuid()));
+                    clazz.getName(), entityId));
         }
 
         if (!foundEntity.getOwner().getUsername().equals(username)) {
             throw new SecurityException(String.format("User %s is not an owner but tried to to " +
-                    "access entity of type %s with id of %s", username,
-                    entity.getClass().getName(), entity.getUuid()));
+                            "access entity of type %s with id of %s", username,
+                    clazz.getName(), entityId));
         }
 
-        return entity;
+        return foundEntity;
     }
+
 }
