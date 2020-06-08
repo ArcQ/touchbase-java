@@ -48,6 +48,63 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Base'
+  /api/v1/base/{baseId}/user/{username}:
+    post:
+      operationId: addUserToBaseAsOwner
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: addUserToBaseAsOwner default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Base'
+    delete:
+      operationId: removeUserFromBaseAsOwner
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: removeUserFromBaseAsOwner default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Base'
+  /api/v1/base/{baseId}:
+    delete:
+      operationId: makeBaseInactive
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: makeBaseInactive default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
   /api/v1/person/me:
     get:
       operationId: getMe
@@ -158,10 +215,14 @@ components:
             format: double
           imageUrl:
             type: string
+          active:
+            type: boolean
           members:
             type: array
             items:
               $ref: '#/components/schemas/Person'
+          isActive:
+            type: boolean
     BaseReq:
       type: object
       properties:
@@ -172,3 +233,5 @@ components:
           format: double
         imageUrl:
           type: string
+    Success:
+      type: object

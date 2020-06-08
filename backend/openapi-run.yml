@@ -50,6 +50,58 @@ paths:
           schema:
             $ref: '#/definitions/Base'
       operationId: patchBase
+  '/api/v1/base/{baseId}':
+    delete:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: baseId
+          required: true
+          type: string
+      responses:
+        default:
+          description: makeBaseInactive default response
+          schema:
+            $ref: '#/definitions/Success'
+      operationId: makeBaseInactive
+  '/api/v1/base/{baseId}/user/{username}':
+    delete:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: baseId
+          required: true
+          type: string
+        - in: path
+          name: username
+          required: true
+          type: string
+      responses:
+        default:
+          description: removeUserFromBaseAsOwner default response
+          schema:
+            $ref: '#/definitions/Base'
+      operationId: removeUserFromBaseAsOwner
+    post:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: baseId
+          required: true
+          type: string
+        - in: path
+          name: username
+          required: true
+          type: string
+      responses:
+        default:
+          description: addUserToBaseAsOwner default response
+          schema:
+            $ref: '#/definitions/Base'
+      operationId: addUserToBaseAsOwner
   /api/v1/person:
     post:
       consumes:
@@ -100,8 +152,12 @@ definitions:
       - $ref: '#/definitions/TouchBaseEntity'
       - $ref: '#/definitions/TouchBaseDomain'
       - properties:
+          active:
+            type: boolean
           imageUrl:
             type: string
+          isActive:
+            type: boolean
           members:
             items:
               $ref: '#/definitions/Person'
@@ -152,6 +208,8 @@ definitions:
           username:
             type: string
         type: object
+  Success:
+    type: object
   TouchBaseDomain:
     properties:
       createdAt:
