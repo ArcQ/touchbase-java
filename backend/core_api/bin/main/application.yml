@@ -1,0 +1,82 @@
+---
+micronaut:
+  application:
+    name: core-api
+  server:
+    cors:
+      enabled: true
+      configurations:
+        web:
+          allowedOrigins:
+            - http://localhost:3000
+    netty:
+      log-level: TRACE
+  router:
+    static-resources:
+        swagger:
+            paths: classpath:META-INF/swagger
+            mapping: /swagger/**
+  security:
+    enabled: true
+    token:
+      enabled: true
+      jwt:
+        enabled: true
+        signatures:
+          jwks:
+            auth0:
+              url: https://${JWKS_AUTH_URL:cognito-idp.us-east-1.amazonaws.com/us-east-1_HnccgMQBx}/.well-known/jwks.json
+        bearer:
+          enabled: true
+    intercept-url-map:
+      - pattern: /swagger/**
+        httpMethod: GET
+        access:
+          - isAnonymous()
+  io:
+    watch:
+      paths: src/main
+      restart: true
+---
+neo4j:
+  uri: bolt://${NEO4J_HOST:localhost}
+  username: ${NEO4J_USER:neo4j}
+  password: ${NEO4J_PW:test}
+  encryption:
+    level: ${NEO4J_ENCRYPTION_LEVEL:NONE}
+
+---
+graphql:
+  enabled: true
+  path: /graphql
+  graphql-ws:
+    enabled: true
+    path: /graphql-ws
+    keep-alive-enabled: true
+    keep-alive-interval: 15s
+  graphiql:
+    enabled: true
+    version: 0.13.2
+    path: /graphiql
+    template-path: classpath:graphiql/index.html
+    template-parameters:
+    page-title: GraphiQL
+
+---
+postgres:
+  reactive:
+    client:
+      port: 5432
+      host: ${DB_HOST:localhost}
+      database: ${DB_NAME:touchbase}
+      user: ${DB_USER:postgres}
+      password: ${DB_PASSWORD:pw123}
+      maxSize: 5
+
+---
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update

@@ -1,7 +1,5 @@
 package com.kf.touchbase.models.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -16,7 +14,6 @@ import java.util.UUID;
 
 @Data
 @SuperBuilder(toBuilder = true)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "uuid")
 @NoArgsConstructor
 public abstract class TouchBaseDomain {
     @Id
