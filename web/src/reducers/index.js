@@ -3,6 +3,6 @@ import basesReducer from './basesReducer';
 import selectedBaseReducer from './selectedBaseReducer';
 
 export default combineReducers({
-  bases: basesReducer,
+  userBases: basesReducer,
   selectedBase: selectedBaseReducer,
 });
