@@ -16,6 +16,8 @@ Amplify.configure(awsconfig);
 
 const store = createStore(reducers, applyMiddleware(thunk));
 
+Auth.currentSession().then((data) => console.log('data:', data));
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

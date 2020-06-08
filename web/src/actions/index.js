@@ -9,10 +9,11 @@ export const selectBase = (base) => {
 };
 
 export const fetchBases = () => async (dispatch) => {
-  const bases = await touchbase.get('/bases');
+  const instance = await touchbase.getTouchbaseInstance();
+  const response = await instance.get('/base');
 
   dispatch({
     type: FETCH_BASES,
-    payload: bases.data,
+    payload: response.data,
   });
 };
