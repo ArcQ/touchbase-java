@@ -3,6 +3,12 @@ micronaut:
   application:
     name: core-api
   server:
+    cors:
+      enabled: true
+      configurations:
+        web:
+          allowedOrigins:
+            - http://localhost:3000
     netty:
       log-level: TRACE
   router:
