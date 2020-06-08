@@ -1,7 +1,6 @@
 package com.kf.touchbase.models.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -17,7 +16,6 @@ import java.util.Set;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "uuid")
 @NodeEntity
 public class Base extends TouchBaseEntity {
 
@@ -29,5 +27,6 @@ public class Base extends TouchBaseEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Relationship(type="HAS_MEMBER", direction = Relationship.INCOMING)
+    @JsonIgnoreProperties({"bases", "created", "owns"})
     private Set<Person> members;
 }

@@ -25,6 +25,17 @@ CREATE (p:Person { username: "sita", firstName: "alanna", lastName: "tai", email
 CREATE (b)-[r1:HAS_MEMBER]->(p)
 RETURN b;
 
+MATCH (b:Base {name: "base2"})
+MATCH (p:Person {username: "arcq"})
+CREATE (b)-[r1:HAS_MEMBER]->(p)
+RETURN b;
+
+
+//modify user for base
+MATCH (b:Base {name: "base1"})
+SET b.imageUrl="https://images.unsplash.com/photo-1591552583452-bb878eafbe41?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1901&q=80"
+RETURN b;
+
 //find all of user's bases
 MATCH (b:Base)-[r:HAS_MEMBER]-(p:Person { username: "arcq" })
 RETURN b;
@@ -44,3 +55,8 @@ WHERE SIZE(rr) > 1
 WITH rr
 LIMIT 100000
 FOREACH (r IN TAIL(rr) | DELETE r);
+
+MATCH (A:Node {name:'A'}) WITH A
+MATCH (A)--(FD1:Node)-[r]-(FD2:Node)--(A)
+  WHERE ID(FD1) > ID(FD2)
+RETURN FD1, r, FD2

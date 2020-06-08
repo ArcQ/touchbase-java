@@ -22,7 +22,7 @@ public abstract class AbstractDataService<T extends TouchBaseDomain> implements 
     @Override
     public T find(UUID id) {
         var session = sessionFactory.openSession();
-        return session.load(getEntityType(), id, DEPTH_ENTITY);
+        return session.load(getEntityType(), id, 1);
     }
 
     @Override
