@@ -1,5 +1,5 @@
 import touchbase from '../apis/touchbase';
-import { BASE_SELECTED, FETCH_BASES } from './types';
+import { BASE_SELECTED, FETCH_USER_BASES } from './types';
 
 export const selectBase = (base) => {
   return {
@@ -8,12 +8,12 @@ export const selectBase = (base) => {
   };
 };
 
-export const fetchBases = () => async (dispatch) => {
+export const fetchUserBases = () => async (dispatch) => {
   const instance = await touchbase.getTouchbaseInstance();
-  const response = await instance.get('/base');
+  const response = await instance.get('/api/v1/person/me');
 
   dispatch({
-    type: FETCH_BASES,
+    type: FETCH_USER_BASES,
     payload: response.data,
   });
 };
