@@ -1,7 +1,6 @@
 package com.kf.touchbase.services;
 
 import com.kf.touchbase.models.domain.TouchBaseDomain;
-import com.kf.touchbase.services.neo4j.DataService;
 import lombok.RequiredArgsConstructor;
 import org.neo4j.ogm.session.SessionFactory;
 

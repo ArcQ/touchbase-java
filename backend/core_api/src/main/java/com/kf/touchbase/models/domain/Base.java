@@ -25,7 +25,7 @@ public class Base extends TouchBaseEntity {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @Relationship(type="HAS_MEMBER", direction = Relationship.INCOMING)
     @JsonIgnoreProperties({"bases", "created", "owns"})
+    @Relationship(type="HAS_MEMBER")
     private Set<Person> members;
 }
