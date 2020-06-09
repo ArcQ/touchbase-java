@@ -1,10 +1,7 @@
 package com.kf.touchbase.models.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -22,6 +19,8 @@ public class Base extends TouchBaseEntity {
     private String name;
     private Double score;
     private String imageUrl;
+
+    @Builder.Default()
     private boolean isActive = true;
 
     @ToString.Exclude

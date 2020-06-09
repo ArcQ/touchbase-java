@@ -6,7 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
 @Data
@@ -14,7 +13,6 @@ import org.neo4j.ogm.annotation.Relationship;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@NodeEntity
 public abstract class TouchBaseEntity extends TouchBaseDomain{
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

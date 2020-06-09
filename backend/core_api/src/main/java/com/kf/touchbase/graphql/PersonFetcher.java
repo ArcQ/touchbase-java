@@ -1,7 +1,7 @@
 package com.kf.touchbase.graphql;
 
 import com.kf.touchbase.models.domain.Person;
-import com.kf.touchbase.services.PersonService;
+import com.kf.touchbase.services.neo4j.PersonService;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +17,6 @@ public class PersonFetcher implements DataFetcher<Person> {
     @Override
     public Person get(DataFetchingEnvironment env) {
         String username = env.getArgument("username");
-        return personService.getByUsername(username);
+        return personService.findByUsername(username);
     }
 }

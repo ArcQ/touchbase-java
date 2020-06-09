@@ -4,7 +4,7 @@ import com.kf.touchbase.models.domain.Success;
 import com.kf.touchbase.mappers.BaseMapper;
 import com.kf.touchbase.models.domain.Base;
 import com.kf.touchbase.models.dto.BaseReq;
-import com.kf.touchbase.services.BaseServiceImpl;
+import com.kf.touchbase.services.neo4j.BaseServiceImpl;
 import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;

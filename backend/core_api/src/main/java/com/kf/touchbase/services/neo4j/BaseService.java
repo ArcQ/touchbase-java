@@ -1,4 +1,4 @@
-package com.kf.touchbase.services;
+package com.kf.touchbase.services.neo4j;
 
 import com.kf.touchbase.models.domain.Base;
 import com.kf.touchbase.models.domain.Success;
