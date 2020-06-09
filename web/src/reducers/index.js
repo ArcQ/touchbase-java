@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import basesReducer from './basesReducer';
+import userReducer from './userReducer';
 import selectedBaseReducer from './selectedBaseReducer';
 
 export default combineReducers({
-  bases: basesReducer,
+  user: userReducer,
   selectedBase: selectedBaseReducer,
 });

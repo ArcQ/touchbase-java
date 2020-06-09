@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 
 import UserApp from './pages/UserApp/UserApp';
 
@@ -8,6 +9,7 @@ import './App.css';
 function App() {
   return (
     <div className='app'>
+      <AmplifySignOut />
       <Switch>
         <Route exact path='/user' render={() => <UserApp />} />
       </Switch>
@@ -15,4 +17,4 @@ function App() {
   );
 }
 
-export default App;
+export default withAuthenticator(App);

@@ -1,11 +1,11 @@
-import { FETCH_BASES } from '../actions/types';
+import { FETCH_USER } from '../actions/types';
 
-export default (bases = [], action) => {
+export default (user = null, action) => {
   switch (action.type) {
-    case FETCH_BASES:
+    case FETCH_USER:
       return action.payload;
     default:
-      return bases;
+      return user;
   }
 };
 
