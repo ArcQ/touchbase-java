@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { selectBase } from '../../actions';
-import { fetchUserBases } from '../../actions';
+import { selectBase } from '../../actions/basesActions';
+import { fetchUser } from '../../actions/userActions';
 import './NavBases.css';
 
 class NavBases extends Component {
   componentDidMount() {
-    this.props.fetchUserBases();
+    this.props.fetchUser();
   }
 
   render() {
-    const { userBases, selectedBase } = this.props;
+    const { user, selectedBase } = this.props;
 
-    if (!userBases) {
+    if (!user) {
       return 'loading';
     }
     //force coding this for now, will refactor
     else if (selectedBase) {
       return (
         <div className='nav-bases'>
-          {userBases.bases.map((base) => (
+          {user.bases.map((base) => (
             <div
               key={base.name}
               id={selectedBase.name === base.name ? 'selected' : ''}
@@ -39,7 +39,7 @@ class NavBases extends Component {
     }
     return (
       <div className='nav-bases'>
-        {userBases.bases.map((base) => (
+        {user.bases.map((base) => (
           <div
             key={base.name}
             className='nav-bases-item'
@@ -56,11 +56,9 @@ class NavBases extends Component {
 const mapStateToProps = (state) => {
   console.log(state);
   return {
-    userBases: state.userBases,
+    user: state.user,
     selectedBase: state.selectedBase,
   };
 };
 
-export default connect(mapStateToProps, { fetchUserBases, selectBase })(
-  NavBases
-);
+export default connect(mapStateToProps, { fetchUser, selectBase })(NavBases);
