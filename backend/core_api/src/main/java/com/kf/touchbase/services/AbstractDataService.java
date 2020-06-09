@@ -1,6 +1,7 @@
 package com.kf.touchbase.services;
 
 import com.kf.touchbase.models.domain.TouchBaseDomain;
+import com.kf.touchbase.services.neo4j.DataService;
 import lombok.RequiredArgsConstructor;
 import org.neo4j.ogm.session.SessionFactory;
 
@@ -38,5 +39,5 @@ public abstract class AbstractDataService<T extends TouchBaseDomain> implements 
         return find(entity.getUuid());
     }
 
-    abstract Class<T> getEntityType();
+    protected abstract Class<T> getEntityType();
 }

@@ -1,11 +1,11 @@
-package com.kf.touchbase.services;
+package com.kf.touchbase.services.neo4j;
 
 import com.kf.touchbase.models.domain.Person;
 
 public interface PersonService extends DataService<Person> {
     Iterable<Person> findAll();
 
-    Person getByUsername(String username);
+    Person findByUsername(String username);
 
     Class<Person> getEntityType();
 

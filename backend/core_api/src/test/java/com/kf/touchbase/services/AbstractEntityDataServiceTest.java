@@ -33,7 +33,7 @@ class AbstractEntityDataServiceTest {
         initMocks(this);
         abstractEntityDataServiceUnderTest = new AbstractEntityDataService(mockSessionFactory) {
             @Override
-            Class<Base> getEntityType() {
+            protected Class<Base> getEntityType() {
                 return Base.class;
             }
         };

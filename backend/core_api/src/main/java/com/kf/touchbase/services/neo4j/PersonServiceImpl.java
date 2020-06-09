@@ -1,6 +1,7 @@
-package com.kf.touchbase.services;
+package com.kf.touchbase.services.neo4j;
 
 import com.kf.touchbase.models.domain.Person;
+import com.kf.touchbase.services.AbstractDataService;
 import org.neo4j.ogm.cypher.ComparisonOperator;
 import org.neo4j.ogm.cypher.Filter;
 import org.neo4j.ogm.cypher.Filters;
@@ -22,7 +23,7 @@ public class PersonServiceImpl extends AbstractDataService<Person> implements Pe
     }
 
     @Override
-    public Person getByUsername(String username) {
+    public Person findByUsername(String username) {
         var session = sessionFactory.openSession();
 		return session.loadAll(
 			getEntityType(), new Filter("username", ComparisonOperator.CONTAINING, username), 1).iterator().next();

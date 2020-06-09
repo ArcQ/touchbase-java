@@ -1,7 +1,7 @@
 package com.kf.touchbase.rest;
 
 import com.kf.touchbase.models.domain.Person;
-import com.kf.touchbase.services.PersonService;
+import com.kf.touchbase.services.neo4j.PersonService;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 import io.micronaut.security.annotation.Secured;
@@ -19,13 +19,13 @@ public class PersonController {
     @Get("me")
     @Produces(MediaType.APPLICATION_JSON)
     public Person getMe(Authentication authentication) {
-        return personService.getByUsername((String) authentication.getAttributes().get("username"));
+        return personService.findByUsername((String) authentication.getAttributes().get("username"));
     }
 
     @Get("{username}")
     @Produces(MediaType.APPLICATION_JSON)
     public Person getPerson(String username) {
-        return personService.getByUsername(username);
+        return personService.findByUsername(username);
     }
 
     @Post
