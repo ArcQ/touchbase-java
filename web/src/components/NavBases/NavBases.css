@@ -23,16 +23,8 @@
 
 .nav-bases img {
   width: 5em;
-  height: auto;
+  height: 5em;
 }
-
-/* .image-cropper {
-  width: 6em;
-  height: 6em;
-  position: relative;
-  overflow: hidden;
-  border-radius: 50%;
-} */
 
 #selected {
   background-color: white;

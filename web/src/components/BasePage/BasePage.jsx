@@ -11,7 +11,7 @@ function BasePage({ selectedBase }) {
         <p className='base-page-score'>
           <span class='fa fa-star yellow'></span> {selectedBase.score}
         </p>
-        <img src={selectedBase.icon} alt={selectedBase.name} />
+        <img src={selectedBase.imageUrl} alt={selectedBase.name} />
       </div>
     );
   }
