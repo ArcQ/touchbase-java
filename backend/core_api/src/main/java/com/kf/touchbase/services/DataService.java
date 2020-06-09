@@ -1,4 +1,4 @@
-package com.kf.touchbase.services.neo4j;
+package com.kf.touchbase.services;
 
 import java.util.UUID;
 
