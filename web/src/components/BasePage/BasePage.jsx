@@ -3,21 +3,22 @@ import { connect } from 'react-redux';
 
 import './BasePage.css';
 
-function BasePage({ selectedBase }) {
-  if (selectedBase) {
-    return (
-      <div className='base-page'>
-        <p className='base-page-name'>{selectedBase.name}</p>
-        <p className='base-page-score'>
-          <span class='fa fa-star yellow'></span> {selectedBase.score}
-        </p>
-        <img src={selectedBase.imageUrl} alt={selectedBase.name} />
-      </div>
-    );
-  }
+function BasePage({ base }) {
   return (
     <div className='base-page'>
-      <p className='base-page-name'>Welcome to TouchBase</p>
+      <p className='base-page-name'>{base.name}</p>
+      <p className='base-page-score'>
+        <span class='fa fa-star yellow'></span> {base.score}
+      </p>
+      <img src={base.imageUrl} alt={base.name} />
+      <div className='base-members'>
+        <p>Members</p>
+        <ul>
+          {base.members.map((member) => (
+            <li>{member.username}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
