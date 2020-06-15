@@ -30,6 +30,7 @@ class UserApp extends Component {
           <Route
             exact
             path={`/user/bases/${base.uuid}`}
+            key={base.uuid}
             render={() => <BasePage base={base} />}
           />
         ))}

@@ -8,14 +8,14 @@ function BasePage({ base }) {
     <div className='base-page'>
       <p className='base-page-name'>{base.name}</p>
       <p className='base-page-score'>
-        <span class='fa fa-star yellow'></span> {base.score}
+        <span className='fa fa-star yellow'></span> {base.score}
       </p>
       <img src={base.imageUrl} alt={base.name} />
       <div className='base-members'>
         <p>Members</p>
         <ul>
           {base.members.map((member) => (
-            <li>{member.username}</li>
+            <li key={member.username}>{member.username}</li>
           ))}
         </ul>
       </div>

@@ -6,7 +6,7 @@ import { selectBase } from '../../actions/basesActions';
 import './NavBases.css';
 
 function NavBases(props) {
-  const { user, selectedBase, pathname } = props;
+  const { user, pathname } = props;
 
   if (!user) {
     return <div className='nav-bases'></div>;
@@ -34,11 +34,9 @@ function NavBases(props) {
   );
 }
 
-const mapStateToProps = (state, ownProps) => {
-  console.log(ownProps);
+const mapStateToProps = (state) => {
   return {
     user: state.user,
-    selectedBase: state.selectedBase,
   };
 };
 

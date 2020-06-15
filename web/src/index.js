@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import Amplify, { Auth } from 'aws-amplify';
+import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
 
 import './index.css';
