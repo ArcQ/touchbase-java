@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 
 import UserApp from './pages/UserApp/UserApp';
