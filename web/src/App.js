@@ -11,7 +11,12 @@ function App() {
     <div className='app'>
       <AmplifySignOut />
       <Switch>
-        <Route exact path='/user' render={() => <UserApp />} />
+        <Route
+          path='/user'
+          render={({ history }) => (
+            <UserApp pathname={history.location.pathname} />
+          )}
+        />
       </Switch>
     </div>
   );

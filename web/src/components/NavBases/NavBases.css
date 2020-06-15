@@ -1,12 +1,12 @@
 .nav-bases {
   background-color: rgb(240, 240, 240);
-  width: 7em;
+  width: 4em;
   height: 100vh;
 }
 
 .nav-bases-item {
-  height: 7em;
-  width: 7em;
+  height: 4em;
+  width: 4em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,8 +22,8 @@
 }
 
 .nav-bases img {
-  width: 5em;
-  height: 5em;
+  width: 2.5em;
+  height: 2.5em;
 }
 
 #selected {
