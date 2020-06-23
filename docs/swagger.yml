@@ -105,6 +105,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Success'
+  /api/v1/baseJoin/me:
+    get:
+      summary: Get all the joins and requests you've made
+      operationId: getBases
+      parameters: []
+      responses:
+        default:
+          description: getBases default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BaseJoin'
+  /api/v1/baseJoin:
+    post:
+      operationId: requestIntoBase
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaseJoinReq'
+        required: true
+      responses:
+        default:
+          description: requestIntoBase default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseJoin'
+  /api/v1/baseJoin/{baseId}:
+    delete:
+      operationId: makeBaseInactive
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: makeBaseInactive default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
   /api/v1/person/me:
     get:
       operationId: getMe
@@ -149,6 +196,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Person'
+  /api/v1/mission/me:
+    get:
+      operationId: getOwnMissions
+      parameters: []
+      responses:
+        default:
+          description: getOwnMissions default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mission'
+  /api/v1/mission/progress:
+    post:
+      operationId: progressMission
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                progressReq:
+                  $ref: '#/components/schemas/ProgressReq'
+        required: true
+      responses:
+        default:
+          description: progressMission default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mission'
 components:
   schemas:
     TouchBaseDomain:
@@ -235,3 +315,54 @@ components:
           type: string
     Success:
       type: object
+    BaseJoin:
+      allOf:
+      - $ref: '#/components/schemas/TouchBaseEntity'
+      - $ref: '#/components/schemas/TouchBaseDomain'
+      - type: object
+        properties:
+          baseId:
+            type: string
+          userId:
+            type: string
+          baseJoinAction:
+            $ref: '#/components/schemas/BaseJoinAction'
+    BaseJoinAction:
+      type: string
+      enum:
+      - Request
+      - Invite
+    BaseJoinReq:
+      type: object
+      properties:
+        baseId:
+          type: string
+        userId:
+          type: string
+        baseJoinAction:
+          $ref: '#/components/schemas/BaseJoinAction'
+    Mission:
+      allOf:
+      - $ref: '#/components/schemas/TouchBaseEntity'
+      - $ref: '#/components/schemas/TouchBaseDomain'
+      - type: object
+        properties:
+          name:
+            type: string
+          description:
+            type: string
+          scoreReward:
+            type: number
+            format: double
+          missonType:
+            $ref: '#/components/schemas/MissonType'
+    MissonType:
+      type: string
+      enum:
+      - PERIODIC
+    ProgressReq:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int32

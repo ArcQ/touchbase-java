@@ -102,6 +102,87 @@ paths:
           schema:
             $ref: '#/definitions/Base'
       operationId: addUserToBaseAsOwner
+  /api/v1/baseJoin:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/BaseJoinReq'
+      responses:
+        default:
+          description: requestIntoBase default response
+          schema:
+            $ref: '#/definitions/BaseJoin'
+      operationId: requestIntoBase
+  /api/v1/baseJoin/me:
+    get:
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        default:
+          description: getBases default response
+          schema:
+            items:
+              $ref: '#/definitions/BaseJoin'
+            type: array
+      operationId: getBases
+      summary: Get all the joins and requests you've made
+  '/api/v1/baseJoin/{baseId}':
+    delete:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: baseId
+          required: true
+          type: string
+      responses:
+        default:
+          description: makeBaseInactive default response
+          schema:
+            $ref: '#/definitions/Success'
+      operationId: makeBaseInactive
+  /api/v1/mission/me:
+    get:
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        default:
+          description: getOwnMissions default response
+          schema:
+            items:
+              $ref: '#/definitions/Mission'
+            type: array
+      operationId: getOwnMissions
+  /api/v1/mission/progress:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              progressReq:
+                $ref: '#/definitions/ProgressReq'
+            type: object
+      responses:
+        default:
+          description: progressMission default response
+          schema:
+            $ref: '#/definitions/Mission'
+      operationId: progressMission
   /api/v1/person:
     post:
       consumes:
@@ -168,6 +249,32 @@ definitions:
             format: double
             type: number
         type: object
+  BaseJoin:
+    allOf:
+      - $ref: '#/definitions/TouchBaseEntity'
+      - $ref: '#/definitions/TouchBaseDomain'
+      - properties:
+          baseId:
+            type: string
+          baseJoinAction:
+            $ref: '#/definitions/BaseJoinAction'
+          userId:
+            type: string
+        type: object
+  BaseJoinAction:
+    enum:
+      - Request
+      - Invite
+    type: string
+  BaseJoinReq:
+    properties:
+      baseId:
+        type: string
+      baseJoinAction:
+        $ref: '#/definitions/BaseJoinAction'
+      userId:
+        type: string
+    type: object
   BaseReq:
     properties:
       imageUrl:
@@ -178,6 +285,25 @@ definitions:
         format: double
         type: number
     type: object
+  Mission:
+    allOf:
+      - $ref: '#/definitions/TouchBaseEntity'
+      - $ref: '#/definitions/TouchBaseDomain'
+      - properties:
+          description:
+            type: string
+          missonType:
+            $ref: '#/definitions/MissonType'
+          name:
+            type: string
+          scoreReward:
+            format: double
+            type: number
+        type: object
+  MissonType:
+    enum:
+      - PERIODIC
+    type: string
   Person:
     allOf:
       - $ref: '#/definitions/TouchBaseDomain'
@@ -208,6 +334,12 @@ definitions:
           username:
             type: string
         type: object
+  ProgressReq:
+    properties:
+      value:
+        format: int32
+        type: integer
+    type: object
   Success:
     type: object
   TouchBaseDomain:

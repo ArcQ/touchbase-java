@@ -39,5 +39,14 @@ class AuthUtilsTest {
         // Verify the results
         assertThat(result).isEqualTo("arcq");
     }
+
+    @Test
+    void testGetUserIdFromAuth() {
+        // Run the test
+        final var result = AuthUtils.getUserIdFromAuth(authentication);
+
+        // Verify the results
+        assertThat(result).isEqualTo("2a672bhg11if5bo6fni8spctc4");
+    }
 }
 

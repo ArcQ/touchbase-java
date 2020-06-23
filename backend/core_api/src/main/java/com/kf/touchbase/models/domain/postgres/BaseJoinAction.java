@@ -1,4 +1,4 @@
-package com.kf.touchbase.models.domain;
+package com.kf.touchbase.models.domain.postgres;
 
 public enum BaseJoinAction {
     Request, Invite;

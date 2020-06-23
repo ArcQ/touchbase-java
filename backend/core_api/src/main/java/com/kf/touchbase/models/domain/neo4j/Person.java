@@ -1,4 +1,4 @@
-package com.kf.touchbase.models.domain;
+package com.kf.touchbase.models.domain.neo4j;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
@@ -18,7 +18,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @NodeEntity
 @NoArgsConstructor
-public class Person extends TouchBaseDomain {
+public class Person extends TouchBaseNeo4jDomain {
 
     private String authId;
     private String username;

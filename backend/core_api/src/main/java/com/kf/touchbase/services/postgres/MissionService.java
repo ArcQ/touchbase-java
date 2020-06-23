@@ -1,10 +1,13 @@
 package com.kf.touchbase.services.postgres;
 
-import com.kf.touchbase.models.domain.Mission;
-import com.kf.touchbase.services.DataService;
+import com.kf.touchbase.models.domain.postgres.Mission;
 
-public interface MissionService extends DataService<Mission> {
-    Iterable<Mission> findOwnMissions(String username);
+import javax.inject.Singleton;
 
-    Class<Mission> getEntityType();
+@Singleton
+public class MissionService {
+
+    public Iterable<Mission> findOwnMissions(String requesterAuthId) {
+        return null;
+    }
 }

@@ -1,13 +1,16 @@
-package com.kf.touchbase.services;
+package com.kf.touchbase.services.neo4j.repository;
 
-import com.kf.touchbase.models.domain.TouchBaseDomain;
+import com.kf.touchbase.models.domain.neo4j.TouchBaseNeo4jDomain;
+import com.kf.touchbase.services.RepositoryService;
 import lombok.RequiredArgsConstructor;
 import org.neo4j.ogm.session.SessionFactory;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public abstract class AbstractDataService<T extends TouchBaseDomain> implements DataService<T> {
+public abstract class Neo4jRepository<T extends TouchBaseNeo4jDomain> implements RepositoryService<T> {
     protected final SessionFactory sessionFactory;
 
     protected static final int DEPTH_LIST = 0;
@@ -20,22 +23,22 @@ public abstract class AbstractDataService<T extends TouchBaseDomain> implements 
     }
 
     @Override
-    public T find(UUID id) {
+    public Optional<T> findById(UUID id) {
         var session = sessionFactory.openSession();
-        return session.load(getEntityType(), id, 1);
+        return Optional.of(session.load(getEntityType(), id, 1));
     }
 
     @Override
-    public void delete(UUID id) {
+    public void deleteById(UUID id) {
         var session = sessionFactory.openSession();
         session.delete(session.load(getEntityType(), id));
     }
 
     @Override
-    public T createOrUpdate(T entity) {
+    public T save(T entity) {
         var session = sessionFactory.openSession();
         session.save(entity, DEPTH_ENTITY);
-        return find(entity.getUuid());
+        return findById(entity.getUuid()).orElseThrow(EntityNotFoundException::new);
     }
 
     protected abstract Class<T> getEntityType();

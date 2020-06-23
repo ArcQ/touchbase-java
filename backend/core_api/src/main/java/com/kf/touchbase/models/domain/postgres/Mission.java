@@ -1,22 +1,21 @@
-package com.kf.touchbase.models.domain;
+package com.kf.touchbase.models.domain.postgres;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.kf.touchbase.models.domain.neo4j.TouchBaseNeo4jEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-import org.neo4j.ogm.annotation.NodeEntity;
+
+import javax.persistence.Entity;
 
 @Data
 @SuperBuilder(toBuilder = true)
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "uuid")
-@NodeEntity
-public class Mission extends TouchBaseEntity {
+@Entity
+public class Mission extends TouchBaseNeo4jEntity {
     private String name;
     private String description;
     private Double scoreReward;

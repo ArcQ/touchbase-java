@@ -1,5 +1,6 @@
-package com.kf.touchbase.models.domain;
+package com.kf.touchbase.models.domain.neo4j;
 
+import com.kf.touchbase.models.domain.TouchBaseDomainInterface;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Data
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
-public abstract class TouchBaseDomain {
+public abstract class TouchBaseNeo4jDomain implements TouchBaseDomainInterface {
     @Id
     @GeneratedValue(strategy = UuidStrategy.class)
     @Convert(org.neo4j.ogm.typeconversion.UuidStringConverter.class)

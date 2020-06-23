@@ -1,14 +1,26 @@
 package com.kf.touchbase.services.neo4j;
 
-import com.kf.touchbase.models.domain.Person;
-import com.kf.touchbase.services.DataService;
+import com.kf.touchbase.models.domain.neo4j.Person;
+import com.kf.touchbase.services.neo4j.repository.PersonRepository;
+import lombok.RequiredArgsConstructor;
 
-public interface PersonService extends DataService<Person> {
-    Iterable<Person> findAll();
+import javax.inject.Singleton;
 
-    Person findByUsername(String username);
+@RequiredArgsConstructor
+@Singleton
+public class PersonService {
 
-    Class<Person> getEntityType();
+    private final PersonRepository personRepository;
 
-    Person create(Person person);
+    public Person findByUsername(String username) {
+        return personRepository.findByUsername(username);
+    }
+
+    public Person findByAuthId(String authId) {
+        return personRepository.findByAuthId(authId);
+    }
+
+    public Person create(Person person) {
+        return personRepository.create(person);
+    }
 }

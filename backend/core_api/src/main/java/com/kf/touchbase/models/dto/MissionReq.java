@@ -1,6 +1,6 @@
 package com.kf.touchbase.models.dto;
 
-import com.kf.touchbase.models.domain.MissonType;
+import com.kf.touchbase.models.domain.postgres.MissonType;
 import lombok.*;
 
 @Data

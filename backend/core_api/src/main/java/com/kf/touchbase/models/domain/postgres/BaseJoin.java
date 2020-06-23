@@ -1,7 +1,9 @@
-package com.kf.touchbase.models.domain;
+package com.kf.touchbase.models.domain.postgres;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import javax.persistence.Entity;
 
 @Data
 @SuperBuilder(toBuilder = true)
@@ -9,8 +11,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class BaseJoin extends TouchBaseEntity{
+@Entity
+public class BaseJoin extends TouchBasePostgresEntity {
     String baseId;
-    String userId;
     BaseJoinAction baseJoinAction;
 }
