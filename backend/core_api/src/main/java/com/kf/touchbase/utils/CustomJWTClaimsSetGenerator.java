@@ -1,6 +1,6 @@
 package com.kf.touchbase.utils;
 
-import com.kf.touchbase.models.domain.JwtUserDetails;
+import com.kf.touchbase.models.domain.postgres.JwtUserDetails;
 import com.nimbusds.jwt.JWTClaimsSet;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.runtime.ApplicationConfiguration;
@@ -29,6 +29,7 @@ public class CustomJWTClaimsSetGenerator extends JWTClaimsSetGenerator {
         super.populateWithUserDetails(builder, userDetails);
         if (userDetails instanceof JwtUserDetails) {
             builder.claim("email", ((JwtUserDetails) userDetails).getEmail());
+            builder.claim("authId", ((JwtUserDetails) userDetails).getClientId());
         }
     }
 }

@@ -1,6 +1,7 @@
-package com.kf.touchbase.models.domain;
+package com.kf.touchbase.models.domain.neo4j;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.kf.touchbase.models.domain.TouchBaseEntityInterface;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import org.neo4j.ogm.annotation.Relationship;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public abstract class TouchBaseEntity extends TouchBaseDomain{
+public abstract class TouchBaseNeo4jEntity extends TouchBaseNeo4jDomain implements TouchBaseEntityInterface {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @Relationship(type="CREATED_BY")
@@ -25,4 +26,14 @@ public abstract class TouchBaseEntity extends TouchBaseDomain{
     @Relationship(type="OWNED_BY")
     @JsonIgnoreProperties({"bases", "created", "owns"})
     private Person owner;
+
+    @Override
+    public String getOwnerId() {
+        return getOwner().getAuthId();
+    }
+
+    @Override
+    public String getCreatorId() {
+        return getCreator().getAuthId();
+    }
 }

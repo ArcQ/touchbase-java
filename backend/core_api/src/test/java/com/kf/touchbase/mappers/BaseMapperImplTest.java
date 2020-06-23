@@ -1,6 +1,6 @@
 package com.kf.touchbase.mappers;
 
-import com.kf.touchbase.models.domain.Base;
+import com.kf.touchbase.models.domain.neo4j.Base;
 import com.kf.touchbase.models.dto.BaseReq;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

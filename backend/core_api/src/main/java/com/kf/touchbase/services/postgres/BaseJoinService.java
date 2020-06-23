@@ -1,17 +1,14 @@
 package com.kf.touchbase.services.postgres;
 
-import com.kf.touchbase.models.domain.BaseJoin;
-import com.kf.touchbase.models.domain.Success;
-import com.kf.touchbase.services.DataService;
+import com.kf.touchbase.models.domain.postgres.BaseJoin;
+import com.kf.touchbase.models.domain.postgres.Success;
 
-public interface BaseJoinService extends DataService<BaseJoin> {
-    Class<BaseJoin> getEntityType();
+public interface BaseJoinService {
+    Iterable<BaseJoin> findAllByOwner(String cognitoId);
 
-    Iterable<BaseJoin> findAllByOwner(String username);
+    BaseJoin createBaseJoin(String ownerAuthId, BaseJoin baseJoin) throws SecurityException;
 
-    BaseJoin createBaseJoin(String requesterUsername, BaseJoin baseJoin);
+    Success acceptBaseJoin(String ownerAuthId, BaseJoin baseJoin) throws SecurityException;
 
-    Success acceptBaseJoin(String requesterUsername, BaseJoin baseJoin);
-
-    Success deleteBaseJoin(String requesterUsername, String baseJoinId) throws SecurityException;
+    Success deleteBaseJoin(String ownerAuthId, String baseJoinId) throws SecurityException;
 }

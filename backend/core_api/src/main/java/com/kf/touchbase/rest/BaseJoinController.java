@@ -1,9 +1,9 @@
 package com.kf.touchbase.rest;
 
 import com.kf.touchbase.mappers.BaseJoinMapper;
-import com.kf.touchbase.models.domain.BaseJoin;
-import com.kf.touchbase.models.domain.BaseJoinAction;
-import com.kf.touchbase.models.domain.Success;
+import com.kf.touchbase.models.domain.postgres.BaseJoin;
+import com.kf.touchbase.models.domain.postgres.BaseJoinAction;
+import com.kf.touchbase.models.domain.postgres.Success;
 import com.kf.touchbase.models.dto.BaseJoinReq;
 import com.kf.touchbase.services.postgres.BaseJoinService;
 import com.kf.touchbase.utils.AuthUtils;
@@ -34,8 +34,7 @@ public class BaseJoinController {
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Get all the joins and requests you've made")
     public Iterable<BaseJoin> getBases(Authentication authentication) {
-        return baseInviteService.findAllByOwner((String) authentication.getAttributes().get(
-                "username"));
+        return baseInviteService.findAllByOwner(AuthUtils.getUserIdFromAuth(authentication));
     }
 
     @Post
@@ -43,10 +42,10 @@ public class BaseJoinController {
     public BaseJoin createBaseJoin(Authentication authentication, @Body BaseJoinReq baseJoinReq) {
         var baseJoin = baseJoinMapper.basejoinReqToRequest(baseJoinReq);
         if (baseJoin.getBaseJoinAction().equals(BaseJoinAction.Invite)) {
-            return baseInviteService.createBaseJoin(AuthUtils.getUsernameFromAuth(authentication),
+            return baseInviteService.createBaseJoin(AuthUtils.getUserIdFromAuth(authentication),
                     baseJoin);
         }
-        return baseRequestService.createBaseJoin(AuthUtils.getUsernameFromAuth(authentication),
+        return baseRequestService.createBaseJoin(AuthUtils.getUserIdFromAuth(authentication),
                 baseJoin);
     }
 
@@ -55,17 +54,17 @@ public class BaseJoinController {
     public BaseJoin requestIntoBase(Authentication authentication, @Body BaseJoinReq baseJoinReq) {
         var baseJoin = baseJoinMapper.basejoinReqToRequest(baseJoinReq);
         if (baseJoin.getBaseJoinAction().equals(BaseJoinAction.Invite)) {
-            return baseInviteService.createBaseJoin(AuthUtils.getUsernameFromAuth(authentication),
+            return baseInviteService.createBaseJoin(AuthUtils.getUserIdFromAuth(authentication),
                     baseJoin);
         }
-        return baseRequestService.createBaseJoin(AuthUtils.getUsernameFromAuth(authentication),
+        return baseRequestService.createBaseJoin(AuthUtils.getUserIdFromAuth(authentication),
                 baseJoin);
     }
 
     @Delete("{baseId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Success makeBaseInactive(Authentication authentication, String baseId) {
-        return baseInviteService.deleteBaseJoin(AuthUtils.getUsernameFromAuth(authentication),
+        return baseInviteService.deleteBaseJoin(AuthUtils.getUserIdFromAuth(authentication),
                 baseId);
     }
 }

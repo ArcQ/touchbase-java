@@ -63,6 +63,8 @@ dependencies {
     implementation "io.micronaut.configuration:micronaut-postgres-reactive"
     implementation "io.micronaut:micronaut-http-server-netty"
     implementation "io.micronaut.data:micronaut-data-hibernate-jpa"
+    implementation "io.micronaut.configuration:micronaut-jdbc-hikari"
+    implementation "org.apache.commons:commons-lang3:3.10"
     implementation "javax.annotation:javax.annotation-api"
     implementation("io.swagger.core.v3:swagger-annotations")
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
@@ -103,4 +105,18 @@ shadowJar {
 tasks.withType(JavaExec) {
     classpath += configurations.developmentOnly
     jvmArgs('-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
+}
+
+task getDeps(type: Copy) {
+    from sourceSets.main.runtimeClasspath
+    into 'runtime/'
+
+    doFirst {
+        ant.delete(dir: 'runtime')
+        ant.mkdir(dir: 'runtime')
+    }
+
+    doLast {
+        ant.delete(dir: 'runtime')
+    }
 }

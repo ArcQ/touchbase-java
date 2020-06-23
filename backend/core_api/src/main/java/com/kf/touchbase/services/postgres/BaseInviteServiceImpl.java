@@ -1,49 +1,35 @@
 package com.kf.touchbase.services.postgres;
 
-import com.kf.touchbase.models.domain.BaseJoin;
-import com.kf.touchbase.models.domain.Success;
-import com.kf.touchbase.services.AbstractEntityDataService;
-import com.kf.touchbase.services.neo4j.PersonService;
-import org.neo4j.ogm.cypher.ComparisonOperator;
-import org.neo4j.ogm.cypher.Filter;
-import org.neo4j.ogm.session.SessionFactory;
+import com.kf.touchbase.models.domain.postgres.BaseJoin;
+import com.kf.touchbase.models.domain.postgres.Success;
+import com.kf.touchbase.services.postgres.repository.BaseJoinRepository;
+import lombok.RequiredArgsConstructor;
 
 import javax.inject.Singleton;
 
+@RequiredArgsConstructor
 @Singleton
-public class BaseInviteServiceImpl extends AbstractEntityDataService<BaseJoin> implements BaseJoinService {
-    private PersonService personService;
+public class BaseInviteServiceImpl implements BaseJoinService {
 
-    public BaseInviteServiceImpl(SessionFactory sessionFactory,
-                                 PersonService personService) {
-        super(sessionFactory);
-        this.personService = personService;
-    }
+    private final BaseJoinRepository baseJoinRepository;
 
     @Override
-    public Class<BaseJoin> getEntityType() {
-        return BaseJoin.class;
-    }
-
-    @Override
-    public Iterable<BaseJoin> findAllByOwner(String username) {
-        var session = sessionFactory.openSession();
-        return session.loadAll(
-                getEntityType(), new Filter("owner", ComparisonOperator.CONTAINING, username), 1);
-    }
-
-    @Override
-    public BaseJoin createBaseJoin(String requesterUsername, BaseJoin baseJoin) {
+    public Iterable<BaseJoin> findAllByOwner(String ownerAuthId) {
         return null;
     }
 
     @Override
-    public Success acceptBaseJoin(String requesterUsername, BaseJoin baseJoin) {
+    public BaseJoin createBaseJoin(String ownerAuthId, BaseJoin baseJoin) throws SecurityException {
         return null;
     }
 
     @Override
-    public Success deleteBaseJoin(String requesterUsername, String baseJoinId) throws SecurityException {
+    public Success acceptBaseJoin(String ownerAuthId, BaseJoin baseJoin) throws SecurityException {
+        return null;
+    }
+
+    @Override
+    public Success deleteBaseJoin(String requesterAuthId, String baseJoinId) throws SecurityException {
         return null;
     }
 }

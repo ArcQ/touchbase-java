@@ -1,7 +1,7 @@
 package com.kf.touchbase.utils;
 
-import com.kf.touchbase.models.domain.Person;
-import com.kf.touchbase.models.domain.TouchBaseDomain;
+import com.kf.touchbase.models.domain.neo4j.Person;
+import com.kf.touchbase.models.domain.neo4j.TouchBaseNeo4jDomain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +39,7 @@ class TouchbaseBeanUtilsTest {
                 .username("username").build();
 
         // Run the test
-        TouchbaseBeanUtils.mergeInNotNull(person, newPerson, TouchBaseDomain.class, "email", "lastName", "score");
+        TouchbaseBeanUtils.mergeInNotNull(person, newPerson, TouchBaseNeo4jDomain.class, "email", "lastName", "score");
 
         // Verify the results
         assertThat(result).isEqualToComparingFieldByField(result);
@@ -61,7 +61,7 @@ class TouchbaseBeanUtilsTest {
                 .username("username").build();
 
         // Run the test
-        TouchbaseBeanUtils.mergeInNotNull(person, newPerson, TouchBaseDomain.class, "email", "lastName", "score");
+        TouchbaseBeanUtils.mergeInNotNull(person, newPerson, TouchBaseNeo4jDomain.class, "email", "lastName", "score");
 
         // Verify the results
         assertThat(result).isEqualToComparingFieldByField(person);
@@ -85,7 +85,7 @@ class TouchbaseBeanUtilsTest {
                 .username("username").build();
 
         // Run the test
-        TouchbaseBeanUtils.mergeInNotNull(person, newPerson, TouchBaseDomain.class);
+        TouchbaseBeanUtils.mergeInNotNull(person, newPerson, TouchBaseNeo4jDomain.class);
 
         // Verify the results
         assertThat(result).isEqualToComparingFieldByField(person);

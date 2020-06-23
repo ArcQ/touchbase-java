@@ -1,6 +1,6 @@
 package com.kf.touchbase.rest;
 
-import com.kf.touchbase.models.domain.Person;
+import com.kf.touchbase.models.domain.neo4j.Person;
 import com.kf.touchbase.services.neo4j.PersonService;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;

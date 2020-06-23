@@ -1,31 +1,31 @@
-package com.kf.touchbase.models.domain;
+package com.kf.touchbase.models.domain.postgres;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.micronaut.security.authentication.UserDetails;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.neo4j.ogm.annotation.NodeEntity;
 
 import java.util.Collection;
 
 @ToString
 @EqualsAndHashCode(callSuper = true)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "uuid")
-@NodeEntity
 public class JwtUserDetails extends UserDetails {
     @Getter
     @Setter
     private String email;
 
+    @Getter
+    @Setter
+    private String clientId;
+
     public JwtUserDetails(String username, Collection<String> roles) {
         super(username, roles);
     }
 
-    public JwtUserDetails(String username, Collection<String> roles, String email) {
+    public JwtUserDetails(String username, Collection<String> roles, String email, String client_id) {
         super(username, roles);
         this.email = email;
+        this.clientId = client_id;
     }
 }

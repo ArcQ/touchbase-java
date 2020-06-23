@@ -1,4 +1,4 @@
-package com.kf.touchbase.models.domain;
+package com.kf.touchbase.models.domain.neo4j;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -14,7 +14,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @NodeEntity
-public class Base extends TouchBaseEntity {
+public class Base extends TouchBaseNeo4jEntity {
 
     private String name;
     private Double score;
