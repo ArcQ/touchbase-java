@@ -1,6 +1,6 @@
 .user-app {
   display: grid;
-  grid-template-columns: 8em;
+  grid-template-columns: 5em;
   grid-template-areas: 'nav main';
 }
 

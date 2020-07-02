@@ -27,7 +27,11 @@ function NavBases(props) {
       <div className='nav-bases-item' style={{ fontSize: 16 }}>
         +
       </div>
-      <Link to='/user/profile' className='nav-bases-item'>
+      <Link
+        to='/user/profile'
+        className='nav-bases-item'
+        id={pathname === '/user/profile' ? 'selected' : ''}
+      >
         {user.username}
       </Link>
     </div>
