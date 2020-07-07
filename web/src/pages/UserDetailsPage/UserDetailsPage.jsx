@@ -16,16 +16,18 @@ function UserDetailsPage({ user }) {
           <div className='title'>{user.username}</div>
           <div className='user-info'>
             <table>
-              <tr>
-                <td className='table-header'>Full Name</td>
-                <td>
-                  {user.firstName} {user.lastName}
-                </td>
-              </tr>
-              <tr>
-                <td className='table-header'>Email</td>
-                <td>{user.email}</td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td className='table-header'>Full Name</td>
+                  <td>
+                    {user.firstName} {user.lastName}
+                  </td>
+                </tr>
+                <tr>
+                  <td className='table-header'>Email</td>
+                  <td>{user.email}</td>
+                </tr>
+              </tbody>
             </table>
           </div>
           <a className='button'>EDIT</a>

@@ -19,7 +19,7 @@ function NavBases(props) {
           to={`/user/bases/${base.uuid}`}
           className='nav-bases-item'
           key={base.name}
-          id={pathname === `/user/bases/${base.uuid}` ? 'selected' : ''}
+          id={pathname.includes(`/user/bases/${base.uuid}`) ? 'selected' : ''}
         >
           <img className='circle-icon' src={base.imageUrl} alt={base.name} />
         </Link>
