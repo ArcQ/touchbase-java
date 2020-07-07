@@ -6,9 +6,10 @@ import './UserApp.css';
 import { fetchUser } from '../../actions/userActions';
 import { selectBase } from '../../actions/basesActions';
 import NavBases from '../../components/NavBases/NavBases';
-import MainPage from '../../components/MainPage/MainPage';
-import BasePage from '../../components/BasePage/BasePage';
-import UserDetailsPage from '../../components/UserDetailsPage/UserDetailsPage';
+import MainPage from '../MainPage/MainPage';
+import BasePage from '../BasePage/BasePage';
+import BaseSettingsPage from '../BaseSettingsPage/BaseSettingsPage';
+import UserDetailsPage from '../UserDetailsPage/UserDetailsPage';
 
 class UserApp extends Component {
   componentDidMount() {
@@ -19,7 +20,11 @@ class UserApp extends Component {
     const { user, pathname } = this.props;
 
     if (!user) {
-      return <div className='user-app'>LOADING...</div>;
+      return (
+        <div className='user-app'>
+          <div className='loader'></div>
+        </div>
+      );
     }
     return (
       <div className='user-app'>
@@ -27,12 +32,20 @@ class UserApp extends Component {
         <Route exact path='/user' render={() => <MainPage />} />
         <Route exact path='/user/profile' render={() => <UserDetailsPage />} />
         {user.bases.map((base) => (
-          <Route
-            exact
-            path={`/user/bases/${base.uuid}`}
-            key={base.uuid}
-            render={() => <BasePage base={base} />}
-          />
+          <>
+            <Route
+              exact
+              path={`/user/bases/${base.uuid}`}
+              key={base.uuid}
+              render={() => <BasePage base={base} />}
+            />
+            <Route
+              exact
+              path={`/user/bases/${base.uuid}/settings`}
+              key={base.uuid}
+              render={() => <BaseSettingsPage base={base} />}
+            />
+          </>
         ))}
       </div>
     );

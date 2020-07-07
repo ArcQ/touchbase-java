@@ -10,6 +10,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  color: black;
 }
 
 .nav-bases-item:hover {
@@ -35,4 +36,6 @@
   margin: 5px;
   box-shadow: 5px 5px 20px rgb(230, 230, 230), 10px 10px 20px rgb(242, 242, 242),
     15px 15px 20px rgb(250, 250, 250);
+  color: white;
+  font-weight: 700;
 }
