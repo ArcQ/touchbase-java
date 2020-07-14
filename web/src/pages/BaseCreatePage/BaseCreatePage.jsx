@@ -18,7 +18,9 @@ class BaseCreatePage extends Component {
     );
   };
 
-  onSubmit(formValues) {}
+  onSubmit(formValues) {
+    console.log(formValues);
+  }
 
   render() {
     return (
