@@ -9,6 +9,7 @@ import NavBases from '../../components/NavBases/NavBases';
 import MainPage from '../MainPage/MainPage';
 import BasePage from '../BasePage/BasePage';
 import BaseSettingsPage from '../BaseSettingsPage/BaseSettingsPage';
+import BaseCreatePage from '../BaseCreatePage/BaseCreatePage';
 import UserDetailsPage from '../UserDetailsPage/UserDetailsPage';
 
 class UserApp extends Component {
@@ -31,6 +32,7 @@ class UserApp extends Component {
         <NavBases pathname={pathname} />
         <Route exact path='/user' render={() => <MainPage />} />
         <Route exact path='/user/profile' render={() => <UserDetailsPage />} />
+        <Route exact path='/user/bases/new' render={() => <BaseCreatePage />} />
         {user.bases.map((base) => (
           <>
             <Route
