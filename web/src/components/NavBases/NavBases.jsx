@@ -24,9 +24,14 @@ function NavBases(props) {
           <img className='circle-icon' src={base.imageUrl} alt={base.name} />
         </Link>
       ))}
-      <div className='nav-bases-item' style={{ fontSize: 16 }}>
+      <Link
+        to='/user/bases/new'
+        className='nav-bases-item'
+        id={pathname === '/user/bases/new' ? 'selected' : ''}
+        style={{ fontSize: 16 }}
+      >
         +
-      </div>
+      </Link>
       <Link
         to='/user/profile'
         className='nav-bases-item'
