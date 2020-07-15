@@ -1,11 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import './BaseChatPage.css';
+import ChatSideBar from '../../components/ChatSideBar/ChatSideBar';
+import MessagesList from '../../components/MessagesList/MessagesList';
+import NewMessageBar from '../../components/NewMessageBar/NewMessageBar';
+
 function BaseChatPage({ base }) {
   return (
     <div className='page'>
-      <Link to={`/user/bases/${base.uuid}`}>BACK</Link>
-      <p className='title'>{base.name} Chat</p>
+      <div className='chat-container'>
+        <div className='chat-sidebar'>
+          <ChatSideBar />
+        </div>
+        <div className='chat-main'>
+          <MessagesList />
+          <NewMessageBar />
+        </div>
+      </div>
     </div>
   );
 }
