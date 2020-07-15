@@ -3,16 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import './BasePage.css';
-// import Modal from '../../components/Modals/Modal';
 
 function BasePage({ base }) {
-  // const actions = (
-  //   <div>
-  //     <button>Save</button>
-  //     <button>Close</button>
-  //   </div>
-  // );
-
   return (
     <div className='page'>
       <div className='card'>
@@ -30,16 +22,11 @@ function BasePage({ base }) {
               ))}
             </ul>
           </div>
-          {/* <Modal
-            title='Settings'
-            content='these are the settings of the base'
-            actions={actions}
-            onDismiss={() => {
-              console.log('dismissed');
-            }}
-          /> */}
           <Link to={`/user/bases/${base.uuid}/settings`} className='button'>
             SETTINGS
+          </Link>
+          <Link to={`/user/bases/${base.uuid}/chat`} className='button'>
+            CHAT
           </Link>
         </div>
       </div>

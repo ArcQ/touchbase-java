@@ -141,3 +141,9 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
+:root {
+  --amplify-primary-color: #b5bcff;
+  --amplify-primary-tint: #ff7359;
+  --amplify-primary-shade: #e0573e;
+}
