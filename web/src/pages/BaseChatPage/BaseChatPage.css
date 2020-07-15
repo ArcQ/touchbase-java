@@ -1,0 +1,18 @@
+.chat-container {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-areas: 'sidebar main';
+  width: 100vw;
+  height: 100vh;
+}
+
+.chat-sidebar {
+  grid-area: sidebar;
+  padding: 0;
+  border-right: 1px solid #3f3f3f;
+  height: 100%;
+}
+
+.chat-main {
+  grid-area: 'main';
+}
