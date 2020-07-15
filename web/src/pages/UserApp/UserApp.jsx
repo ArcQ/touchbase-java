@@ -9,6 +9,7 @@ import NavBases from '../../components/NavBases/NavBases';
 import MainPage from '../MainPage/MainPage';
 import BasePage from '../BasePage/BasePage';
 import BaseSettingsPage from '../BaseSettingsPage/BaseSettingsPage';
+import BaseChatPage from '../BaseChatPage/BaseChatPage';
 import BaseCreatePage from '../BaseCreatePage/BaseCreatePage';
 import UserDetailsPage from '../UserDetailsPage/UserDetailsPage';
 
@@ -46,6 +47,12 @@ class UserApp extends Component {
               path={`/user/bases/${base.uuid}/settings`}
               key={base.uuid}
               render={() => <BaseSettingsPage base={base} />}
+            />
+            <Route
+              exact
+              path={`/user/bases/${base.uuid}/chat`}
+              key={base.uuid}
+              render={() => <BaseChatPage base={base} />}
             />
           </>
         ))}
