@@ -17,7 +17,7 @@ import java.util.Set;
 public class Base extends TouchBaseNeo4jEntity {
 
     private String name;
-    private Double score;
+    private Double score = 0.0;
     private String imageUrl;
 
     @Builder.Default()
