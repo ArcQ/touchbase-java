@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 import javax.inject.Named;
 
 @RequiredArgsConstructor
-@Controller("/api/v1/baseJoin/")
+@Controller("/api/v1/baseJoin")
 @Secured(SecurityRule.IS_AUTHENTICATED)
 public class BaseJoinController {
 
@@ -30,7 +30,7 @@ public class BaseJoinController {
 
     private final BaseJoinMapper baseJoinMapper;
 
-    @Get("me")
+    @Get("/me")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Get all the joins and requests you've made")
     public Iterable<BaseJoin> getBases(Authentication authentication) {

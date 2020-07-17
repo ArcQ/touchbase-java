@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.neo4j.driver.internal.shaded.reactor.util.annotation.Nullable;
+import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
@@ -20,8 +21,11 @@ import java.util.Set;
 @NoArgsConstructor
 public class Person extends TouchBaseNeo4jDomain {
 
+    @Index(unique=true)
     private String authId;
     private String username;
+
+    @Index(unique=true)
     private String email;
     private Double score;
 

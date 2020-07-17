@@ -1,5 +1,6 @@
 package com.kf.touchbase.models.domain.neo4j;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.kf.touchbase.models.domain.TouchBaseEntityInterface;
 import lombok.Data;
@@ -28,11 +29,13 @@ public abstract class TouchBaseNeo4jEntity extends TouchBaseNeo4jDomain implemen
     private Person owner;
 
     @Override
+    @JsonIgnore
     public String getOwnerId() {
         return getOwner().getAuthId();
     }
 
     @Override
+    @JsonIgnore
     public String getCreatorId() {
         return getCreator().getAuthId();
     }

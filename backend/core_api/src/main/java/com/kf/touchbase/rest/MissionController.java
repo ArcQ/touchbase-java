@@ -15,19 +15,19 @@ import io.micronaut.security.rules.SecurityRule;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Controller("/api/v1/mission/")
+@Controller("/api/v1/mission")
 @Secured(SecurityRule.IS_AUTHENTICATED)
 public class MissionController {
 
     private final MissionService missionService;
 
-    @Get("me")
+    @Get("/me")
     @Produces(MediaType.APPLICATION_JSON)
     public Iterable<Mission> getOwnMissions(Authentication authentication) {
         return missionService.findOwnMissions(AuthUtils.getUserIdFromAuth(authentication));
     }
 
-    @Post("progress")
+    @Post("/progress")
     @Produces(MediaType.APPLICATION_JSON)
     public Mission progressMission(ProgressReq progressReq) {
         return null;
