@@ -11,7 +11,8 @@ public class TouchbaseBeanUtils {
 //    private static Logger logger;
 
     public static List<Field> getAllFieldsTilParent(Class<?> curClass, Class<?> stopParentClass) {
-        List<Field> fields = Arrays.asList(curClass.getDeclaredFields());
+        List<Field> fields = new ArrayList<>();
+        fields.addAll(List.of(curClass.getDeclaredFields()));
 
         Class<?> parentClass = curClass.getSuperclass();
 

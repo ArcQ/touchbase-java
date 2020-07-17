@@ -26,14 +26,12 @@ public class BaseService {
         return baseRepository.save(newBase);
     }
 
-    public Base patchBase(String ownerAuthId, Base updateBase) throws SecurityException {
-        Base existingBase = baseRepository.findIfOwner(ownerAuthId, updateBase);
+    public Base patchBase(String ownerAuthId, UUID baseId, Base updateBase) throws SecurityException {
+        Base existingBase = baseRepository.findIfOwnerId(ownerAuthId, baseId, Base.class);
         TouchbaseBeanUtils.mergeInNotNull(
-                existingBase, updateBase, TouchBaseNeo4jDomain.class, "email", "name", "score",
-                "imageUrl",
-                "owner");
-        baseRepository.save(existingBase);
-        return null;
+                existingBase, updateBase, TouchBaseNeo4jDomain.class, "email", "name",
+                "imageUrl");
+        return baseRepository.save(existingBase);
     }
 
     public Base addUserToBaseAsOwner(String ownerAuthId, String addAuthId, String baseId) throws SecurityException {
