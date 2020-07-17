@@ -9,6 +9,5 @@ import lombok.*;
 @AllArgsConstructor
 public class BaseReq {
     private String name;
-    private Double score;
     private String imageUrl;
 }
