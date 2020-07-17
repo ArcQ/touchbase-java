@@ -4,18 +4,6 @@ info:
   version: "0.0"
 paths:
   /api/v1/base:
-    get:
-      operationId: getBases
-      parameters: []
-      responses:
-        default:
-          description: getBases default response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Base'
     put:
       operationId: patchBase
       parameters: []
@@ -48,7 +36,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Base'
-  /api/v1/base/{baseId}/user/{username}:
+  /api/v1/base/{baseId}/user/{authId}:
     post:
       operationId: addUserToBaseAsOwner
       parameters:
@@ -57,7 +45,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: username
+      - name: authId
         in: path
         required: true
         schema:
@@ -77,7 +65,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: username
+      - name: authId
         in: path
         required: true
         schema:
@@ -98,6 +86,7 @@ paths:
         required: true
         schema:
           type: string
+          format: uuid
       responses:
         default:
           description: makeBaseInactive default response
@@ -231,7 +220,7 @@ paths:
                 $ref: '#/components/schemas/Mission'
 components:
   schemas:
-    TouchBaseDomain:
+    TouchBaseNeo4jDomain:
       type: object
       properties:
         uuid:
@@ -243,18 +232,22 @@ components:
         updatedAt:
           type: string
           format: date-time
-    TouchBaseEntity:
+    TouchBaseNeo4jEntity:
       allOf:
-      - $ref: '#/components/schemas/TouchBaseDomain'
+      - $ref: '#/components/schemas/TouchBaseNeo4jDomain'
       - type: object
         properties:
+          ownerId:
+            type: string
+          creatorId:
+            type: string
           creator:
             $ref: '#/components/schemas/Person'
           owner:
             $ref: '#/components/schemas/Person'
     Person:
       allOf:
-      - $ref: '#/components/schemas/TouchBaseDomain'
+      - $ref: '#/components/schemas/TouchBaseNeo4jDomain'
       - type: object
         properties:
           authId:
@@ -284,8 +277,8 @@ components:
               $ref: '#/components/schemas/Base'
     Base:
       allOf:
-      - $ref: '#/components/schemas/TouchBaseEntity'
-      - $ref: '#/components/schemas/TouchBaseDomain'
+      - $ref: '#/components/schemas/TouchBaseNeo4jEntity'
+      - $ref: '#/components/schemas/TouchBaseNeo4jDomain'
       - type: object
         properties:
           name:
@@ -315,15 +308,35 @@ components:
           type: string
     Success:
       type: object
+    TouchBasePostgresDomain:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    TouchBasePostgresEntity:
+      allOf:
+      - $ref: '#/components/schemas/TouchBasePostgresDomain'
+      - type: object
+        properties:
+          ownerId:
+            type: string
+          creatorId:
+            type: string
     BaseJoin:
       allOf:
-      - $ref: '#/components/schemas/TouchBaseEntity'
-      - $ref: '#/components/schemas/TouchBaseDomain'
+      - $ref: '#/components/schemas/TouchBasePostgresEntity'
+      - $ref: '#/components/schemas/TouchBasePostgresDomain'
       - type: object
         properties:
           baseId:
-            type: string
-          userId:
             type: string
           baseJoinAction:
             $ref: '#/components/schemas/BaseJoinAction'
@@ -343,8 +356,8 @@ components:
           $ref: '#/components/schemas/BaseJoinAction'
     Mission:
       allOf:
-      - $ref: '#/components/schemas/TouchBaseEntity'
-      - $ref: '#/components/schemas/TouchBaseDomain'
+      - $ref: '#/components/schemas/TouchBaseNeo4jEntity'
+      - $ref: '#/components/schemas/TouchBaseNeo4jDomain'
       - type: object
         properties:
           name:
@@ -360,6 +373,8 @@ components:
       type: string
       enum:
       - PERIODIC
+      - WEEKLY
+      - ONE_TIME
     ProgressReq:
       type: object
       properties:
