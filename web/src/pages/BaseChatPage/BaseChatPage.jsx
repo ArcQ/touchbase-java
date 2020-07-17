@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 
 import './BaseChatPage.css';
 import ChatSideBar from '../../components/ChatSideBar/ChatSideBar';
-import MessagesList from '../../components/MessagesList/MessagesList';
-import NewMessageBar from '../../components/NewMessageBar/NewMessageBar';
+import { MessagesList } from '../../components/MessagesList/MessagesListContainer';
+import { NewMessageBar } from '../../components/NewMessageBar/NewMessageBarContainer';
 
 function BaseChatPage({ base }) {
   return (
