@@ -176,7 +176,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Person'
+              $ref: '#/components/schemas/PersonReq'
         required: true
       responses:
         default:
@@ -297,9 +297,6 @@ components:
       properties:
         name:
           type: string
-        score:
-          type: number
-          format: double
         imageUrl:
           type: string
     Success:
@@ -353,6 +350,22 @@ components:
           type: string
         baseJoinAction:
           $ref: '#/components/schemas/BaseJoinAction'
+    PersonReq:
+      type: object
+      properties:
+        authId:
+          type: string
+        email:
+          type: string
+        score:
+          type: number
+          format: double
+        firstName:
+          type: string
+        lastName:
+          type: string
+        username:
+          type: string
     Mission:
       allOf:
       - $ref: '#/components/schemas/TouchBaseNeo4jEntity'
