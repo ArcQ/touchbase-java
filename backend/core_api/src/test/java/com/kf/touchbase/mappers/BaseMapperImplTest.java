@@ -19,7 +19,7 @@ class BaseMapperImplTest {
     @Test
     void testBaseReqToBase() {
         // Setup
-        final BaseReq base = new BaseReq("name", 0.0, "imageUrl");
+        final BaseReq base = new BaseReq("name", "imageUrl");
         final Base expectedResult = Base.builder().isActive(true).name("name").score(0.0).imageUrl("imageUrl").build();
 
         // Run the test

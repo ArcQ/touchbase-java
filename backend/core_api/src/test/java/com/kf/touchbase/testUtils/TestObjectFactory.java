@@ -41,7 +41,7 @@ public class TestObjectFactory {
 
     public static class Dto {
         public static BaseReq createBaseReq() {
-            return new BaseReq("Tony's Base 1", 0.0, "imageUrl");
+            return new BaseReq("Tony's Base 1", "imageUrl");
         }
     }
 }
