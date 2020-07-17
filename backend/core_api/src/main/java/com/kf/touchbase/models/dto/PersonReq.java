@@ -1,12 +1,12 @@
 package com.kf.touchbase.models.dto;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
+import lombok.*;
 
-@Value
+@Data
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class PersonReq {
     String authId;
     String email;

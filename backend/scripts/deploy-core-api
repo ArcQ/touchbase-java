@@ -17,7 +17,7 @@ cp build/classes/java/main/META-INF/swagger/core-api-0.0.yml ../../docs/swagger.
 api-spec-converter --from=openapi_3 --to=swagger_2 --syntax=yaml --order=openapi build/classes/java/main/META-INF/swagger/core-api-0.0.yml > ../openapi-run.yml
 
 cd ../../docs #/docs
-redoc-cli bundle swagger.json
+redoc-cli bundle swagger.yml
 mv redoc-static.html index.html
 cd - #/backend/core_api
 

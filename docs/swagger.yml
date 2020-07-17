@@ -237,10 +237,6 @@ components:
       - $ref: '#/components/schemas/TouchBaseNeo4jDomain'
       - type: object
         properties:
-          ownerId:
-            type: string
-          creatorId:
-            type: string
           creator:
             $ref: '#/components/schemas/Person'
           owner:
@@ -308,6 +304,9 @@ components:
           type: string
     Success:
       type: object
+      properties:
+        status:
+          type: string
     TouchBasePostgresDomain:
       type: object
       properties:

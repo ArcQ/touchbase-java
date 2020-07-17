@@ -330,6 +330,9 @@ definitions:
         type: integer
     type: object
   Success:
+    properties:
+      status:
+        type: string
     type: object
   TouchBaseNeo4jDomain:
     properties:
@@ -349,12 +352,8 @@ definitions:
       - properties:
           creator:
             $ref: '#/definitions/Person'
-          creatorId:
-            type: string
           owner:
             $ref: '#/definitions/Person'
-          ownerId:
-            type: string
         type: object
   TouchBasePostgresDomain:
     properties:

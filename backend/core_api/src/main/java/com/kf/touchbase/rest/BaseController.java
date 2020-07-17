@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@Controller("/api/v1/base/")
+@Controller("/api/v1/base")
 @Secured(SecurityRule.IS_AUTHENTICATED)
 public class BaseController {
 
@@ -38,19 +38,19 @@ public class BaseController {
         return baseService.patchBase(AuthUtils.getUserIdFromAuth(authentication), base);
     }
 
-    @Post("{baseId}/user/{authId}")
+    @Post("/{baseId}/user/{authId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Base addUserToBaseAsOwner(Authentication authentication, String baseId, String authId) {
         return baseService.addUserToBaseAsOwner(AuthUtils.getUserIdFromAuth(authentication), authId, baseId);
     }
 
-    @Delete("{baseId}/user/{authId}")
+    @Delete("/{baseId}/user/{authId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Base removeUserFromBaseAsOwner(Authentication authentication, String baseId, String authId) {
         return baseService.deleteUserFromBaseAsOwner(AuthUtils.getUserIdFromAuth(authentication), authId, baseId);
     }
 
-    @Delete("{baseId}")
+    @Delete("/{baseId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Success makeBaseInactive(Authentication authentication, UUID baseId) {
         return baseService.makeBaseInactive(AuthUtils.getUserIdFromAuth(authentication), baseId);

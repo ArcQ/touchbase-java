@@ -24,21 +24,21 @@ public class PersonRepository extends Neo4jRepository<Person> {
     public Person findByUsername(String username) {
         var session = sessionFactory.openSession();
         return session.loadAll(
-                getEntityType(), new Filter("username", ComparisonOperator.CONTAINING, username), 1).iterator().next();
+                getEntityType(), new Filter("username", ComparisonOperator.EQUALS, username), 1).iterator().next();
     }
 
     public Person findByAuthId(String authId) {
         var session = sessionFactory.openSession();
         return session.loadAll(
-                getEntityType(), new Filter("authId", ComparisonOperator.CONTAINING, authId), 1).iterator().next();
+                getEntityType(), new Filter("authId", ComparisonOperator.EQUALS, authId), 1).iterator().next();
     }
 
     public Person create(Person person) {
         var session = sessionFactory.openSession();
         Filters filters = new Filters()
-                .or(new Filter("username", ComparisonOperator.CONTAINING, person.getUsername()))
-                .or(new Filter("email", ComparisonOperator.CONTAINING, person.getEmail()))
-                .or(new Filter("authId", ComparisonOperator.CONTAINING, person.getAuthId()));
+                .or(new Filter("username", ComparisonOperator.EQUALS, person.getUsername()))
+                .or(new Filter("email", ComparisonOperator.EQUALS, person.getEmail()))
+                .or(new Filter("authId", ComparisonOperator.EQUALS, person.getAuthId()));
 
         if (session.loadAll(getEntityType(), filters, 0).size() == 0) {
             return save(person);

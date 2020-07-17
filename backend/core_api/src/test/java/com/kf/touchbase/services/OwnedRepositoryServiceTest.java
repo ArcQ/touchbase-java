@@ -28,7 +28,7 @@ class OwnedRepositoryServiceTest {
 
     private OwnedRepositoryService<Base> ownedRepositoryServiceUnderTest;
 
-    private final Base base = TestObjectFactory.createBase();
+    private final Base base = TestObjectFactory.Domain.createBase();
 
     @BeforeEach
     void setUp() {

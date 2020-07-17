@@ -1,5 +1,8 @@
 package com.kf.touchbase.models.domain.postgres;
 
+import lombok.Value;
+
+@Value
 public class Success {
-    final String status = "success";
+    String status = "success";
 }

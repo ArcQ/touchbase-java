@@ -23,8 +23,7 @@ public class BaseService {
         newBase.setCreator(creator);
         newBase.setOwner(creator);
         newBase.setMembers(Collections.singleton(creator));
-        baseRepository.save(newBase);
-        return null;
+        return baseRepository.save(newBase);
     }
 
     public Base patchBase(String ownerAuthId, Base updateBase) throws SecurityException {
