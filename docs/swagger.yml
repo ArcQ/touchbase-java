@@ -4,22 +4,6 @@ info:
   version: "0.0"
 paths:
   /api/v1/base:
-    put:
-      operationId: patchBase
-      parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BaseReq'
-        required: true
-      responses:
-        default:
-          description: patchBase default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Base'
     post:
       operationId: postBase
       parameters: []
@@ -36,8 +20,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Base'
-  /api/v1/base/{baseId}/user/{authId}:
+  /api/v1/base/{baseId}:
+    delete:
+      description: Not Implemented Yet
+      operationId: makeBaseInactive
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        default:
+          description: makeBaseInactive default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+    patch:
+      operationId: patchBase
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaseReq'
+        required: true
+      responses:
+        default:
+          description: patchBase default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Base'
+  /api/v1/base/{baseId}/owner/{authId}:
     post:
+      description: Not Implemented Yet
       operationId: addUserToBaseAsOwner
       parameters:
       - name: baseId
@@ -58,6 +82,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Base'
     delete:
+      description: Not Implemented Yet
       operationId: removeUserFromBaseAsOwner
       parameters:
       - name: baseId
@@ -77,23 +102,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Base'
-  /api/v1/base/{baseId}:
-    delete:
-      operationId: makeBaseInactive
+    patch:
+      description: Not Implemented Yet
+      operationId: patchUserToBaseAsOwner
       parameters:
       - name: baseId
         in: path
         required: true
         schema:
           type: string
-          format: uuid
+      - name: authId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaseReq'
+        required: true
       responses:
         default:
-          description: makeBaseInactive default response
+          description: patchUserToBaseAsOwner default response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Success'
+                $ref: '#/components/schemas/Base'
   /api/v1/baseJoin/me:
     get:
       summary: Get all the joins and requests you've made

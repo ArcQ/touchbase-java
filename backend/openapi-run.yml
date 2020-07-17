@@ -21,23 +21,6 @@ paths:
           schema:
             $ref: '#/definitions/Base'
       operationId: postBase
-    put:
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: body
-          required: true
-          schema:
-            $ref: '#/definitions/BaseReq'
-      responses:
-        default:
-          description: patchBase default response
-          schema:
-            $ref: '#/definitions/Base'
-      operationId: patchBase
   '/api/v1/base/{baseId}':
     delete:
       produces:
@@ -53,8 +36,30 @@ paths:
           description: makeBaseInactive default response
           schema:
             $ref: '#/definitions/Success'
+      description: Not Implemented Yet
       operationId: makeBaseInactive
-  '/api/v1/base/{baseId}/user/{authId}':
+    patch:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: baseId
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/BaseReq'
+      responses:
+        default:
+          description: patchBase default response
+          schema:
+            $ref: '#/definitions/Base'
+      operationId: patchBase
+  '/api/v1/base/{baseId}/owner/{authId}':
     delete:
       produces:
         - application/json
@@ -72,7 +77,34 @@ paths:
           description: removeUserFromBaseAsOwner default response
           schema:
             $ref: '#/definitions/Base'
+      description: Not Implemented Yet
       operationId: removeUserFromBaseAsOwner
+    patch:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: baseId
+          required: true
+          type: string
+        - in: path
+          name: authId
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/BaseReq'
+      responses:
+        default:
+          description: patchUserToBaseAsOwner default response
+          schema:
+            $ref: '#/definitions/Base'
+      description: Not Implemented Yet
+      operationId: patchUserToBaseAsOwner
     post:
       produces:
         - application/json
@@ -90,6 +122,7 @@ paths:
           description: addUserToBaseAsOwner default response
           schema:
             $ref: '#/definitions/Base'
+      description: Not Implemented Yet
       operationId: addUserToBaseAsOwner
   /api/v1/baseJoin:
     post:
