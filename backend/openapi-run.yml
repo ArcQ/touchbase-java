@@ -4,18 +4,6 @@ info:
   version: '0.0'
 paths:
   /api/v1/base:
-    get:
-      produces:
-        - application/json
-      parameters: []
-      responses:
-        default:
-          description: getBases default response
-          schema:
-            items:
-              $ref: '#/definitions/Base'
-            type: array
-      operationId: getBases
     post:
       consumes:
         - application/json
@@ -55,7 +43,8 @@ paths:
       produces:
         - application/json
       parameters:
-        - in: path
+        - format: uuid
+          in: path
           name: baseId
           required: true
           type: string
@@ -65,7 +54,7 @@ paths:
           schema:
             $ref: '#/definitions/Success'
       operationId: makeBaseInactive
-  '/api/v1/base/{baseId}/user/{username}':
+  '/api/v1/base/{baseId}/user/{authId}':
     delete:
       produces:
         - application/json
@@ -75,7 +64,7 @@ paths:
           required: true
           type: string
         - in: path
-          name: username
+          name: authId
           required: true
           type: string
       responses:
@@ -93,7 +82,7 @@ paths:
           required: true
           type: string
         - in: path
-          name: username
+          name: authId
           required: true
           type: string
       responses:
@@ -230,8 +219,8 @@ paths:
 definitions:
   Base:
     allOf:
-      - $ref: '#/definitions/TouchBaseEntity'
-      - $ref: '#/definitions/TouchBaseDomain'
+      - $ref: '#/definitions/TouchBaseNeo4jEntity'
+      - $ref: '#/definitions/TouchBaseNeo4jDomain'
       - properties:
           active:
             type: boolean
@@ -251,15 +240,13 @@ definitions:
         type: object
   BaseJoin:
     allOf:
-      - $ref: '#/definitions/TouchBaseEntity'
-      - $ref: '#/definitions/TouchBaseDomain'
+      - $ref: '#/definitions/TouchBasePostgresEntity'
+      - $ref: '#/definitions/TouchBasePostgresDomain'
       - properties:
           baseId:
             type: string
           baseJoinAction:
             $ref: '#/definitions/BaseJoinAction'
-          userId:
-            type: string
         type: object
   BaseJoinAction:
     enum:
@@ -287,8 +274,8 @@ definitions:
     type: object
   Mission:
     allOf:
-      - $ref: '#/definitions/TouchBaseEntity'
-      - $ref: '#/definitions/TouchBaseDomain'
+      - $ref: '#/definitions/TouchBaseNeo4jEntity'
+      - $ref: '#/definitions/TouchBaseNeo4jDomain'
       - properties:
           description:
             type: string
@@ -303,10 +290,12 @@ definitions:
   MissonType:
     enum:
       - PERIODIC
+      - WEEKLY
+      - ONE_TIME
     type: string
   Person:
     allOf:
-      - $ref: '#/definitions/TouchBaseDomain'
+      - $ref: '#/definitions/TouchBaseNeo4jDomain'
       - properties:
           authId:
             type: string
@@ -342,7 +331,7 @@ definitions:
     type: object
   Success:
     type: object
-  TouchBaseDomain:
+  TouchBaseNeo4jDomain:
     properties:
       createdAt:
         format: date-time
@@ -354,14 +343,40 @@ definitions:
         format: uuid
         type: string
     type: object
-  TouchBaseEntity:
+  TouchBaseNeo4jEntity:
     allOf:
-      - $ref: '#/definitions/TouchBaseDomain'
+      - $ref: '#/definitions/TouchBaseNeo4jDomain'
       - properties:
           creator:
             $ref: '#/definitions/Person'
+          creatorId:
+            type: string
           owner:
             $ref: '#/definitions/Person'
+          ownerId:
+            type: string
+        type: object
+  TouchBasePostgresDomain:
+    properties:
+      createdAt:
+        format: date-time
+        type: string
+      updatedAt:
+        format: date-time
+        type: string
+      uuid:
+        format: uuid
+        type: string
+        x-nullable: true
+    type: object
+  TouchBasePostgresEntity:
+    allOf:
+      - $ref: '#/definitions/TouchBasePostgresDomain'
+      - properties:
+          creatorId:
+            type: string
+          ownerId:
+            type: string
         type: object
 x-components: {}
 
