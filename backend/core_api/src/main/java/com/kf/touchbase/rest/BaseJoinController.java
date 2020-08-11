@@ -1,5 +1,6 @@
 package com.kf.touchbase.rest;
 
+import com.kf.touchbase.annotation.NotYetImplemented;
 import com.kf.touchbase.mappers.BaseJoinMapper;
 import com.kf.touchbase.models.domain.postgres.BaseJoin;
 import com.kf.touchbase.models.domain.postgres.BaseJoinAction;
@@ -32,13 +33,16 @@ public class BaseJoinController {
 
     @Get("/me")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Get all the joins and requests you've made")
+    @NotYetImplemented
+    @Operation(description = "Not Implemented Yet")
     public Iterable<BaseJoin> getBases(Authentication authentication) {
         return baseInviteService.findAllByOwner(AuthUtils.getUserIdFromAuth(authentication));
     }
 
     @Post
     @Produces(MediaType.APPLICATION_JSON)
+    @NotYetImplemented
+    @Operation(description = "Not Implemented Yet")
     public BaseJoin createBaseJoin(Authentication authentication, @Body BaseJoinReq baseJoinReq) {
         var baseJoin = baseJoinMapper.basejoinReqToRequest(baseJoinReq);
         if (baseJoin.getBaseJoinAction().equals(BaseJoinAction.Invite)) {
@@ -51,6 +55,8 @@ public class BaseJoinController {
 
     @Post
     @Produces(MediaType.APPLICATION_JSON)
+    @NotYetImplemented
+    @Operation(description = "Not Implemented Yet")
     public BaseJoin requestIntoBase(Authentication authentication, @Body BaseJoinReq baseJoinReq) {
         var baseJoin = baseJoinMapper.basejoinReqToRequest(baseJoinReq);
         if (baseJoin.getBaseJoinAction().equals(BaseJoinAction.Invite)) {
@@ -63,7 +69,9 @@ public class BaseJoinController {
 
     @Delete("{baseId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Success makeBaseInactive(Authentication authentication, String baseId) {
+    @NotYetImplemented
+    @Operation(description = "Not Implemented Yet")
+    public Success deleteBaseInvite(Authentication authentication, String baseId) {
         return baseInviteService.deleteBaseJoin(AuthUtils.getUserIdFromAuth(authentication),
                 baseId);
     }
