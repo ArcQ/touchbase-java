@@ -141,6 +141,7 @@ paths:
           description: requestIntoBase default response
           schema:
             $ref: '#/definitions/BaseJoin'
+      description: Not Implemented Yet
       operationId: requestIntoBase
   /api/v1/baseJoin/me:
     get:
@@ -154,8 +155,8 @@ paths:
             items:
               $ref: '#/definitions/BaseJoin'
             type: array
+      description: Not Implemented Yet
       operationId: getBases
-      summary: Get all the joins and requests you've made
   '/api/v1/baseJoin/{baseId}':
     delete:
       produces:
@@ -167,10 +168,11 @@ paths:
           type: string
       responses:
         default:
-          description: makeBaseInactive default response
+          description: deleteBaseInvite default response
           schema:
             $ref: '#/definitions/Success'
-      operationId: makeBaseInactive
+      description: Not Implemented Yet
+      operationId: deleteBaseInvite
   /api/v1/mission/me:
     get:
       produces:
@@ -183,6 +185,7 @@ paths:
             items:
               $ref: '#/definitions/Mission'
             type: array
+      description: Not Implemented Yet
       operationId: getOwnMissions
   /api/v1/mission/progress:
     post:
@@ -204,8 +207,26 @@ paths:
           description: progressMission default response
           schema:
             $ref: '#/definitions/Mission'
+      description: Not Implemented Yet
       operationId: progressMission
   /api/v1/person:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: query
+          required: true
+          type: string
+      responses:
+        default:
+          description: findAllPublic default response
+          schema:
+            items:
+              $ref: '#/definitions/PersonPublicRes'
+            type: array
+      operationId: findAllPublic
+      summary: Search for users to add
     post:
       consumes:
         - application/json
@@ -353,6 +374,18 @@ definitions:
           username:
             type: string
         type: object
+  PersonPublicRes:
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      score:
+        format: double
+        type: number
+      username:
+        type: string
+    type: object
   PersonReq:
     properties:
       authId:
