@@ -1,12 +1,5 @@
-.base-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.base-page img {
-  width: 20em;
+.base-page-img {
+  width: 15em;
 }
 
 .base-page-name {
@@ -17,6 +10,10 @@
 .base-page-score {
   font-size: 5em;
   padding: 1rem;
+}
+
+.base-members {
+  margin: 20px 0 40px 0;
 }
 
 .yellow {

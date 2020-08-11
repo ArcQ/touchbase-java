@@ -1,0 +1,10 @@
+{
+	"auth": {
+		"touchbase9a62064a": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [],
+			"customAuth": false
+		}
+	}
+}
