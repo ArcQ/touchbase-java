@@ -1,6 +1,7 @@
 package com.kf.touchbase.mappers;
 
 import com.kf.touchbase.models.domain.neo4j.Person;
+import com.kf.touchbase.models.dto.PersonPublicRes;
 import com.kf.touchbase.models.dto.PersonReq;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -9,4 +10,8 @@ import org.mapstruct.ReportingPolicy;
 public interface PersonMapper {
 
     Person personReqToPerson(PersonReq person);
+
+    PersonPublicRes personToPersonPublicRes(Person person);
+
+    Iterable<PersonPublicRes> personIterableToPersonPublicResIterable(Iterable<Person> person);
 }

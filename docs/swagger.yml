@@ -131,7 +131,7 @@ paths:
                 $ref: '#/components/schemas/Base'
   /api/v1/baseJoin/me:
     get:
-      summary: Get all the joins and requests you've made
+      description: Not Implemented Yet
       operationId: getBases
       parameters: []
       responses:
@@ -145,6 +145,7 @@ paths:
                   $ref: '#/components/schemas/BaseJoin'
   /api/v1/baseJoin:
     post:
+      description: Not Implemented Yet
       operationId: requestIntoBase
       parameters: []
       requestBody:
@@ -162,7 +163,8 @@ paths:
                 $ref: '#/components/schemas/BaseJoin'
   /api/v1/baseJoin/{baseId}:
     delete:
-      operationId: makeBaseInactive
+      description: Not Implemented Yet
+      operationId: deleteBaseInvite
       parameters:
       - name: baseId
         in: path
@@ -171,11 +173,46 @@ paths:
           type: string
       responses:
         default:
-          description: makeBaseInactive default response
+          description: deleteBaseInvite default response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Success'
+  /api/v1/person:
+    get:
+      summary: Search for users to add
+      operationId: findAllPublic
+      parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: findAllPublic default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonPublicRes'
+    post:
+      operationId: postPerson
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonReq'
+        required: true
+      responses:
+        default:
+          description: postPerson default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
   /api/v1/person/me:
     get:
       operationId: getMe
@@ -203,25 +240,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Person'
-  /api/v1/person:
-    post:
-      operationId: postPerson
-      parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PersonReq'
-        required: true
-      responses:
-        default:
-          description: postPerson default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Person'
   /api/v1/mission/me:
     get:
+      description: Not Implemented Yet
       operationId: getOwnMissions
       parameters: []
       responses:
@@ -235,6 +256,7 @@ paths:
                   $ref: '#/components/schemas/Mission'
   /api/v1/mission/progress:
     post:
+      description: Not Implemented Yet
       operationId: progressMission
       parameters: []
       requestBody:
@@ -385,6 +407,18 @@ components:
           type: string
         baseJoinAction:
           $ref: '#/components/schemas/BaseJoinAction'
+    PersonPublicRes:
+      type: object
+      properties:
+        score:
+          type: number
+          format: double
+        firstName:
+          type: string
+        lastName:
+          type: string
+        username:
+          type: string
     PersonReq:
       type: object
       properties:

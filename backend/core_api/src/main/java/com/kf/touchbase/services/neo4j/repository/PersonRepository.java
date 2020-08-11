@@ -21,6 +21,17 @@ public class PersonRepository extends Neo4jRepository<Person> {
         return Person.class;
     }
 
+    public Iterable<Person> searchByQuery(String query) {
+        var session = sessionFactory.openSession();
+
+        Filters filters = new Filters()
+                .or(new Filter("username", ComparisonOperator.CONTAINING, query))
+                .or(new Filter("firstName", ComparisonOperator.CONTAINING, query))
+                .or(new Filter("fullName", ComparisonOperator.CONTAINING, query));
+
+        return session.loadAll(getEntityType(), filters, 1);
+    }
+
     public Person findByUsername(String username) {
         var session = sessionFactory.openSession();
         return session.loadAll(

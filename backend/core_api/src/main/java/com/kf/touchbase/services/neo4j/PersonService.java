@@ -12,6 +12,14 @@ public class PersonService {
 
     private final PersonRepository personRepository;
 
+    public Iterable<Person> findAll() {
+        return personRepository.findAll();
+    }
+
+    public Iterable<Person> searchByQuery(String query) {
+        return personRepository.searchByQuery(query);
+    }
+
     public Person findByUsername(String username) {
         return personRepository.findByUsername(username);
     }
