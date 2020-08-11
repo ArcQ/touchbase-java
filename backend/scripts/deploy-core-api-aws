@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#Dev Build Only
+ECR_DOMAIN=670564539270.dkr.ecr.us-east-1.amazonaws.com
+PROJECT_NAME=touchbase-core
+
+#############################################
+# 1. build open-api spec and copy to docs
+#############################################
+
+cd core_api #/backend/core_api
+JAVA_TOOL_OPTIONS=-Dmicronaut.openapi.views.spec=redoc.enabled=true ./gradlew --no-daemon clean assemble
+cp build/classes/java/main/META-INF/swagger/core-api-0.0.yml ../../docs/swagger.yml
+#build open api spec for cloud endpoints
+#TODO need to format this with could endpoint modifications
+api-spec-converter --from=openapi_3 --to=swagger_2 --syntax=yaml --order=openapi build/classes/java/main/META-INF/swagger/core-api-0.0.yml > ../openapi-run.yml
+
+cd ../../docs #/docs
+redoc-cli bundle swagger.yml
+mv redoc-static.html index.html
+cd - #/backend/core_api
+
+#############################################
+# 2. build backenddocker container and upload
+#############################################
+
+./gradlew build
+
+aws ecr get-login-password --region us-east-1 --profile default | docker login --username AWS --password-stdin $ECR_DOMAIN
+docker build -t $ECR_DOMAIN/$PROJECT_NAME:latest -f Dockerfile .
+docker push $ECR_DOMAIN/$PROJECT_NAME:latest

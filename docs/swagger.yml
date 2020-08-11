@@ -3,132 +3,6 @@ info:
   title: core-api
   version: "0.0"
 paths:
-  /api/v1/base:
-    post:
-      operationId: postBase
-      parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BaseReq'
-        required: true
-      responses:
-        default:
-          description: postBase default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Base'
-  /api/v1/base/{baseId}:
-    delete:
-      description: Not Implemented Yet
-      operationId: makeBaseInactive
-      parameters:
-      - name: baseId
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        default:
-          description: makeBaseInactive default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Success'
-    patch:
-      operationId: patchBase
-      parameters:
-      - name: baseId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BaseReq'
-        required: true
-      responses:
-        default:
-          description: patchBase default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Base'
-  /api/v1/base/{baseId}/owner/{authId}:
-    post:
-      description: Not Implemented Yet
-      operationId: addUserToBaseAsOwner
-      parameters:
-      - name: baseId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: authId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        default:
-          description: addUserToBaseAsOwner default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Base'
-    delete:
-      description: Not Implemented Yet
-      operationId: removeUserFromBaseAsOwner
-      parameters:
-      - name: baseId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: authId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        default:
-          description: removeUserFromBaseAsOwner default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Base'
-    patch:
-      description: Not Implemented Yet
-      operationId: patchUserToBaseAsOwner
-      parameters:
-      - name: baseId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: authId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BaseReq'
-        required: true
-      responses:
-        default:
-          description: patchUserToBaseAsOwner default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Base'
   /api/v1/baseJoin/me:
     get:
       description: Not Implemented Yet
@@ -275,92 +149,134 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Mission'
-components:
-  schemas:
-    TouchBaseNeo4jDomain:
-      type: object
-      properties:
-        uuid:
+  /api/v1/base:
+    post:
+      operationId: postBase
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaseReq'
+        required: true
+      responses:
+        default:
+          description: postBase default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Base'
+  /api/v1/base/{baseId}:
+    delete:
+      description: Not Implemented Yet
+      operationId: makeBaseInactive
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
           type: string
           format: uuid
-        createdAt:
+      responses:
+        default:
+          description: makeBaseInactive default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+    patch:
+      operationId: patchBase
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
           type: string
-          format: date-time
-        updatedAt:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaseReq'
+        required: true
+      responses:
+        default:
+          description: patchBase default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Base'
+  /api/v1/base/{baseId}/owner/{authId}:
+    post:
+      description: Not Implemented Yet
+      operationId: addUserToBaseAsOwner
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
           type: string
-          format: date-time
-    TouchBaseNeo4jEntity:
-      allOf:
-      - $ref: '#/components/schemas/TouchBaseNeo4jDomain'
-      - type: object
-        properties:
-          creator:
-            $ref: '#/components/schemas/Person'
-          owner:
-            $ref: '#/components/schemas/Person'
-    Person:
-      allOf:
-      - $ref: '#/components/schemas/TouchBaseNeo4jDomain'
-      - type: object
-        properties:
-          authId:
-            type: string
-          username:
-            type: string
-          email:
-            type: string
-          score:
-            type: number
-            format: double
-          firstName:
-            type: string
-          lastName:
-            type: string
-          bases:
-            type: array
-            items:
-              $ref: '#/components/schemas/Base'
-          created:
-            type: array
-            items:
-              $ref: '#/components/schemas/Base'
-          owns:
-            type: array
-            items:
-              $ref: '#/components/schemas/Base'
-    Base:
-      allOf:
-      - $ref: '#/components/schemas/TouchBaseNeo4jEntity'
-      - $ref: '#/components/schemas/TouchBaseNeo4jDomain'
-      - type: object
-        properties:
-          name:
-            type: string
-          score:
-            type: number
-            format: double
-          imageUrl:
-            type: string
-          active:
-            type: boolean
-          members:
-            type: array
-            items:
-              $ref: '#/components/schemas/Person'
-          isActive:
-            type: boolean
-    BaseReq:
-      type: object
-      properties:
-        name:
+      - name: authId
+        in: path
+        required: true
+        schema:
           type: string
-        imageUrl:
+      responses:
+        default:
+          description: addUserToBaseAsOwner default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Base'
+    delete:
+      description: Not Implemented Yet
+      operationId: removeUserFromBaseAsOwner
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
           type: string
-    Success:
-      type: object
-      properties:
-        status:
+      - name: authId
+        in: path
+        required: true
+        schema:
           type: string
+      responses:
+        default:
+          description: removeUserFromBaseAsOwner default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Base'
+    patch:
+      description: Not Implemented Yet
+      operationId: patchUserToBaseAsOwner
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaseReq'
+        required: true
+      responses:
+        default:
+          description: patchUserToBaseAsOwner default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Base'
+components:
+  schemas:
     TouchBasePostgresDomain:
       type: object
       properties:
@@ -407,6 +323,11 @@ components:
           type: string
         baseJoinAction:
           $ref: '#/components/schemas/BaseJoinAction'
+    Success:
+      type: object
+      properties:
+        status:
+          type: string
     PersonPublicRes:
       type: object
       properties:
@@ -419,6 +340,78 @@ components:
           type: string
         username:
           type: string
+    TouchBaseNeo4jDomain:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Person:
+      allOf:
+      - $ref: '#/components/schemas/TouchBaseNeo4jDomain'
+      - type: object
+        properties:
+          authId:
+            type: string
+          username:
+            type: string
+          email:
+            type: string
+          score:
+            type: number
+            format: double
+          firstName:
+            type: string
+          lastName:
+            type: string
+          bases:
+            type: array
+            items:
+              $ref: '#/components/schemas/Base'
+          created:
+            type: array
+            items:
+              $ref: '#/components/schemas/Base'
+          owns:
+            type: array
+            items:
+              $ref: '#/components/schemas/Base'
+    TouchBaseNeo4jEntity:
+      allOf:
+      - $ref: '#/components/schemas/TouchBaseNeo4jDomain'
+      - type: object
+        properties:
+          creator:
+            $ref: '#/components/schemas/Person'
+          owner:
+            $ref: '#/components/schemas/Person'
+    Base:
+      allOf:
+      - $ref: '#/components/schemas/TouchBaseNeo4jEntity'
+      - $ref: '#/components/schemas/TouchBaseNeo4jDomain'
+      - type: object
+        properties:
+          name:
+            type: string
+          score:
+            type: number
+            format: double
+          imageUrl:
+            type: string
+          active:
+            type: boolean
+          members:
+            type: array
+            items:
+              $ref: '#/components/schemas/Person'
+          isActive:
+            type: boolean
     PersonReq:
       type: object
       properties:
@@ -462,3 +455,10 @@ components:
         value:
           type: integer
           format: int32
+    BaseReq:
+      type: object
+      properties:
+        name:
+          type: string
+        imageUrl:
+          type: string

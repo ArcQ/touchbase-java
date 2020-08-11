@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#Dev Build Only
+PROJECT_ID=touchbase-276115
+PROJECT_NUMBER=834725213934
+CLOUD_RUN_HOSTNAME=touchbase-dev-bitfvu56tq-uk.a.run.app
+
+#############################################
+# 1. build open-api spec and copy to docs
+#############################################
+
+cd core_api #/backend/core_api
+JAVA_TOOL_OPTIONS=-Dmicronaut.openapi.views.spec=redoc.enabled=true ./gradlew --no-daemon clean assemble
+cp build/classes/java/main/META-INF/swagger/core-api-0.0.yml ../../docs/swagger.yml
+#build open api spec for cloud endpoints
+#TODO need to format this with could endpoint modifications
+api-spec-converter --from=openapi_3 --to=swagger_2 --syntax=yaml --order=openapi build/classes/java/main/META-INF/swagger/core-api-0.0.yml > ../openapi-run.yml
+
+cd ../../docs #/docs
+redoc-cli bundle swagger.yml
+mv redoc-static.html index.html
+cd - #/backend/core_api
+
+#############################################
+# 2. build backenddocker container and upload
+#############################################
+
+./gradlew build
+docker build -t gcr.io/$PROJECT_ID/touchbase:latest -f Dockerfile .
+docker push gcr.io/$PROJECT_ID/touchbase:latest
+
+gcloud beta run deploy touchbase-dev --image gcr.io/$PROJECT_ID/touchbase --platform managed --allow-unauthenticated --project $PROJECT_ID
