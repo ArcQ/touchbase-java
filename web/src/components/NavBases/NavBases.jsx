@@ -1,56 +1,52 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { selectBase } from '../../actions';
-import { fetchBases } from '../../actions';
+import { selectBase } from '../../actions/basesActions';
 import './NavBases.css';
 
-class NavBases extends Component {
-  componentDidMount() {
-    this.props.fetchBases();
+function NavBases(props) {
+  const { user, pathname } = props;
+
+  if (!user) {
+    return <div className='nav-bases'></div>;
   }
 
-  render() {
-    const { bases, selectedBase } = this.props;
-
-    //force coding this for now, will refactor
-    if (selectedBase) {
-      return (
-        <div className='nav-bases'>
-          {bases.map((base) => (
-            <div
-              key={base.name}
-              id={selectedBase.name === base.name ? 'selected' : ''}
-              className='nav-bases-item'
-              onClick={() => this.props.selectBase(base)}
-            >
-              <img className='circle-icon' src={base.icon} alt={base.name} />
-            </div>
-          ))}
-        </div>
-      );
-    }
-    return (
-      <div className='nav-bases'>
-        {bases.map((base) => (
-          <div
-            key={base.name}
-            className='nav-bases-item'
-            onClick={() => this.props.selectBase(base)}
-          >
-            <img className='circle-icon' src={base.icon} alt={base.name} />
-          </div>
-        ))}
-      </div>
-    );
-  }
+  return (
+    <div className='nav-bases'>
+      {user.bases.map((base) => (
+        <Link
+          to={`/user/bases/${base.uuid}`}
+          className='nav-bases-item'
+          key={base.name}
+          id={pathname.includes(`/user/bases/${base.uuid}`) ? 'selected' : ''}
+        >
+          <img className='circle-icon' src={base.imageUrl} alt={base.name} />
+        </Link>
+      ))}
+      <Link
+        to='/user/bases/new'
+        className='nav-bases-item'
+        id={pathname === '/user/bases/new' ? 'selected' : ''}
+        style={{ fontSize: 16 }}
+      >
+        +
+      </Link>
+      <Link
+        to='/user/profile'
+        className='nav-bases-item'
+        id={pathname === '/user/profile' ? 'selected' : ''}
+      >
+        {user.username}
+      </Link>
+    </div>
+  );
 }
 
 const mapStateToProps = (state) => {
   return {
-    bases: state.bases,
-    selectedBase: state.selectedBase,
+    user: state.user,
   };
 };
 
-export default connect(mapStateToProps, { fetchBases, selectBase })(NavBases);
+export default connect(mapStateToProps, { selectBase })(NavBases);
