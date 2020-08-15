@@ -1,10 +1,10 @@
 package com.kf.touchbase.testUtils;
 
-import com.kf.touchbase.models.domain.neo4j.Base;
-import com.kf.touchbase.models.domain.neo4j.Person;
+import com.kf.touchbase.models.domain.postgres.Base;
+import com.kf.touchbase.models.domain.postgres.Person;
 import com.kf.touchbase.models.dto.BaseReq;
 
-import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class TestObjectFactory {
@@ -19,8 +19,6 @@ public class TestObjectFactory {
                     .email("tony.stark@gmail.com")
                     .firstName("Tony")
                     .lastName("Stark")
-                    .owns(new HashSet<>())
-                    .bases(new HashSet<>())
                     .build();
         }
 
@@ -31,10 +29,8 @@ public class TestObjectFactory {
                     .name("Tony's Base 1")
                     .score(0.0)
                     .imageUrl("imageUrl")
-                    .owner(person)
+                    .owners(Set.of(person))
                     .build();
-            person.getBases().add(base);
-            person.getOwns().add(base);
             return base;
         }
     }

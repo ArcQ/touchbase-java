@@ -7,7 +7,7 @@ public class AuthUtils {
         return (String) authentication.getAttributes().get("username");
     }
 
-    public static String getUserIdFromAuth(Authentication authentication) {
+    public static String getAuthIdFromAuth(Authentication authentication) {
         return (String) authentication.getAttributes().get("client_id");
     }
 }

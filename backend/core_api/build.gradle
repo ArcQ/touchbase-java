@@ -36,12 +36,10 @@ configurations {
 dependencies {
     compile "org.projectlombok:lombok:$lombokVersion"
     compileOnly "org.mapstruct:mapstruct:$mapstructVersion"
-    compile "io.micronaut.configuration:micronaut-neo4j-bolt:2.0.0"
     compile "io.micronaut:micronaut-inject"
-    compile "org.neo4j:neo4j-ogm:3.2.11"
-    compile "org.neo4j:neo4j-ogm-core:3.2.11"
-    compile "org.neo4j:neo4j-ogm-bolt-driver:3.2.11"
     compile 'commons-beanutils:commons-beanutils:1.9.4'
+    compile "io.micronaut.configuration:micronaut-flyway:1.0.0.RC2"
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
     annotationProcessor "io.micronaut:micronaut-security-annotations:1.4.0"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
@@ -56,10 +54,8 @@ dependencies {
     implementation "io.micronaut:micronaut-inject"
     implementation "io.micronaut:micronaut-validation"
     implementation "io.micronaut:micronaut-runtime"
-    implementation "io.micronaut.configuration:micronaut-jdbc-tomcat"
     implementation "io.swagger.core.v3:swagger-annotations"
     implementation "io.micronaut:micronaut-http-client"
-    implementation "io.micronaut.graphql:micronaut-graphql"
     implementation "io.micronaut.configuration:micronaut-postgres-reactive"
     implementation "io.micronaut:micronaut-http-server-netty"
     implementation "io.micronaut.data:micronaut-data-hibernate-jpa"
@@ -76,6 +72,7 @@ dependencies {
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"
     testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
     testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.4.6'
     testImplementation "io.micronaut.test:micronaut-test-junit5"
     testImplementation("org.spockframework:spock-core") {
         exclude group: "org.codehaus.groovy", module: "groovy-all"
@@ -83,7 +80,6 @@ dependencies {
     testImplementation "io.micronaut:micronaut-inject-groovy"
     testImplementation "io.micronaut.test:micronaut-test-spock"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
-    testRuntimeOnly "org.neo4j.test:neo4j-harness"
 }
 
 test.classpath += configurations.developmentOnly

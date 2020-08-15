@@ -1,29 +1,27 @@
 package com.kf.touchbase.models.domain.postgres;
 
-import com.kf.touchbase.models.domain.TouchBaseEntityInterface;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+import java.util.Set;
+
 @Data
 @SuperBuilder(toBuilder = true)
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public abstract class TouchBasePostgresEntity extends TouchBasePostgresDomain implements TouchBaseEntityInterface {
-    private String creatorId;
+@MappedSuperclass
+public abstract class TouchBasePostgresEntity extends TouchBasePostgresDomain {
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Person creator;
 
-    private String ownerId;
-
-    @Override
-    public String getOwnerId() {
-        return ownerId;
-    }
-
-    @Override
-    public String getCreatorId() {
-        return creatorId;
-    }
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Person> owners;
 }

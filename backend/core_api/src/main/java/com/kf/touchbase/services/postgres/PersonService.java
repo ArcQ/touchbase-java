@@ -1,10 +1,11 @@
-package com.kf.touchbase.services.neo4j;
+package com.kf.touchbase.services.postgres;
 
-import com.kf.touchbase.models.domain.neo4j.Person;
-import com.kf.touchbase.services.neo4j.repository.PersonRepository;
+import com.kf.touchbase.models.domain.postgres.Person;
+import com.kf.touchbase.services.postgres.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Singleton;
+import javax.persistence.EntityExistsException;
 
 @RequiredArgsConstructor
 @Singleton
@@ -17,7 +18,7 @@ public class PersonService {
     }
 
     public Iterable<Person> searchByQuery(String query) {
-        return personRepository.searchByQuery(query);
+        return personRepository.findByUsernameContainsOrFirstNameContainsOrLastNameContains(query, query, query);
     }
 
     public Person findByUsername(String username) {
@@ -29,6 +30,9 @@ public class PersonService {
     }
 
     public Person create(Person person) {
-        return personRepository.create(person);
+        if (personRepository.findByEmail(person.getEmail()) == null) {
+            throw new EntityExistsException("A user is already registered under this email.");
+        }
+        return personRepository.save(person);
     }
 }

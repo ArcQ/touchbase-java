@@ -1,6 +1,6 @@
 package com.kf.touchbase.mappers;
 
-import com.kf.touchbase.models.domain.neo4j.Person;
+import com.kf.touchbase.models.domain.postgres.Person;
 import com.kf.touchbase.models.dto.PersonReq;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

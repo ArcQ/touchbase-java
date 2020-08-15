@@ -28,7 +28,7 @@ public class MissionController {
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
     public Iterable<Mission> getOwnMissions(Authentication authentication) {
-        return missionService.findOwnMissions(AuthUtils.getUserIdFromAuth(authentication));
+        return missionService.findOwnMissions(AuthUtils.getAuthIdFromAuth(authentication));
     }
 
     @Post("/progress")
