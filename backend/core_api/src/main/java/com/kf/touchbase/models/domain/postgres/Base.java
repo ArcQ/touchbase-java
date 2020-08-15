@@ -1,11 +1,11 @@
-package com.kf.touchbase.models.domain.neo4j;
+package com.kf.touchbase.models.domain.postgres;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import java.util.Set;
 
 @Data
@@ -13,10 +13,13 @@ import java.util.Set;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@NodeEntity
-public class Base extends TouchBaseNeo4jEntity {
+@AllArgsConstructor
+@Entity
+public class Base extends TouchBasePostgresEntity {
 
     private String name;
+
+    @Builder.Default()
     private Double score = 0.0;
     private String imageUrl;
 
@@ -26,6 +29,11 @@ public class Base extends TouchBaseNeo4jEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties({"bases", "created", "owns"})
-    @Relationship(type="HAS_MEMBER")
+    @ManyToMany
     private Set<Person> members;
+
+    public void mergeInNotNull(Base base) {
+        name = (base.name == null) ? name : base.name;
+        imageUrl = (base.imageUrl == null) ? imageUrl : base.imageUrl;
+    }
 }

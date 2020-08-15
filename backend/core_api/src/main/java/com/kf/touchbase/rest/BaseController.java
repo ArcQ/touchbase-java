@@ -2,10 +2,10 @@ package com.kf.touchbase.rest;
 
 import com.kf.touchbase.annotation.NotYetImplemented;
 import com.kf.touchbase.mappers.BaseMapper;
-import com.kf.touchbase.models.domain.neo4j.Base;
+import com.kf.touchbase.models.domain.postgres.Base;
 import com.kf.touchbase.models.domain.postgres.Success;
 import com.kf.touchbase.models.dto.BaseReq;
-import com.kf.touchbase.services.neo4j.BaseService;
+import com.kf.touchbase.services.postgres.BaseService;
 import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
@@ -30,7 +30,7 @@ public class BaseController {
     @Produces(MediaType.APPLICATION_JSON)
     public Base postBase(Authentication authentication, @Body BaseReq baseReq) {
         var base = baseMapper.baseReqToBase(baseReq);
-        return baseService.createBase(AuthUtils.getUserIdFromAuth(authentication), base);
+        return baseService.createBase(AuthUtils.getAuthIdFromAuth(authentication), base);
     }
 
     @Patch("/{baseId}")
@@ -38,7 +38,7 @@ public class BaseController {
     public Base patchBase(Authentication authentication, String baseId, @Body BaseReq baseReq) {
         UUID baseUuid = UUID.fromString(baseId);
         var base = baseMapper.baseReqToBase(baseReq);
-        return baseService.patchBase(AuthUtils.getUserIdFromAuth(authentication), baseUuid, base);
+        return baseService.patchBase(AuthUtils.getAuthIdFromAuth(authentication), baseUuid, base);
     }
 
     @Post("/{baseId}/owner/{authId}")
@@ -46,7 +46,7 @@ public class BaseController {
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
     public Base addUserToBaseAsOwner(Authentication authentication, String baseId, String authId) {
-        return baseService.addUserToBaseAsOwner(AuthUtils.getUserIdFromAuth(authentication), authId, baseId);
+        return baseService.addUserToBaseAsOwner(AuthUtils.getAuthIdFromAuth(authentication), authId, baseId);
     }
 
     @Patch("/{baseId}/owner/{authId}")
@@ -56,7 +56,7 @@ public class BaseController {
     public Base patchUserToBaseAsOwner(Authentication authentication, String baseId, String authId, @Body BaseReq baseReq) {
         UUID baseUuid = UUID.fromString(baseId);
         var base = baseMapper.baseReqToBase(baseReq);
-        return baseService.patchBase(AuthUtils.getUserIdFromAuth(authentication), baseUuid, base);
+        return baseService.patchBase(AuthUtils.getAuthIdFromAuth(authentication), baseUuid, base);
     }
 
     @Delete("/{baseId}/owner/{authId}")
@@ -64,7 +64,7 @@ public class BaseController {
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
     public Base removeUserFromBaseAsOwner(Authentication authentication, String baseId, String authId) {
-        return baseService.deleteUserFromBaseAsOwner(AuthUtils.getUserIdFromAuth(authentication), authId, baseId);
+        return baseService.deleteUserFromBaseAsOwner(AuthUtils.getAuthIdFromAuth(authentication), authId, baseId);
     }
 
     @Delete("/{baseId}")
@@ -72,6 +72,6 @@ public class BaseController {
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
     public Success makeBaseInactive(Authentication authentication, UUID baseId) {
-        return baseService.makeBaseInactive(AuthUtils.getUserIdFromAuth(authentication), baseId);
+        return baseService.makeBaseInactive(AuthUtils.getAuthIdFromAuth(authentication), baseId);
     }
 }

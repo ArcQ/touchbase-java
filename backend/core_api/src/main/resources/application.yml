@@ -38,40 +38,21 @@ micronaut:
       paths: src/main
       restart: true
 ---
-neo4j:
-  uri: bolt://${NEO4J_HOST:localhost}
-  username: ${NEO4J_USER:neo4j}
-  password: ${NEO4J_PW:test}
-  encryption:
-    level: ${NEO4J_ENCRYPTION_LEVEL:NONE}
-
----
-graphql:
-  enabled: true
-  path: /graphql
-  graphql-ws:
-    enabled: true
-    path: /graphql-ws
-    keep-alive-enabled: true
-    keep-alive-interval: 15s
-  graphiql:
-    enabled: true
-    version: 0.13.2
-    path: /graphiql
-    template-path: classpath:graphiql/index.html
-    template-parameters:
-    page-title: GraphiQL
-
----
 postgres:
   reactive:
     client:
       port: 5432
-      host: ${DB_HOST:localhost}
-      database: ${DB_NAME:touchbase}
+      host: kfdb1.cihodsllm9ip.us-east-1.rds.amazonaws.com
+      database: touchbase
       user: ${DB_USER:postgres}
-      password: ${DB_PASSWORD:pw123}
+      password: xadgeV-wisvaz-caztu0
       maxSize: 5
+ datasources:
+  default:
+    url: ${JDBC_URL:`jdbc:postgresql://localhost:5432/touchbase`}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:Pw123}
+    driverclassname: ${jdbc_driver:org.postgresql.Driver}
 
 ---
 jpa:
@@ -79,4 +60,6 @@ jpa:
     properties:
       hibernate:
         hbm2ddl:
-          auto: update
+          auto: create-drop
+    packages-to-scan:
+      - 'com.kf.touchbase.models.domain.postgres'

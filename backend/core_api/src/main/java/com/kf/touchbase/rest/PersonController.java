@@ -1,10 +1,11 @@
 package com.kf.touchbase.rest;
 
 import com.kf.touchbase.mappers.PersonMapper;
-import com.kf.touchbase.models.domain.neo4j.Person;
+import com.kf.touchbase.models.domain.postgres.Person;
 import com.kf.touchbase.models.dto.PersonPublicRes;
 import com.kf.touchbase.models.dto.PersonReq;
-import com.kf.touchbase.services.neo4j.PersonService;
+import com.kf.touchbase.services.postgres.PersonService;
+import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
 import io.micronaut.security.annotation.Secured;
@@ -37,7 +38,7 @@ public class PersonController {
     @Get("/me")
     @Produces(MediaType.APPLICATION_JSON)
     public Person getMe(Authentication authentication) {
-        return personService.findByUsername((String) authentication.getAttributes().get("username"));
+        return personService.findByAuthId(AuthUtils.getAuthIdFromAuth(authentication));
     }
 
     @Get("/{username}")

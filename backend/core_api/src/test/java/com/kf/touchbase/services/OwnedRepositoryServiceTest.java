@@ -1,34 +1,31 @@
 package com.kf.touchbase.services;
 
-import com.kf.touchbase.models.domain.neo4j.Base;
+import com.kf.touchbase.models.domain.postgres.Base;
 import com.kf.touchbase.testUtils.TestObjectFactory;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import io.micronaut.data.repository.CrudRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.neo4j.ogm.session.Session;
-import org.neo4j.ogm.session.SessionFactory;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 class OwnedRepositoryServiceTest {
 
-    @Mock
-    private Session session;
-
-    @Mock
-    private SessionFactory mockSessionFactory;
-
     private OwnedRepositoryService<Base> ownedRepositoryServiceUnderTest;
 
     private final Base base = TestObjectFactory.Domain.createBase();
+
+    @Mock
+    CrudRepository<Base,UUID> repository;
 
     @BeforeEach
     void setUp() {
@@ -40,8 +37,30 @@ class OwnedRepositoryServiceTest {
             }
 
             @Override
+            public long count() {
+                return 0;
+            }
+
+            @NonNull
+            @Override
+            public <S extends Base> S update(@NonNull @Valid @NotNull S entity) {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public <S extends Base> Iterable<S> saveAll(@NonNull @Valid @NotNull Iterable<S> entities) {
+                return null;
+            }
+
+            @Override
             public Optional<Base> findById(UUID id) {
-                return Optional.ofNullable(session.load(Base.class, id, 1));
+                return repository.findById(id);
+            }
+
+            @Override
+            public boolean existsById(@NonNull @NotNull UUID uuid) {
+                return false;
             }
 
             @Override
@@ -50,25 +69,36 @@ class OwnedRepositoryServiceTest {
             }
 
             @Override
+            public void delete(@NonNull @NotNull Base entity) {
+
+            }
+
+            @Override
+            public void deleteAll(@NonNull @NotNull Iterable<? extends Base> entities) {
+
+            }
+
+            @Override
+            public void deleteAll() {
+
+            }
+
+            @Override
             public Base save(Base object) {
                 return null;
             }
 
-            @Override
-            public Iterable<Base> findByOwnerId(String ownerAuthId, Class<Base> clazz) {
-                return null;
-            }
         };
-        Mockito.when(mockSessionFactory.openSession()).thenReturn(session);
     }
 
     @Test
     void testFindIfOwner() {
         // Setup
-        Mockito.when(session.load(Base.class, base.getUuid(), 1)).thenReturn(base);
+        Mockito.when(repository.findById(base.getUuid())).thenReturn(Optional.of(base));
 
         // Run the test
-        Base result = ownedRepositoryServiceUnderTest.findIfOwner(base.getOwner().getAuthId(),
+        Base result =
+                ownedRepositoryServiceUnderTest.findIfOwner(base.getOwners().iterator().next().getAuthId(),
                 base);
 
         // Verify the results
@@ -78,10 +108,11 @@ class OwnedRepositoryServiceTest {
     @Test
     void testFindIfOwnerId() {
         // Setup
-        Mockito.when(session.load(Base.class, base.getUuid(), 1)).thenReturn(base);
+        Mockito.when(repository.findById(base.getUuid())).thenReturn(Optional.of(base));
 
         // Run the test
-        Base result = ownedRepositoryServiceUnderTest.findIfOwnerId(base.getOwner().getAuthId(),
+        Base result =
+                ownedRepositoryServiceUnderTest.findIfOwnerId(base.getOwners().iterator().next().getAuthId(),
                 base.getUuid(), Base.class);
 
         // Verify the results
@@ -90,7 +121,7 @@ class OwnedRepositoryServiceTest {
 
     @Test
     void testFindIfOwner_noUserThrowsIllegalArgumentException() {
-        Mockito.when(session.load(eq(Base.class), any(), eq(1))).thenReturn(null);
+        Mockito.when(repository.findById(base.getUuid())).thenReturn(Optional.empty());
         assertThrows(IllegalArgumentException.class, () -> {
             ownedRepositoryServiceUnderTest.findIfOwner("incorrectId", base);
         });
@@ -98,7 +129,7 @@ class OwnedRepositoryServiceTest {
 
     @Test
     void testFindIfOwner_ThrowsSecurityException() {
-        Mockito.when(session.load(Base.class, base.getUuid(), 1)).thenReturn(base);
+        Mockito.when(repository.findById(base.getUuid())).thenReturn(Optional.ofNullable(base));
         assertThrows(SecurityException.class, () -> {
             ownedRepositoryServiceUnderTest.findIfOwner("person2", base);
         });
