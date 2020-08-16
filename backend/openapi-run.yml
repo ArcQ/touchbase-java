@@ -59,7 +59,7 @@ paths:
           schema:
             $ref: '#/definitions/Base'
       operationId: patchBase
-  '/api/v1/base/{baseId}/owner/{authId}':
+  '/api/v1/base/{baseId}/admin/{authId}':
     delete:
       produces:
         - application/json
@@ -74,11 +74,11 @@ paths:
           type: string
       responses:
         default:
-          description: removeUserFromBaseAsOwner default response
+          description: removeUserFromBaseAsAdmin default response
           schema:
             $ref: '#/definitions/Base'
       description: Not Implemented Yet
-      operationId: removeUserFromBaseAsOwner
+      operationId: removeUserFromBaseAsAdmin
     patch:
       consumes:
         - application/json
@@ -100,11 +100,11 @@ paths:
             $ref: '#/definitions/BaseReq'
       responses:
         default:
-          description: patchUserToBaseAsOwner default response
+          description: patchUserToBaseAsAdmin default response
           schema:
             $ref: '#/definitions/Base'
       description: Not Implemented Yet
-      operationId: patchUserToBaseAsOwner
+      operationId: patchUserToBaseAsAdmin
     post:
       produces:
         - application/json
@@ -119,11 +119,11 @@ paths:
           type: string
       responses:
         default:
-          description: addUserToBaseAsOwner default response
+          description: addUserToBaseAsAdmin default response
           schema:
             $ref: '#/definitions/Base'
       description: Not Implemented Yet
-      operationId: addUserToBaseAsOwner
+      operationId: addUserToBaseAsAdmin
   /api/v1/baseJoin:
     post:
       consumes:
@@ -209,7 +209,7 @@ paths:
             $ref: '#/definitions/Mission'
       description: Not Implemented Yet
       operationId: progressMission
-  /api/v1/person:
+  /api/v1/user:
     get:
       produces:
         - application/json
@@ -223,7 +223,7 @@ paths:
           description: findAllPublic default response
           schema:
             items:
-              $ref: '#/definitions/PersonPublicRes'
+              $ref: '#/definitions/UserPublicRes'
             type: array
       operationId: findAllPublic
       summary: Search for users to add
@@ -237,14 +237,14 @@ paths:
           name: body
           required: true
           schema:
-            $ref: '#/definitions/PersonReq'
+            $ref: '#/definitions/UserReq'
       responses:
         default:
-          description: postPerson default response
+          description: postUser default response
           schema:
-            $ref: '#/definitions/Person'
-      operationId: postPerson
-  /api/v1/person/me:
+            $ref: '#/definitions/User'
+      operationId: postUser
+  /api/v1/user/me:
     get:
       produces:
         - application/json
@@ -253,9 +253,9 @@ paths:
         default:
           description: getMe default response
           schema:
-            $ref: '#/definitions/Person'
+            $ref: '#/definitions/User'
       operationId: getMe
-  '/api/v1/person/{username}':
+  '/api/v1/user/{username}':
     get:
       produces:
         - application/json
@@ -266,15 +266,15 @@ paths:
           type: string
       responses:
         default:
-          description: getPerson default response
+          description: getUser default response
           schema:
-            $ref: '#/definitions/Person'
-      operationId: getPerson
+            $ref: '#/definitions/User'
+      operationId: getUser
 definitions:
   Base:
     allOf:
-      - $ref: '#/definitions/TouchBaseNeo4jEntity'
-      - $ref: '#/definitions/TouchBaseNeo4jDomain'
+      - $ref: '#/definitions/TouchBasePostgresEntity'
+      - $ref: '#/definitions/TouchBasePostgresDomain'
       - properties:
           active:
             type: boolean
@@ -284,7 +284,7 @@ definitions:
             type: boolean
           members:
             items:
-              $ref: '#/definitions/Person'
+              $ref: '#/definitions/User'
             type: array
           name:
             type: string
@@ -325,8 +325,7 @@ definitions:
     type: object
   Mission:
     allOf:
-      - $ref: '#/definitions/TouchBaseNeo4jEntity'
-      - $ref: '#/definitions/TouchBaseNeo4jDomain'
+      - $ref: '#/definitions/TouchBasePostgresDomain'
       - properties:
           description:
             type: string
@@ -344,64 +343,6 @@ definitions:
       - WEEKLY
       - ONE_TIME
     type: string
-  Person:
-    allOf:
-      - $ref: '#/definitions/TouchBaseNeo4jDomain'
-      - properties:
-          authId:
-            type: string
-          bases:
-            items:
-              $ref: '#/definitions/Base'
-            type: array
-          created:
-            items:
-              $ref: '#/definitions/Base'
-            type: array
-          email:
-            type: string
-          firstName:
-            type: string
-          lastName:
-            type: string
-          owns:
-            items:
-              $ref: '#/definitions/Base'
-            type: array
-          score:
-            format: double
-            type: number
-          username:
-            type: string
-        type: object
-  PersonPublicRes:
-    properties:
-      firstName:
-        type: string
-      lastName:
-        type: string
-      score:
-        format: double
-        type: number
-      username:
-        type: string
-    type: object
-  PersonReq:
-    properties:
-      authId:
-        type: string
-      email:
-        type: string
-      firstName:
-        type: string
-      lastName:
-        type: string
-      score:
-        format: double
-        type: number
-      username:
-        type: string
-    type: object
   ProgressReq:
     properties:
       value:
@@ -413,27 +354,6 @@ definitions:
       status:
         type: string
     type: object
-  TouchBaseNeo4jDomain:
-    properties:
-      createdAt:
-        format: date-time
-        type: string
-      updatedAt:
-        format: date-time
-        type: string
-      uuid:
-        format: uuid
-        type: string
-    type: object
-  TouchBaseNeo4jEntity:
-    allOf:
-      - $ref: '#/definitions/TouchBaseNeo4jDomain'
-      - properties:
-          creator:
-            $ref: '#/definitions/Person'
-          owner:
-            $ref: '#/definitions/Person'
-        type: object
   TouchBasePostgresDomain:
     properties:
       createdAt:
@@ -451,10 +371,60 @@ definitions:
     allOf:
       - $ref: '#/definitions/TouchBasePostgresDomain'
       - properties:
-          creatorId:
+          admins:
+            items:
+              $ref: '#/definitions/User'
+            type: array
+          creator:
+            $ref: '#/definitions/User'
+        type: object
+  User:
+    allOf:
+      - $ref: '#/definitions/TouchBasePostgresDomain'
+      - properties:
+          authId:
             type: string
-          ownerId:
+          email:
+            type: string
+          firstName:
+            type: string
+          imageUrl:
+            type: string
+          lastName:
+            type: string
+          score:
+            format: double
+            type: number
+          username:
             type: string
         type: object
+  UserPublicRes:
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      score:
+        format: double
+        type: number
+      username:
+        type: string
+    type: object
+  UserReq:
+    properties:
+      authId:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      score:
+        format: double
+        type: number
+      username:
+        type: string
+    type: object
 x-components: {}
 
