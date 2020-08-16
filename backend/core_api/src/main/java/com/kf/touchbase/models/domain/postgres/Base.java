@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import java.util.Set;
 
@@ -30,7 +31,8 @@ public class Base extends TouchBasePostgresEntity {
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties({"bases", "created", "owns"})
     @ManyToMany
-    private Set<Person> members;
+    @JoinTable(name = "base_member")
+    private Set<User> members;
 
     public void mergeInNotNull(Base base) {
         name = (base.name == null) ? name : base.name;

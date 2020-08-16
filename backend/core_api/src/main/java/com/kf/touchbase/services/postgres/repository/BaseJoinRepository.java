@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface BaseJoinRepository extends CrudRepository<BaseJoin, UUID>,
         OwnedRepositoryService<BaseJoin> {
-    Iterable<BaseJoin> findByOwnerId(String ownerAuthId);
+    Iterable<BaseJoin> findByAdminId(String adminAuthId);
 }

@@ -7,7 +7,7 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonPublicRes {
+public class UserPublicRes {
     Double score;
     String firstName;
     String lastName;

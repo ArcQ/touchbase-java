@@ -6,10 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.Set;
 
 @Data
@@ -20,8 +17,9 @@ import java.util.Set;
 @MappedSuperclass
 public abstract class TouchBasePostgresEntity extends TouchBasePostgresDomain {
     @ManyToOne(fetch = FetchType.LAZY)
-    private Person creator;
+    private User creator;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Person> owners;
+    @JoinTable(name="entity_admin")
+    private Set<User> admins;
 }

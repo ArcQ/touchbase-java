@@ -41,30 +41,30 @@ public class BaseController {
         return baseService.patchBase(AuthUtils.getAuthIdFromAuth(authentication), baseUuid, base);
     }
 
-    @Post("/{baseId}/owner/{authId}")
+    @Post("/{baseId}/admin/{authId}")
     @Produces(MediaType.APPLICATION_JSON)
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
-    public Base addUserToBaseAsOwner(Authentication authentication, String baseId, String authId) {
-        return baseService.addUserToBaseAsOwner(AuthUtils.getAuthIdFromAuth(authentication), authId, baseId);
+    public Base addUserToBaseAsAdmin(Authentication authentication, String baseId, String authId) {
+        return baseService.addUserToBaseAsAdmin(AuthUtils.getAuthIdFromAuth(authentication), authId, baseId);
     }
 
-    @Patch("/{baseId}/owner/{authId}")
+    @Patch("/{baseId}/admin/{authId}")
     @Produces(MediaType.APPLICATION_JSON)
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
-    public Base patchUserToBaseAsOwner(Authentication authentication, String baseId, String authId, @Body BaseReq baseReq) {
+    public Base patchUserToBaseAsAdmin(Authentication authentication, String baseId, String authId, @Body BaseReq baseReq) {
         UUID baseUuid = UUID.fromString(baseId);
         var base = baseMapper.baseReqToBase(baseReq);
         return baseService.patchBase(AuthUtils.getAuthIdFromAuth(authentication), baseUuid, base);
     }
 
-    @Delete("/{baseId}/owner/{authId}")
+    @Delete("/{baseId}/admin/{authId}")
     @Produces(MediaType.APPLICATION_JSON)
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
-    public Base removeUserFromBaseAsOwner(Authentication authentication, String baseId, String authId) {
-        return baseService.deleteUserFromBaseAsOwner(AuthUtils.getAuthIdFromAuth(authentication), authId, baseId);
+    public Base removeUserFromBaseAsAdmin(Authentication authentication, String baseId, String authId) {
+        return baseService.deleteUserFromBaseAsAdmin(AuthUtils.getAuthIdFromAuth(authentication), authId, baseId);
     }
 
     @Delete("/{baseId}")

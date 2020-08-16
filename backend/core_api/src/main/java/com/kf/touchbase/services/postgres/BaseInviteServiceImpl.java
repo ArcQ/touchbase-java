@@ -14,17 +14,17 @@ public class BaseInviteServiceImpl implements BaseJoinService {
     private final BaseJoinRepository baseJoinRepository;
 
     @Override
-    public Iterable<BaseJoin> findAllByOwner(String ownerAuthId) {
+    public Iterable<BaseJoin> findByAdmin(String adminAuthId) {
         return null;
     }
 
     @Override
-    public BaseJoin createBaseJoin(String ownerAuthId, BaseJoin baseJoin) throws SecurityException {
+    public BaseJoin createBaseJoin(String adminAuthId, BaseJoin baseJoin) throws SecurityException {
         return null;
     }
 
     @Override
-    public Success acceptBaseJoin(String ownerAuthId, BaseJoin baseJoin) throws SecurityException {
+    public Success acceptBaseJoin(String adminAuthId, BaseJoin baseJoin) throws SecurityException {
         return null;
     }
 

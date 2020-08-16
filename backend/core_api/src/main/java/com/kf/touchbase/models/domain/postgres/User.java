@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Data
 @SuperBuilder(toBuilder = true)
@@ -12,7 +13,8 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Person extends TouchBasePostgresDomain {
+@Table(name="tb_user")
+public class User extends TouchBasePostgresDomain {
 
     private String authId;
     private String username;
@@ -22,6 +24,8 @@ public class Person extends TouchBasePostgresDomain {
 
     private String firstName;
     private String lastName;
+
+    private String imageUrl;
 
 //    @ManyToMany
 //    private Set<Base> bases;

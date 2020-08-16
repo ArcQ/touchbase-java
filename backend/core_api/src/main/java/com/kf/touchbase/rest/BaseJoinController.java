@@ -36,7 +36,7 @@ public class BaseJoinController {
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
     public Iterable<BaseJoin> getBases(Authentication authentication) {
-        return baseInviteService.findAllByOwner(AuthUtils.getAuthIdFromAuth(authentication));
+        return baseInviteService.findByAdmin(AuthUtils.getAuthIdFromAuth(authentication));
     }
 
     @Post

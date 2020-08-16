@@ -7,7 +7,7 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonReq {
+public class UserReq {
     String authId;
     String email;
     Double score;
