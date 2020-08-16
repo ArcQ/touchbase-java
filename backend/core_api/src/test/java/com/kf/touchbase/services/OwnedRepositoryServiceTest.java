@@ -41,15 +41,13 @@ class OwnedRepositoryServiceTest {
                 return 0;
             }
 
-            @NonNull
             @Override
-            public <S extends Base> S update(@NonNull @Valid @NotNull S entity) {
+            public <S extends Base> S update(@Valid @NotNull S entity) {
                 return null;
             }
 
-            @NonNull
             @Override
-            public <S extends Base> Iterable<S> saveAll(@NonNull @Valid @NotNull Iterable<S> entities) {
+            public <S extends Base> Iterable<S> saveAll(@Valid @NotNull Iterable<S> entities) {
                 return null;
             }
 
@@ -59,7 +57,7 @@ class OwnedRepositoryServiceTest {
             }
 
             @Override
-            public boolean existsById(@NonNull @NotNull UUID uuid) {
+            public boolean existsById(@NotNull UUID uuid) {
                 return false;
             }
 
@@ -69,12 +67,12 @@ class OwnedRepositoryServiceTest {
             }
 
             @Override
-            public void delete(@NonNull @NotNull Base entity) {
+            public void delete(@NotNull Base entity) {
 
             }
 
             @Override
-            public void deleteAll(@NonNull @NotNull Iterable<? extends Base> entities) {
+            public void deleteAll(@NotNull Iterable<? extends Base> entities) {
 
             }
 
@@ -92,13 +90,13 @@ class OwnedRepositoryServiceTest {
     }
 
     @Test
-    void testFindIfOwner() {
+    void testFindIfAdmin() {
         // Setup
         Mockito.when(repository.findById(base.getUuid())).thenReturn(Optional.of(base));
 
         // Run the test
         Base result =
-                ownedRepositoryServiceUnderTest.findIfOwner(base.getOwners().iterator().next().getAuthId(),
+                ownedRepositoryServiceUnderTest.findIfAdmin(base.getAdmins().iterator().next().getAuthId(),
                 base);
 
         // Verify the results
@@ -106,13 +104,13 @@ class OwnedRepositoryServiceTest {
     }
 
     @Test
-    void testFindIfOwnerId() {
+    void testFindIfAdminId() {
         // Setup
         Mockito.when(repository.findById(base.getUuid())).thenReturn(Optional.of(base));
 
         // Run the test
         Base result =
-                ownedRepositoryServiceUnderTest.findIfOwnerId(base.getOwners().iterator().next().getAuthId(),
+                ownedRepositoryServiceUnderTest.findifAdminId(base.getAdmins().iterator().next().getAuthId(),
                 base.getUuid(), Base.class);
 
         // Verify the results
@@ -120,18 +118,18 @@ class OwnedRepositoryServiceTest {
     }
 
     @Test
-    void testFindIfOwner_noUserThrowsIllegalArgumentException() {
+    void testFindIfAdmin_noUserThrowsIllegalArgumentException() {
         Mockito.when(repository.findById(base.getUuid())).thenReturn(Optional.empty());
         assertThrows(IllegalArgumentException.class, () -> {
-            ownedRepositoryServiceUnderTest.findIfOwner("incorrectId", base);
+            ownedRepositoryServiceUnderTest.findIfAdmin("incorrectId", base);
         });
     }
 
     @Test
-    void testFindIfOwner_ThrowsSecurityException() {
+    void testFindIfAdmin_ThrowsSecurityException() {
         Mockito.when(repository.findById(base.getUuid())).thenReturn(Optional.ofNullable(base));
         assertThrows(SecurityException.class, () -> {
-            ownedRepositoryServiceUnderTest.findIfOwner("person2", base);
+            ownedRepositoryServiceUnderTest.findIfAdmin("user2", base);
         });
     }
 }

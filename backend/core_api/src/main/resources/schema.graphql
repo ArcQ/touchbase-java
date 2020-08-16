@@ -1,6 +1,6 @@
 type Query {
-  person(username: String, me: Boolean): Person
-  people: [Person]
+  user(username: String, me: Boolean): User
+  user: [User]
   base(uuid: String): Base
   bases(me: Boolean): [Base]
 }
@@ -10,7 +10,7 @@ type Mutation {
   updateBase(input: Base): Base
 }
 
-type Person {
+type User {
   username: String!
   email: String!
   score: Float
@@ -26,7 +26,7 @@ type Base {
   name: String!
   score: Float
   imageUrl: String
-  members: Person
-  owner: Person
-  creator: Person
+  members: User
+  admin: User
+  creator: User
 }

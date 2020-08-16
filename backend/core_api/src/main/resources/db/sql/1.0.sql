@@ -1,4 +1,4 @@
-create table if not exists mission
+create table mission
 (
     uuid uuid not null
         constraint mission_pkey
@@ -11,25 +11,23 @@ create table if not exists mission
     score_reward double precision
 );
 
-create table if not exists person
+create table tb_user
 (
     uuid uuid not null
-        constraint person_pkey
+        constraint tb_user_pkey
             primary key,
     created_at timestamp,
     updated_at timestamp,
     auth_id varchar(255),
     email varchar(255),
     first_name varchar(255),
+    image_url varchar(255),
     last_name varchar(255),
     score double precision,
-    username varchar(255),
-    creator_uuid uuid
-        constraint fkiyq15ay1ijamkhau9pihc77vs
-            references person
+    username varchar(255)
 );
 
-create table if not exists base
+create table base
 (
     uuid uuid not null
         constraint base_pkey
@@ -41,26 +39,23 @@ create table if not exists base
     name varchar(255),
     score double precision,
     creator_uuid uuid
-        constraint fk4ixaqaak8kkd1oi5rrloqdbgo
-            references person
+        constraint fk22ncmdygalwwj4ttqtvugup0n
+            references tb_user
 );
 
-create table if not exists base_person
+create table base_member
 (
     base_uuid uuid not null
-        constraint fkhqedgbrs5j5kmyxjvwfmbmajy
+        constraint fkt6j9uk6wrten8qcnfegeyi3jk
             references base,
     members_uuid uuid not null
-        constraint fkpy7gw1fpbkt0se4iarp4muavy
-            references person,
-    owners_uuid uuid not null
-        constraint fk9t86bupqsyqlqo3vyceipid1l
-            references person,
-    constraint base_person_pkey
-        primary key (base_uuid, owners_uuid)
+        constraint fkovvwgvbsypfnxm3ss3mdk2x64
+            references tb_user,
+    constraint base_member_pkey
+        primary key (base_uuid, members_uuid)
 );
 
-create table if not exists base_join
+create table base_join
 (
     uuid uuid not null
         constraint base_join_pkey
@@ -70,19 +65,22 @@ create table if not exists base_join
     base_id varchar(255),
     base_join_action integer,
     creator_uuid uuid
-        constraint fk2hgopac4s2famicfu0peejrpa
-            references person
+        constraint fkhw7sx7xw92ys7ej169xofwc28
+            references tb_user
 );
 
-create table if not exists base_join_person
+create table entity_admin
 (
     base_join_uuid uuid not null
-        constraint fki5l5558cwv1nbo6300fpjb9uk
+        constraint fksix9t0x9jtu1i70num40o6oc2
             references base_join,
-    owners_uuid uuid not null
-        constraint fk5sjj1dtitaq83yhyexdrc6or0
-            references person,
-    constraint base_join_person_pkey
-        primary key (base_join_uuid, owners_uuid)
+    admins_uuid uuid not null
+        constraint fk7ervd96doyus2se86go2lpdv1
+            references tb_user,
+    base_uuid uuid not null
+        constraint fk7psmg55hik37e2ysreoim998l
+            references base,
+    constraint entity_admin_pkey
+        primary key (base_uuid, admins_uuid)
 );
 

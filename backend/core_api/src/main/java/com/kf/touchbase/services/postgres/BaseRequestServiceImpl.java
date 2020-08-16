@@ -7,14 +7,14 @@ import javax.inject.Singleton;
 
 @Singleton
 public class BaseRequestServiceImpl implements BaseJoinService {
-    private PersonService personService;
+    private UserService userService;
 
-    public BaseRequestServiceImpl(PersonService personService) {
-        this.personService = personService;
+    public BaseRequestServiceImpl(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
-    public Iterable<BaseJoin> findAllByOwner(String ownerAuthId) throws SecurityException {
+    public Iterable<BaseJoin> findByAdmin(String adminAuthId) throws SecurityException {
         return null;
     }
 

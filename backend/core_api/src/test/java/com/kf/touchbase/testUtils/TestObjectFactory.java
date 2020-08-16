@@ -1,7 +1,7 @@
 package com.kf.touchbase.testUtils;
 
 import com.kf.touchbase.models.domain.postgres.Base;
-import com.kf.touchbase.models.domain.postgres.Person;
+import com.kf.touchbase.models.domain.postgres.User;
 import com.kf.touchbase.models.dto.BaseReq;
 
 import java.util.Set;
@@ -12,8 +12,8 @@ public class TestObjectFactory {
     public static UUID userId = UUID.randomUUID();
 
     public static class Domain {
-        public static Person createPerson() {
-            return Person.builder()
+        public static User createUser() {
+            return User.builder()
                     .uuid(userId)
                     .authId(authId)
                     .email("tony.stark@gmail.com")
@@ -23,13 +23,13 @@ public class TestObjectFactory {
         }
 
         public static Base createBase() {
-            Person person = createPerson();
+            User user = createUser();
             Base base = Base.builder()
                     .uuid(UUID.randomUUID())
                     .name("Tony's Base 1")
                     .score(0.0)
                     .imageUrl("imageUrl")
-                    .owners(Set.of(person))
+                    .admins(Set.of(user))
                     .build();
             return base;
         }

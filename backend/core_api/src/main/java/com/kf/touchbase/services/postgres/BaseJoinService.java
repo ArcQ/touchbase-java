@@ -4,11 +4,11 @@ import com.kf.touchbase.models.domain.postgres.BaseJoin;
 import com.kf.touchbase.models.domain.postgres.Success;
 
 public interface BaseJoinService {
-    Iterable<BaseJoin> findAllByOwner(String cognitoId);
+    Iterable<BaseJoin> findByAdmin(String cognitoId);
 
-    BaseJoin createBaseJoin(String ownerAuthId, BaseJoin baseJoin) throws SecurityException;
+    BaseJoin createBaseJoin(String adminAuthId, BaseJoin baseJoin) throws SecurityException;
 
-    Success acceptBaseJoin(String ownerAuthId, BaseJoin baseJoin) throws SecurityException;
+    Success acceptBaseJoin(String adminAuthId, BaseJoin baseJoin) throws SecurityException;
 
-    Success deleteBaseJoin(String ownerAuthId, String baseJoinId) throws SecurityException;
+    Success deleteBaseJoin(String adminAuthId, String baseJoinId) throws SecurityException;
 }

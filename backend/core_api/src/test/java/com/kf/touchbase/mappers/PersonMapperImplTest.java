@@ -1,26 +1,26 @@
 package com.kf.touchbase.mappers;
 
-import com.kf.touchbase.models.domain.postgres.Person;
-import com.kf.touchbase.models.dto.PersonReq;
+import com.kf.touchbase.models.domain.postgres.User;
+import com.kf.touchbase.models.dto.UserReq;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
-class PersonMapperImplTest {
+class UserMapperImplTest {
 
-    private PersonMapperImpl personMapperImplUnderTest;
+    private UserMapperImpl userMapperImplUnderTest;
 
     @BeforeEach
     void setUp() {
-        personMapperImplUnderTest = new PersonMapperImpl();
+        userMapperImplUnderTest = new UserMapperImpl();
     }
 
     @Test
-    void testPersonReqToPerson() {
+    void testUserReqToUser() {
         // Setup
-        final PersonReq person = new PersonReq("authId", "email", 0.0, "first_name", "last_name", "username");
-        final Person expectedResult = Person.builder()
+        final UserReq user = new UserReq("authId", "email", 0.0, "first_name", "last_name", "username");
+        final User expectedResult = User.builder()
                 .authId("authId")
                 .email("email")
                 .score(0.0)
@@ -29,7 +29,7 @@ class PersonMapperImplTest {
                 .username("username").build();
 
         // Run the test
-        final Person result = personMapperImplUnderTest.personReqToPerson(person);
+        final User result = userMapperImplUnderTest.userReqToUser(user);
 
         // Verify the results
         assertThat(result).isEqualToComparingFieldByField(expectedResult);
