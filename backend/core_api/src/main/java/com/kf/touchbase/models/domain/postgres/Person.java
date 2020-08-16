@@ -12,7 +12,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Person extends TouchBasePostgresEntity {
+public class Person extends TouchBasePostgresDomain {
 
     private String authId;
     private String username;
