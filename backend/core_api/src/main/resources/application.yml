@@ -37,29 +37,27 @@ micronaut:
     watch:
       paths: src/main
       restart: true
----
-postgres:
-  reactive:
-    client:
-      port: 5432
-      host: kfdb1.cihodsllm9ip.us-east-1.rds.amazonaws.com
-      database: touchbase
-      user: ${DB_USER:postgres}
-      password: xadgeV-wisvaz-caztu0
-      maxSize: 5
- datasources:
+
+datasources:
   default:
     url: ${JDBC_URL:`jdbc:postgresql://localhost:5432/touchbase`}
     username: ${DB_USER:postgres}
-    password: ${DB_PASS:Pw123}
+    password: ${DB_PASS:pw123}
     driverclassname: ${jdbc_driver:org.postgresql.Driver}
 
----
+liquibase:
+  enabled: ${MIGRATIONS:true}
+  datasources:
+    default:
+      change-log: 'classpath:db/liquibase-changelog.yml'
+
 jpa:
   default:
     properties:
       hibernate:
+        physical_naming_strategy: 'com.vladmihalcea.hibernate.type.util.CamelCaseToSnakeCaseNamingStrategy'
+        dialect: 'org.hibernate.dialect.PostgreSQLDialect'
         hbm2ddl:
-          auto: create-drop
+          auto: validate
     packages-to-scan:
       - 'com.kf.touchbase.models.domain.postgres'
