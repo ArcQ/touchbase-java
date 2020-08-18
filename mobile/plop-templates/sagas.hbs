@@ -1,0 +1,31 @@
+import { select, put, fork } from 'redux-saga/effects';
+
+import {
+  {{name}}Selectors,
+  {{name}}Actions,
+  {{name}}Constants,
+} from 'store/{{name}}/ducks';
+import { errorActions } from '../error/ducks';
+import apiService from 'services/api/apiService';
+import { watchActionsLatest } from 'utils/sagas/watchActions';
+
+function* request{{titleCase name}}() {
+  yield apiService.get('api/example', [
+    function* onSuccess(res) {
+      yield put(
+        {{name}}Actions.receive{{titleCase name}}({
+          {{name}}: res.{{name}},
+        }),
+      );
+    },
+  ]);
+}
+
+export default function* {{name}}Saga() {
+  yield fork(watchActionsLatest, [
+    [
+      {{name}}Constants.SET_EXAMPLE,
+      request{{titleCase name}},
+    ],
+  ]);
+}

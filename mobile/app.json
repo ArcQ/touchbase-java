@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "touchbase-mobile",
+    "description": "",
+    "name": "touchbase-mobile",
+    "scheme": "touchbase-mobile",
+    "slug": "touchbase-mobile",
+    "privacy": "public",
+    "version": "0.0.1",
+    "platforms": [
+      "android",
+      "ios",
+      "web"
+    ],
+    "orientation": "portrait",
+    "primaryColor": "#ffffff",
+    "icon": "src/assets/icon.png",
+    "splash": {
+      "backgroundColor": "#ffffff",
+      "image": "src/assets/splash.png",
+      "resizeMode": "contain"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "versionCode": 1
+    },
+    "ios": {
+      "buildNumber": "0.0.1",
+      "supportsTablet": true
+    }
+  }
+}
