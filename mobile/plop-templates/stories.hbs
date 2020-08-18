@@ -1,0 +1,13 @@
+import React from 'react';
+
+import { storiesOf } from '@storybook/react-native';
+import {{name}} from '../{{name}}';
+import { MockWithPadding } from 'utils/testing/Mock';
+
+export const Basic = () => (
+  <MockWithPadding appearance="outline">
+    <{{name}} />
+  </MockWithPadding>
+);
+
+storiesOf('{{name}}', module).add('basic', Basic);

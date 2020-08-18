@@ -1,0 +1,19 @@
+{
+  "Auth": {
+    "identityPoolId": "us-east-1_HnccgMQBx",
+    "region": "us-east-1",
+    "userPoolId": "us-east-1_HnccgMQBx",
+    "userPoolWebClientId": "2llq6kvj80r4vfvtqhbm3l4kr9"
+  },
+  "API": {
+    "endpoints": [
+      {
+        "name": "Touchbase",
+        "endpoint": "https://1234567890-abcdefgh.amazonaws.com"
+      }
+    ]
+  },
+  "Analytics": {
+    "disabled": true
+  }
+}

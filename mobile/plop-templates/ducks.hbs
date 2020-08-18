@@ -1,0 +1,40 @@
+import { path } from 'ramda';
+import produce from 'immer';
+
+import {
+  createConstantsAndActions,
+  createSelectorsAndState,
+} from 'utils/reduxHelpers';
+
+export const {{name}}Namespace = '{{name}}';
+
+const constArr = ['SET_EXAMPLE'];
+
+export const {
+  constants: {{name}}Constants,
+  actions: {{name}}Actions,
+} = createConstantsAndActions(
+  {{name}}Namespace,
+  constArr,
+);
+
+const { initialState, selectors } = createSelectorsAndState({{name}}Namespace, {
+  example: false,
+});
+
+export const {{name}}Selectors = {
+  ...selectors,
+  example: path([{{name}}Namespace, 'example']),
+};
+
+const c = {{name}}Constants;
+
+export default function {{name}}Reducer(state = initialState, action) {
+  switch (action.type) {
+    case c.SET_EXAMPLE: {
+      return {...state}
+    }
+    default:
+      return state;
+  }
+}
