@@ -27,7 +27,17 @@ INSERT INTO tb_user (uuid,
           'tai',
           'https://images.unsplash.com/photo-1597476934600-ef660b4ce617?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80',
           0,
-          'sita');
+          'sita'),
+         ('56431cd1-6724-4ac9-af64-08c74d8df027',
+          '08-15-2020 01:00:00',
+          '08-15-2020, 01:00:00',
+          '5728dfb5-d089-48f1-aa9c-f1ea436fa8b1',
+          'eltonlaw296@gmail.com',
+          'elton',
+          'law',
+          'https://images.unsplash.com/photo-1597588405595-982407b950d2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=701&q=80',
+          0,
+          'd0nkers');
 
 INSERT INTO base (uuid,
                  created_at,
@@ -57,3 +67,33 @@ INSERT INTO base (uuid,
           0.0,
            'https://images.unsplash.com/photo-1597055181449-b3f17e2ada63?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80',
            true);
+
+INSERT INTO base_member (base_uuid,
+                  members_uuid)
+VALUES ((SELECT uuid from base where name='base1'),
+        (SELECT uuid from tb_user where username='arcq'));
+
+INSERT INTO base_member (base_uuid,
+                         members_uuid)
+VALUES ((SELECT uuid from base where name='base1'),
+        (SELECT uuid from tb_user where username='sita'));
+
+INSERT INTO base_member (base_uuid,
+                         members_uuid)
+VALUES ((SELECT uuid from base where name='base1'),
+        (SELECT uuid from tb_user where username='d0nkers'));
+
+INSERT INTO base_member (base_uuid,
+                         members_uuid)
+VALUES ((SELECT uuid from base where name='base2'),
+        (SELECT uuid from tb_user where username='arcq'));
+
+INSERT INTO base_member (base_uuid,
+                         members_uuid)
+VALUES ((SELECT uuid from base where name='base2'),
+        (SELECT uuid from tb_user where username='sita'));
+
+INSERT INTO base_member (base_uuid,
+                         members_uuid)
+VALUES ((SELECT uuid from base where name='base3'),
+        (SELECT uuid from tb_user where username='arcq'));
