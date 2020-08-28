@@ -6,6 +6,7 @@ import threadReducer, { threadNamespace } from './thread/ducks';
 // import profileReducer, { profileNamespace } from './profile/ducks';
 
 // ---plop_append_import---
+import baseReducer, { baseNamespace } from './base/ducks';
 
 export default function createReducer(asyncReducers) {
   const combinedReducer = combineReducers({
@@ -13,6 +14,7 @@ export default function createReducer(asyncReducers) {
     // [alertNamespace]: alertReducer,
     // [errorNamespace]: errorReducer,
     // ---plop_append_reducer---
+    [baseNamespace]: baseReducer,
     [threadNamespace]: threadReducer,
     // [appNamespace]: appReducer,
     // [profileNamespace]: profileReducer,

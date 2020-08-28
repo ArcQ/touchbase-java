@@ -37,7 +37,7 @@
     "namespace-constants": "^1.0.1",
     "normalizr": "^3.6.0",
     "phoenixjs": "^1.0.5",
-    "plop": "^2.5.3",
+    "plop": "^2.7.4",
     "prop-types": "^15.7.2",
     "ramda": "^0.27.0",
     "react": "16.11.0",
