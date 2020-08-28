@@ -2,6 +2,7 @@ import { delay, spawn, all } from 'redux-saga/effects';
 import { call } from 'ramda';
 
 // ---plop_append_import---
+import baseSaga from './base/sagas';
 import threadSaga from './thread/sagas';
 import chatListSaga from './chatList/sagas';
 // import appSaga from './app/sagas';
@@ -10,6 +11,7 @@ import chatListSaga from './chatList/sagas';
 const defaultSagas = [
   // authSaga,
   // ---plop_append_saga---
+  baseSaga,
   threadSaga,
   chatListSaga,
   // appSaga,

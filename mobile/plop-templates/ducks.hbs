@@ -4,7 +4,7 @@ import produce from 'immer';
 import {
   createConstantsAndActions,
   createSelectorsAndState,
-} from 'utils/reduxHelpers';
+} from '../../utils/reduxHelpers';
 
 export const {{name}}Namespace = '{{name}}';
 
@@ -29,7 +29,7 @@ export const {{name}}Selectors = {
 
 const c = {{name}}Constants;
 
-export default function {{name}}Reducer(state = initialState, action) {
+const {{name}}Reducer = produce((state = initialState, action) => {
   switch (action.type) {
     case c.SET_EXAMPLE: {
       return {...state}
@@ -37,4 +37,6 @@ export default function {{name}}Reducer(state = initialState, action) {
     default:
       return state;
   }
-}
+});
+
+export default {{name}}Reducer;

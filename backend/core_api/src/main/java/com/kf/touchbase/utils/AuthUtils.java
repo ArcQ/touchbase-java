@@ -8,6 +8,6 @@ public class AuthUtils {
     }
 
     public static String getAuthIdFromAuth(Authentication authentication) {
-        return (String) authentication.getAttributes().get("client_id");
+        return (String) authentication.getAttributes().get("sub");
     }
 }
