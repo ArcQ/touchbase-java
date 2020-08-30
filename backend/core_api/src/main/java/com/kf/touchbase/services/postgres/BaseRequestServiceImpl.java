@@ -1,7 +1,7 @@
 package com.kf.touchbase.services.postgres;
 
 import com.kf.touchbase.models.domain.postgres.BaseJoin;
-import com.kf.touchbase.models.domain.postgres.Success;
+import com.kf.touchbase.models.domain.Success;
 
 import javax.inject.Singleton;
 

@@ -1,4 +1,4 @@
-package com.kf.touchbase.models.domain.postgres;
+package com.kf.touchbase.models.domain;
 
 import io.micronaut.security.authentication.UserDetails;
 import lombok.EqualsAndHashCode;

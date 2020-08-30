@@ -1,13 +1,15 @@
 package com.kf.touchbase.models.domain.postgres;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.kf.touchbase.models.domain.Role;
+import io.micronaut.data.annotation.Where;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @SuperBuilder(toBuilder = true)
@@ -16,6 +18,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Where("isActive = true")
+@JsonIgnoreProperties(value = { "admins" })
 public class Base extends TouchBasePostgresEntity {
 
     private String name;
@@ -30,12 +34,19 @@ public class Base extends TouchBasePostgresEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonIgnoreProperties({"bases", "created", "owns"})
-    @ManyToMany
-    @JoinTable(name = "base_member")
-    private Set<User> members;
+    @OneToMany(mappedBy = "base")
+    private Set<BaseMember> members;
 
     public void mergeInNotNull(Base base) {
         name = (base.name == null) ? name : base.name;
         imageUrl = (base.imageUrl == null) ? imageUrl : base.imageUrl;
+    }
+
+    public void addMember(User user, Role role) {
+        this.members.add(new BaseMember(this, user, role));
+    }
+
+    public void removeMember(UUID userUuid) {
+        this.members.removeIf((baseMember) -> baseMember.getUser().getUuid().equals(userUuid));
     }
 }

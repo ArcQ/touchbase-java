@@ -69,27 +69,37 @@ INSERT INTO base (uuid,
            true);
 
 INSERT INTO base_member (base_uuid,
-                  members_uuid)
+                  member_uuid,
+                  role)
 VALUES ((SELECT uuid from base where name='base1'),
-        (SELECT uuid from tb_user where username='arcq'));
+        (SELECT uuid from tb_user where username='arcq'),
+        'member');
 
 INSERT INTO base_member (base_uuid,
-                         members_uuid)
+                         member_uuid,
+                         role)
 VALUES ((SELECT uuid from base where name='base1'),
-        (SELECT uuid from tb_user where username='sita'));
+        (SELECT uuid from tb_user where username='sita'),
+        'member');
 
 INSERT INTO base_member (base_uuid,
-                         members_uuid)
+                         member_uuid,
+                         role)
 VALUES ((SELECT uuid from base where name='base1'),
-        (SELECT uuid from tb_user where username='d0nkers'));
+        (SELECT uuid from tb_user where username='d0nkers'),
+        'member');
 
 INSERT INTO base_member (base_uuid,
-                         members_uuid)
+                         member_uuid,
+                         role)
 VALUES ((SELECT uuid from base where name='base2'),
-        (SELECT uuid from tb_user where username='arcq'));
+        (SELECT uuid from tb_user where username='arcq'),
+        'member');
 
 INSERT INTO base_member (base_uuid,
-                         members_uuid)
+                         member_uuid,
+                         role)
 VALUES ((SELECT uuid from base where name='base2'),
-        (SELECT uuid from tb_user where username='sita'));
+        (SELECT uuid from tb_user where username='sita'),
+        'member');
 

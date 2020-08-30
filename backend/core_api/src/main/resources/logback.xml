@@ -11,6 +11,12 @@
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
+    <logger name="io.micronaut.data.query" level="trace">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="io.micronaut.data" level="DEBUG">
+        <appender-ref ref="STDOUT" />
+    </logger>
     <logger name="io.micronaut.http.client" level="debug"/>
-    <logger name="io.netty" level="TRACE"/>
+<!--    <logger name="io.netty" level="TRACE"/>-->
 </configuration>

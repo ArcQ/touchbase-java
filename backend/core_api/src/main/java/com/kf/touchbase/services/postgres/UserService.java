@@ -13,26 +13,26 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public Iterable<User> findAll() {
-        return userRepository.findAll();
-    }
-
     public Iterable<User> searchByQuery(String query) {
         return userRepository.findByUsernameContainsOrFirstNameContainsOrLastNameContains(query, query, query);
     }
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
-    public User findByAuthId(String authId) {
-        return userRepository.findByAuthId(authId);
-    }
-
     public User create(User user) {
-        if (userRepository.findByEmail(user.getEmail()) == null) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new EntityExistsException("A user is already registered under this email.");
         }
         return userRepository.save(user);
+    }
+
+    public Iterable<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public User findByAuthId(String authIdFromAuth) {
+        return userRepository.findByAuthId(authIdFromAuth).orElseThrow();
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow();
     }
 }

@@ -6,7 +6,7 @@ create table mission
     created_at timestamp,
     updated_at timestamp,
     description varchar(255),
-    misson_type integer,
+    mission_type integer,
     name varchar(255),
     score_reward double precision
 );
@@ -39,20 +39,23 @@ create table base
     name varchar(255),
     score double precision,
     creator_uuid uuid
-        constraint fk22ncmdygalwwj4ttqtvugup0n
+        constraint fk_base_user_creator_uuid
             references tb_user
 );
 
 create table base_member
 (
+    created_at timestamp,
+    updated_at timestamp,
+    role varchar(255) not null,
     base_uuid uuid not null
-        constraint fkt6j9uk6wrten8qcnfegeyi3jk
+        constraint fk_base_member_base_base_uuid
             references base,
-    members_uuid uuid not null
-        constraint fkovvwgvbsypfnxm3ss3mdk2x64
+    member_uuid uuid not null
+        constraint fk_base_member_tb_user_member_uuid
             references tb_user,
     constraint base_member_pkey
-        primary key (base_uuid, members_uuid)
+        primary key (base_uuid, member_uuid)
 );
 
 create table base_join
@@ -65,20 +68,20 @@ create table base_join
     base_id varchar(255),
     base_join_action integer,
     creator_uuid uuid
-        constraint fkhw7sx7xw92ys7ej169xofwc28
+        constraint fk_base_join_tb_user_creator_uuid
             references tb_user
 );
 
 create table entity_admin
 (
     base_join_uuid uuid not null
-        constraint fksix9t0x9jtu1i70num40o6oc2
+        constraint fk_entity_admin_base_join_base_join_uuid
             references base_join,
     admins_uuid uuid not null
-        constraint fk7ervd96doyus2se86go2lpdv1
+        constraint fk_entity_admin_tb_user_admins_uuid
             references tb_user,
     base_uuid uuid not null
-        constraint fk7psmg55hik37e2ysreoim998l
+        constraint fk_entity_admin_base_base_uuid
             references base,
     constraint entity_admin_pkey
         primary key (base_uuid, admins_uuid)

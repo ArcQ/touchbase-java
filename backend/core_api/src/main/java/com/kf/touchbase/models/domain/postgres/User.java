@@ -26,16 +26,4 @@ public class User extends TouchBasePostgresDomain {
     private String lastName;
 
     private String imageUrl;
-
-//    @ManyToMany
-//    private Set<Base> bases;
-//
-//    @OneToMany
-//    private Set<Base> created;
-//
-////    @JsonManagedReference
-////    @ToString.Exclude
-////    @EqualsAndHashCode.Exclude
-//    @ManyToMany
-//    private Set<Base> owns;
 }
