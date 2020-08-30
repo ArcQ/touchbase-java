@@ -8,10 +8,10 @@ import java.util.UUID;
 public interface OwnedRepositoryService<T extends TouchBasePostgresEntity> extends CrudRepository<T, UUID> {
 
     default T findIfAdmin(String adminAuthId, TouchBasePostgresEntity entity) throws SecurityException {
-        return findifAdminId(adminAuthId, entity.getUuid(), entity.getClass());
+        return findIfAdminId(adminAuthId, entity.getUuid(), entity.getClass());
     }
 
-    default T findifAdminId(String adminAuthId, UUID entityId, Class<?> clazz) throws SecurityException {
+    default T findIfAdminId(String adminAuthId, UUID entityId, Class<?> clazz) throws SecurityException {
         T foundEntity =
                 findById(entityId).orElseThrow(() -> new IllegalArgumentException(String.format(
                         "User %s tried to access entity of " +

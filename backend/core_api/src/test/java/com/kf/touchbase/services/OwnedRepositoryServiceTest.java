@@ -110,7 +110,7 @@ class OwnedRepositoryServiceTest {
 
         // Run the test
         Base result =
-                ownedRepositoryServiceUnderTest.findifAdminId(base.getAdmins().iterator().next().getAuthId(),
+                ownedRepositoryServiceUnderTest.findIfAdminId(base.getAdmins().iterator().next().getAuthId(),
                 base.getUuid(), Base.class);
 
         // Verify the results

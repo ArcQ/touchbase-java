@@ -40,10 +40,10 @@ micronaut:
 
 datasources:
   default:
-    url: ${JDBC_URL:`jdbc:postgresql://localhost:5432/touchbase`}
+    url: ${JDBC_URL:`jdbc:postgresql://localhost:5432`}/touchbase
     username: ${DB_USER:postgres}
     password: ${DB_PASS:pw123}
-    driverclassname: ${jdbc_driver:org.postgresql.Driver}
+    driverClassName: ${JDBC_DRIVER:org.postgresql.Driver}
 
 liquibase:
   enabled: ${MIGRATIONS:true}

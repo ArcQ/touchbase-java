@@ -2,9 +2,12 @@ package com.kf.touchbase.rest;
 
 import com.kf.touchbase.annotation.NotYetImplemented;
 import com.kf.touchbase.mappers.BaseMapper;
+import com.kf.touchbase.models.domain.Success;
 import com.kf.touchbase.models.domain.postgres.Base;
-import com.kf.touchbase.models.domain.postgres.Success;
 import com.kf.touchbase.models.dto.BaseReq;
+import com.kf.touchbase.models.dto.ListReq;
+import com.kf.touchbase.models.dto.ListRes;
+import com.kf.touchbase.models.dto.MemberReq;
 import com.kf.touchbase.services.postgres.BaseService;
 import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.MediaType;
@@ -26,7 +29,13 @@ public class BaseController {
 
     private final BaseMapper baseMapper;
 
-    @Post
+    @Get("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ListRes<Base> getOwnBases(Authentication authentication) {
+        return new ListRes<>(baseService.getOwnBases(AuthUtils.getAuthIdFromAuth(authentication)));
+    }
+
+    @Post("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Base postBase(Authentication authentication, @Body BaseReq baseReq) {
         var base = baseMapper.baseReqToBase(baseReq);
@@ -35,36 +44,18 @@ public class BaseController {
 
     @Patch("/{baseId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Base patchBase(Authentication authentication, String baseId, @Body BaseReq baseReq) {
-        UUID baseUuid = UUID.fromString(baseId);
+    public Base patchBase(Authentication authentication, UUID baseId, @Body BaseReq baseReq) {
         var base = baseMapper.baseReqToBase(baseReq);
-        return baseService.patchBase(AuthUtils.getAuthIdFromAuth(authentication), baseUuid, base);
+        return baseService.patchBase(AuthUtils.getAuthIdFromAuth(authentication), baseId, base);
     }
 
-    @Post("/{baseId}/admin/{authId}")
+    @Delete("/{baseId}/members")
     @Produces(MediaType.APPLICATION_JSON)
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
-    public Base addUserToBaseAsAdmin(Authentication authentication, String baseId, String authId) {
-        return baseService.addUserToBaseAsAdmin(AuthUtils.getAuthIdFromAuth(authentication), authId, baseId);
-    }
-
-    @Patch("/{baseId}/admin/{authId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @NotYetImplemented
-    @Operation(description = "Not Implemented Yet")
-    public Base patchUserToBaseAsAdmin(Authentication authentication, String baseId, String authId, @Body BaseReq baseReq) {
-        UUID baseUuid = UUID.fromString(baseId);
-        var base = baseMapper.baseReqToBase(baseReq);
-        return baseService.patchBase(AuthUtils.getAuthIdFromAuth(authentication), baseUuid, base);
-    }
-
-    @Delete("/{baseId}/admin/{authId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @NotYetImplemented
-    @Operation(description = "Not Implemented Yet")
-    public Base removeUserFromBaseAsAdmin(Authentication authentication, String baseId, String authId) {
-        return baseService.deleteUserFromBaseAsAdmin(AuthUtils.getAuthIdFromAuth(authentication), authId, baseId);
+    public Base removeMembers(Authentication authentication, UUID baseId, @Body ListReq<MemberReq> memberReqs) {
+        var memberRefs = baseMapper.memberReqsToMemberRefs(memberReqs.getList());
+        return baseService.removeMembers(AuthUtils.getAuthIdFromAuth(authentication), memberRefs, baseId);
     }
 
     @Delete("/{baseId}")

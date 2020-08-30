@@ -4,7 +4,7 @@ import com.kf.touchbase.annotation.NotYetImplemented;
 import com.kf.touchbase.mappers.BaseJoinMapper;
 import com.kf.touchbase.models.domain.postgres.BaseJoin;
 import com.kf.touchbase.models.domain.postgres.BaseJoinAction;
-import com.kf.touchbase.models.domain.postgres.Success;
+import com.kf.touchbase.models.domain.Success;
 import com.kf.touchbase.models.dto.BaseJoinReq;
 import com.kf.touchbase.services.postgres.BaseJoinService;
 import com.kf.touchbase.utils.AuthUtils;

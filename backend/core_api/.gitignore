@@ -12,3 +12,4 @@ out/
 .project
 .settings
 .classpath
+/src/main/resources/application-migratedevdb.yml

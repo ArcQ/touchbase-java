@@ -46,7 +46,7 @@ class AuthUtilsTest {
         final var result = AuthUtils.getAuthIdFromAuth(authentication);
 
         // Verify the results
-        assertThat(result).isEqualTo("2a672bhg11if5bo6fni8spctc4");
+        assertThat(result).isEqualTo("710f7b05-8911-4285-98f9-2cc292352e36");
     }
 }
 

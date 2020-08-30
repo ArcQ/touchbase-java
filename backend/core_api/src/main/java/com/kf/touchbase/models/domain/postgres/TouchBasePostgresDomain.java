@@ -3,11 +3,10 @@ package com.kf.touchbase.models.domain.postgres;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -20,7 +19,9 @@ public abstract class TouchBasePostgresDomain {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID uuid;
 
+    @CreationTimestamp
     protected ZonedDateTime createdAt;
 
+    @UpdateTimestamp
     protected ZonedDateTime updatedAt;
 }
