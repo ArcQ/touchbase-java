@@ -42,6 +42,12 @@ public class BaseController {
         return baseService.createBase(AuthUtils.getAuthIdFromAuth(authentication), base);
     }
 
+    @Get("/{baseId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Base getBaseIfOwn(Authentication authentication, UUID baseId) {
+        return baseService.getBase(AuthUtils.getAuthIdFromAuth(authentication), baseId);
+    }
+
     @Patch("/{baseId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Base patchBase(Authentication authentication, UUID baseId, @Body BaseReq baseReq) {

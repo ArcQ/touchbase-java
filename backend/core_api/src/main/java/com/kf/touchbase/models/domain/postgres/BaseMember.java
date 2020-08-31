@@ -1,6 +1,5 @@
 package com.kf.touchbase.models.domain.postgres;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.kf.touchbase.models.domain.Role;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -18,21 +17,19 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity(name="base_member")
 public class BaseMember {
-
     @EmbeddedId
 	private BaseMemberId id;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @JsonIgnoreProperties({"bases", "created", "owns"})
-    @ManyToOne
+//    @JsonIgnoreProperties({"bases", "created", "owns", "admins", "members"})
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "base_uuid", insertable = false, updatable = false)
     private Base base;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @JsonIgnoreProperties({"bases", "created", "owns"})
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "member_uuid", insertable = false, updatable = false)
     private User user;
 
@@ -59,9 +56,9 @@ public class BaseMember {
     public static class BaseMemberId implements Serializable {
 
         @Column(name = "base_uuid")
-        protected UUID base;
+        protected UUID baseUuid;
 
         @Column(name = "member_uuid")
-        protected UUID user;
+        protected UUID memberUuid;
     }
 }
