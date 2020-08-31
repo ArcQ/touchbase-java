@@ -31,6 +31,10 @@ public class BaseService {
         return baseRepository.findAllByMember(adminAuthId);
     }
 
+    public Base getBase(String adminAuthId, UUID baseId) {
+        return baseRepository.findIfMember(baseId, adminAuthId).orElse(null);
+    }
+
     @Transactional
     public Base createBase(String adminAuthId, Base newBase) {
         var creator = userRepository.findByAuthId(adminAuthId).orElseThrow(AuthenticationException::new);

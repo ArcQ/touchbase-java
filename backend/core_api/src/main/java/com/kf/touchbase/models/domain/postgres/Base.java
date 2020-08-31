@@ -33,9 +33,13 @@ public class Base extends TouchBasePostgresEntity {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @JsonIgnoreProperties({"bases", "created", "owns"})
     @OneToMany(mappedBy = "base")
     private Set<BaseMember> members;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "base")
+    private Set<Chat> chats;
 
     public void mergeInNotNull(Base base) {
         name = (base.name == null) ? name : base.name;
