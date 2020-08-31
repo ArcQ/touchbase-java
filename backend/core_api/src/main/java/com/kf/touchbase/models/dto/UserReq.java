@@ -8,11 +8,19 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserReq {
+
     String authId;
+
     String email;
+
     Double score;
+
     String firstName;
+
     String lastName;
+
     String username;
+
+    String chatpiUserId;
 }
 

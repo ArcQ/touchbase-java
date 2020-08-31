@@ -17,13 +17,18 @@ import javax.persistence.Table;
 public class User extends TouchBasePostgresDomain {
 
     private String authId;
+
     private String username;
 
     private String email;
+
     private Double score;
 
     private String firstName;
+
     private String lastName;
 
     private String imageUrl;
+
+    private String chatpiUserId;
 }

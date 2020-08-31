@@ -22,7 +22,7 @@ public class Chat {
     Base base;
 
     @Column(name="chat_id", insertable = false, updatable = false)
-    String chatId;
+    String chatpiChatId;
 
     @EqualsAndHashCode
     @AllArgsConstructor
@@ -34,6 +34,6 @@ public class Chat {
         protected UUID baseUuid;
 
         @Column(name = "chat_id")
-        protected String chatId;
+        protected String chatpiChatId;
     }
 }
