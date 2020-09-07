@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Table(name="tb_user")
 public class User extends TouchBasePostgresDomain {
 
-    private String authId;
+    private String authKey;
 
     private String username;
 
@@ -29,6 +29,4 @@ public class User extends TouchBasePostgresDomain {
     private String lastName;
 
     private String imageUrl;
-
-    private String chatpiUserId;
 }

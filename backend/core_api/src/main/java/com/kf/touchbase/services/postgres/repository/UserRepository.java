@@ -18,7 +18,7 @@ public interface UserRepository extends CrudRepository<User, UUID> {
 
     Optional<User> findByEmail(String email);
 
-    Optional<User> findByAuthId(String authId);
+    Optional<User> findByAuthKey(String AuthKey);
 
     Optional<User> findAllById(Iterable<UUID> uuids);
 }

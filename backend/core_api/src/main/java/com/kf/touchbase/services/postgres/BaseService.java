@@ -22,45 +22,46 @@ public class BaseService {
     private final BaseRepository baseRepository;
     private final UserRepository userRepository;
 
-    public Base findIfMemberAdmin(String adminAuthId, UUID baseId) {
-        return baseRepository.findIfMemberAdmin(baseId, adminAuthId)
-                .orElseThrow(() -> new SecurityException(String.format("%s not allowed", adminAuthId)));
+    public Base findIfMemberAdmin(String adminAuthKey, UUID baseId) {
+        return baseRepository.findIfMemberAdmin(baseId, adminAuthKey)
+                .orElseThrow(() -> new SecurityException(String.format("%s not allowed", adminAuthKey)));
     }
 
-    public List<Base> getOwnBases(String adminAuthId) {
-        return baseRepository.findAllByMember(adminAuthId);
+    public List<Base> getOwnBases(String adminAuthKey) {
+        var bases = baseRepository.findAllByMembersUserAuthKey(adminAuthKey);
+        return bases;
     }
 
-    public Base getBase(String adminAuthId, UUID baseId) {
-        return baseRepository.findIfMember(baseId, adminAuthId).orElse(null);
+    public Base getBase(String adminAuthKey, UUID baseId) {
+        return baseRepository.findIfMember(baseId, adminAuthKey).orElse(null);
     }
 
     @Transactional
-    public Base createBase(String adminAuthId, Base newBase) {
-        var creator = userRepository.findByAuthId(adminAuthId).orElseThrow(AuthenticationException::new);
+    public Base createBase(String adminAuthKey, Base newBase) {
+        var creator = userRepository.findByAuthKey(adminAuthKey).orElseThrow(AuthenticationException::new);
         newBase.setCreator(creator);
         newBase.setAdmins(Set.of(creator));
         newBase.addMember(creator, Role.ADMIN);
         return baseRepository.save(newBase);
     }
 
-    public Base patchBase(String adminAuthId, UUID baseId, Base updateBase) throws SecurityException {
-        Base existingBase = findIfMemberAdmin(adminAuthId, baseId);
+    public Base patchBase(String adminAuthKey, UUID baseId, Base updateBase) throws SecurityException {
+        var existingBase = findIfMemberAdmin(adminAuthKey, baseId);
         existingBase.mergeInNotNull(updateBase);
         return baseRepository.save(existingBase);
     }
 
-    public Base addMember(String adminAuthId, MemberRef memberRef, UUID baseId, Role role) throws SecurityException {
-        Base existingBase = findIfMemberAdmin(adminAuthId, baseId);
+    public Base addMember(String adminAuthKey, MemberRef memberRef, UUID baseId, Role role) throws SecurityException {
+        Base existingBase = findIfMemberAdmin(adminAuthKey, baseId);
         User user = userRepository.findById(memberRef.getUserId()).orElseThrow();
         existingBase.addMember(user, role);
         baseRepository.save(existingBase);
         return existingBase;
     }
 
-    public Base removeMembers(String adminAuthId, List<MemberRef> memberRefs,
+    public Base removeMembers(String adminAuthKey, List<MemberRef> memberRefs,
                               UUID baseId) throws SecurityException {
-        Base existingBase = findIfMemberAdmin(adminAuthId, baseId);
+        var existingBase = findIfMemberAdmin(adminAuthKey, baseId);
         memberRefs.forEach((memberRef) -> {
             existingBase.removeMember(memberRef.getUserId());
         });
@@ -68,8 +69,8 @@ public class BaseService {
         return existingBase;
     }
 
-    public Success makeBaseInactive(String adminAuthId, UUID baseId) throws SecurityException {
-        Base existingBase = findIfMemberAdmin(adminAuthId, baseId);
+    public Success makeBaseInactive(String adminAuthKey, UUID baseId) throws SecurityException {
+        var existingBase = findIfMemberAdmin(adminAuthKey, baseId);
         existingBase.setActive(false);
         baseRepository.save(existingBase);
         return null;

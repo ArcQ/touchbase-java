@@ -96,7 +96,7 @@ class OwnedRepositoryServiceTest {
 
         // Run the test
         Base result =
-                ownedRepositoryServiceUnderTest.findIfAdmin(base.getAdmins().iterator().next().getAuthId(),
+                ownedRepositoryServiceUnderTest.findIfAdmin(base.getAdmins().iterator().next().getAuthKey(),
                 base);
 
         // Verify the results
@@ -110,7 +110,7 @@ class OwnedRepositoryServiceTest {
 
         // Run the test
         Base result =
-                ownedRepositoryServiceUnderTest.findIfAdminId(base.getAdmins().iterator().next().getAuthId(),
+                ownedRepositoryServiceUnderTest.findIfAdminId(base.getAdmins().iterator().next().getAuthKey(),
                 base.getUuid(), Base.class);
 
         // Verify the results

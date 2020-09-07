@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.Set;
 import java.util.UUID;
@@ -33,12 +34,14 @@ public class Base extends TouchBasePostgresEntity {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "base")
+    @OneToMany(mappedBy = "base", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"id", "base", "createdAt"})
     private Set<BaseMember> members;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "base")
+    @OneToMany(mappedBy = "base", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"id", "base"})
     private Set<Chat> chats;
 
     public void mergeInNotNull(Base base) {

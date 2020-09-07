@@ -1,7 +1,7 @@
 INSERT INTO tb_user (uuid,
                      created_at,
                      updated_at,
-                     auth_id,
+                     auth_key,
                      email,
                      first_name,
                      last_name,
@@ -73,33 +73,47 @@ INSERT INTO base_member (base_uuid,
                   role)
 VALUES ((SELECT uuid from base where name='base1'),
         (SELECT uuid from tb_user where username='arcq'),
-        'member');
+        'ADMIN');
 
 INSERT INTO base_member (base_uuid,
                          member_uuid,
                          role)
 VALUES ((SELECT uuid from base where name='base1'),
         (SELECT uuid from tb_user where username='sita'),
-        'member');
+        'MEMBER');
 
 INSERT INTO base_member (base_uuid,
                          member_uuid,
                          role)
 VALUES ((SELECT uuid from base where name='base1'),
         (SELECT uuid from tb_user where username='d0nkers'),
-        'member');
+        'MEMBER');
 
 INSERT INTO base_member (base_uuid,
                          member_uuid,
                          role)
 VALUES ((SELECT uuid from base where name='base2'),
         (SELECT uuid from tb_user where username='arcq'),
-        'member');
+        'MEMBER');
 
 INSERT INTO base_member (base_uuid,
                          member_uuid,
                          role)
 VALUES ((SELECT uuid from base where name='base2'),
         (SELECT uuid from tb_user where username='sita'),
-        'member');
+        'ADMIN');
 
+
+INSERT INTO base_member (base_uuid,
+                         member_uuid,
+                         role)
+VALUES ((SELECT uuid from base where name='base3'),
+        (SELECT uuid from tb_user where username='d0nkers'),
+        'MEMBER');
+
+INSERT INTO base_member (base_uuid,
+                         member_uuid,
+                         role)
+VALUES ((SELECT uuid from base where name='base3'),
+        (SELECT uuid from tb_user where username='arcq'),
+        'ADMIN');

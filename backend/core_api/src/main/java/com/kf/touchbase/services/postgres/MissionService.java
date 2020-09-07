@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 @Singleton
 public class MissionService {
 
-    public Iterable<Mission> findOwnMissions(String requesterAuthId) {
+    public Iterable<Mission> findOwnMissions(String requesterAuthKey) {
         return null;
     }
 }

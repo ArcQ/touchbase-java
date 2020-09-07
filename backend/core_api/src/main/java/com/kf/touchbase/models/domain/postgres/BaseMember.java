@@ -22,7 +22,6 @@ public class BaseMember {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-//    @JsonIgnoreProperties({"bases", "created", "owns", "admins", "members"})
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "base_uuid", insertable = false, updatable = false)
     private Base base;

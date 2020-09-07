@@ -36,7 +36,7 @@ public class BaseJoinController {
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
     public Iterable<BaseJoin> getBases(Authentication authentication) {
-        return baseInviteService.findByAdmin(AuthUtils.getAuthIdFromAuth(authentication));
+        return baseInviteService.findByAdmin(AuthUtils.getAuthKeyFromAuth(authentication));
     }
 
     @Post
@@ -46,10 +46,10 @@ public class BaseJoinController {
     public BaseJoin createBaseJoin(Authentication authentication, @Body BaseJoinReq baseJoinReq) {
         var baseJoin = baseJoinMapper.basejoinReqToRequest(baseJoinReq);
         if (baseJoin.getBaseJoinAction().equals(BaseJoinAction.Invite)) {
-            return baseInviteService.createBaseJoin(AuthUtils.getAuthIdFromAuth(authentication),
+            return baseInviteService.createBaseJoin(AuthUtils.getAuthKeyFromAuth(authentication),
                     baseJoin);
         }
-        return baseRequestService.createBaseJoin(AuthUtils.getAuthIdFromAuth(authentication),
+        return baseRequestService.createBaseJoin(AuthUtils.getAuthKeyFromAuth(authentication),
                 baseJoin);
     }
 
@@ -60,10 +60,10 @@ public class BaseJoinController {
     public BaseJoin requestIntoBase(Authentication authentication, @Body BaseJoinReq baseJoinReq) {
         var baseJoin = baseJoinMapper.basejoinReqToRequest(baseJoinReq);
         if (baseJoin.getBaseJoinAction().equals(BaseJoinAction.Invite)) {
-            return baseInviteService.createBaseJoin(AuthUtils.getAuthIdFromAuth(authentication),
+            return baseInviteService.createBaseJoin(AuthUtils.getAuthKeyFromAuth(authentication),
                     baseJoin);
         }
-        return baseRequestService.createBaseJoin(AuthUtils.getAuthIdFromAuth(authentication),
+        return baseRequestService.createBaseJoin(AuthUtils.getAuthKeyFromAuth(authentication),
                 baseJoin);
     }
 
@@ -72,7 +72,7 @@ public class BaseJoinController {
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
     public Success deleteBaseInvite(Authentication authentication, String baseId) {
-        return baseInviteService.deleteBaseJoin(AuthUtils.getAuthIdFromAuth(authentication),
+        return baseInviteService.deleteBaseJoin(AuthUtils.getAuthKeyFromAuth(authentication),
                 baseId);
     }
 }
