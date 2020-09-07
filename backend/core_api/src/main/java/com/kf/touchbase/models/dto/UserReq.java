@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class UserReq {
 
-    String authId;
+    String authKey;
 
     String email;
 

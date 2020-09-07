@@ -12,12 +12,12 @@ import java.util.UUID;
 @Repository
 public interface BaseRepository extends OwnedRepositoryService<Base> {
 
-    @Query(value = "SELECT b.* FROM base b, base_member m, tb_user u WHERE m.base_uuid=b.uuid AND m.member_uuid=u.uuid AND u.auth_id=:userAuthId", nativeQuery = true)
-    List<Base> findAllByMember(String userAuthId);
+    @Query(value = "SELECT b.* FROM base b, base_member m, tb_user u WHERE m.base_uuid=b.uuid AND m.member_uuid=u.uuid AND u.auth_key=:userAuthKey", nativeQuery = true)
+    List<Base> findAllByMembersUserAuthKey(String userAuthKey);
 
-    @Query(value = "SELECT b.* FROM base b, base_member m, user u WHERE b.uuid='?1' AND m.base_uuid=b.uuid AND m.member_uuid=u.uuid AND u.auth_id='?2'", nativeQuery = true)
-    Optional<Base> findIfMember(UUID baseId, String userAuthId);
+    @Query(value = "SELECT b.* FROM base b, base_member m, user u WHERE b.uuid='?1' AND m.base_uuid=b.uuid AND m.member_uuid=u.uuid AND u.auth_key='?2'", nativeQuery = true)
+    Optional<Base> findIfMember(UUID baseId, String userAuthKey);
 
-    @Query(value = "SELECT b.* FROM base b, base_member m, user u WHERE b.uuid = ?1 AND m.base_uuid=b.uuid AND m.member_uuid=u.uuid AND u.auth_id='?2' AND m.role='ADMIN'", nativeQuery = true)
-    Optional<Base> findIfMemberAdmin(UUID baseId, String userAuthId);
+    @Query(value = "SELECT b.* FROM base b, base_member m, user u WHERE b.uuid = ?1 AND m.base_uuid=b.uuid AND m.member_uuid=u.uuid AND u.auth_key='?2' AND m.role='ADMIN'", nativeQuery = true)
+    Optional<Base> findIfMemberAdmin(UUID baseId, String userAuthKey);
 }

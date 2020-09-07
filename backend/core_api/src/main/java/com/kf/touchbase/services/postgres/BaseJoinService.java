@@ -6,9 +6,9 @@ import com.kf.touchbase.models.domain.Success;
 public interface BaseJoinService {
     Iterable<BaseJoin> findByAdmin(String cognitoId);
 
-    BaseJoin createBaseJoin(String adminAuthId, BaseJoin baseJoin) throws SecurityException;
+    BaseJoin createBaseJoin(String adminAuthKey, BaseJoin baseJoin) throws SecurityException;
 
-    Success acceptBaseJoin(String adminAuthId, BaseJoin baseJoin) throws SecurityException;
+    Success acceptBaseJoin(String adminAuthKey, BaseJoin baseJoin) throws SecurityException;
 
-    Success deleteBaseJoin(String adminAuthId, String baseJoinId) throws SecurityException;
+    Success deleteBaseJoin(String adminAuthKey, String baseJoinId) throws SecurityException;
 }

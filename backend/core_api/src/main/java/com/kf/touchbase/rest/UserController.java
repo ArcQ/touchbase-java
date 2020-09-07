@@ -38,7 +38,7 @@ public class UserController {
     @Get("/me")
     @Produces(MediaType.APPLICATION_JSON)
     public User getMe(Authentication authentication) {
-        return userService.findByAuthId(AuthUtils.getAuthIdFromAuth(authentication));
+        return userService.findByAuthKey(AuthUtils.getAuthKeyFromAuth(authentication));
     }
 
     @Get("/{username}")

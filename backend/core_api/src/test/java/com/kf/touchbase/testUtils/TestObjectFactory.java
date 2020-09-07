@@ -8,14 +8,14 @@ import java.util.Set;
 import java.util.UUID;
 
 public class TestObjectFactory {
-    public static String authId = "authId1";
+    public static String AuthKey = "AuthKey1";
     public static UUID userId = UUID.randomUUID();
 
     public static class Domain {
         public static User createUser() {
             return User.builder()
                     .uuid(userId)
-                    .authId(authId)
+                    .AuthKey(AuthKey)
                     .email("tony.stark@gmail.com")
                     .firstName("Tony")
                     .lastName("Stark")

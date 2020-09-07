@@ -43,7 +43,7 @@ class AuthUtilsTest {
     @Test
     void testGetUserIdFromAuth() {
         // Run the test
-        final var result = AuthUtils.getAuthIdFromAuth(authentication);
+        final var result = AuthUtils.getAuthKeyFromAuth(authentication);
 
         // Verify the results
         assertThat(result).isEqualTo("710f7b05-8911-4285-98f9-2cc292352e36");

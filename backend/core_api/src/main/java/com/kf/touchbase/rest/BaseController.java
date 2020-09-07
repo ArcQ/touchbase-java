@@ -32,27 +32,27 @@ public class BaseController {
     @Get("/")
     @Produces(MediaType.APPLICATION_JSON)
     public ListRes<Base> getOwnBases(Authentication authentication) {
-        return new ListRes<>(baseService.getOwnBases(AuthUtils.getAuthIdFromAuth(authentication)));
+        return new ListRes<>(baseService.getOwnBases(AuthUtils.getAuthKeyFromAuth(authentication)));
     }
 
     @Post("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Base postBase(Authentication authentication, @Body BaseReq baseReq) {
         var base = baseMapper.baseReqToBase(baseReq);
-        return baseService.createBase(AuthUtils.getAuthIdFromAuth(authentication), base);
+        return baseService.createBase(AuthUtils.getAuthKeyFromAuth(authentication), base);
     }
 
     @Get("/{baseId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Base getBaseIfOwn(Authentication authentication, UUID baseId) {
-        return baseService.getBase(AuthUtils.getAuthIdFromAuth(authentication), baseId);
+        return baseService.getBase(AuthUtils.getAuthKeyFromAuth(authentication), baseId);
     }
 
     @Patch("/{baseId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Base patchBase(Authentication authentication, UUID baseId, @Body BaseReq baseReq) {
         var base = baseMapper.baseReqToBase(baseReq);
-        return baseService.patchBase(AuthUtils.getAuthIdFromAuth(authentication), baseId, base);
+        return baseService.patchBase(AuthUtils.getAuthKeyFromAuth(authentication), baseId, base);
     }
 
     @Delete("/{baseId}/members")
@@ -61,7 +61,7 @@ public class BaseController {
     @Operation(description = "Not Implemented Yet")
     public Base removeMembers(Authentication authentication, UUID baseId, @Body ListReq<MemberReq> memberReqs) {
         var memberRefs = baseMapper.memberReqsToMemberRefs(memberReqs.getList());
-        return baseService.removeMembers(AuthUtils.getAuthIdFromAuth(authentication), memberRefs, baseId);
+        return baseService.removeMembers(AuthUtils.getAuthKeyFromAuth(authentication), memberRefs, baseId);
     }
 
     @Delete("/{baseId}")
@@ -69,6 +69,6 @@ public class BaseController {
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
     public Success makeBaseInactive(Authentication authentication, UUID baseId) {
-        return baseService.makeBaseInactive(AuthUtils.getAuthIdFromAuth(authentication), baseId);
+        return baseService.makeBaseInactive(AuthUtils.getAuthKeyFromAuth(authentication), baseId);
     }
 }

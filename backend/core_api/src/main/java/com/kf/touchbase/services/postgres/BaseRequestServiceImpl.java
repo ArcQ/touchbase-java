@@ -14,22 +14,22 @@ public class BaseRequestServiceImpl implements BaseJoinService {
     }
 
     @Override
-    public Iterable<BaseJoin> findByAdmin(String adminAuthId) throws SecurityException {
+    public Iterable<BaseJoin> findByAdmin(String adminAuthKey) throws SecurityException {
         return null;
     }
 
     @Override
-    public BaseJoin createBaseJoin(String requesterAuthId, BaseJoin baseJoin) throws SecurityException {
+    public BaseJoin createBaseJoin(String requesterAuthKey, BaseJoin baseJoin) throws SecurityException {
         return null;
     }
 
     @Override
-    public Success acceptBaseJoin(String requesterAuthId, BaseJoin baseJoin) throws SecurityException {
+    public Success acceptBaseJoin(String requesterAuthKey, BaseJoin baseJoin) throws SecurityException {
         return null;
     }
 
     @Override
-    public Success deleteBaseJoin(String requesterAuthId, String baseJoinId) throws SecurityException {
+    public Success deleteBaseJoin(String requesterAuthKey, String baseJoinId) throws SecurityException {
         return null;
     }
 }

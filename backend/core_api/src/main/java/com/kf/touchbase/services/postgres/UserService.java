@@ -28,8 +28,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findByAuthId(String authIdFromAuth) {
-        return userRepository.findByAuthId(authIdFromAuth).orElseThrow();
+    public User findByAuthKey(String AuthKeyFromAuth) {
+        return userRepository.findByAuthKey(AuthKeyFromAuth).orElseThrow();
     }
 
     public User findByUsername(String username) {

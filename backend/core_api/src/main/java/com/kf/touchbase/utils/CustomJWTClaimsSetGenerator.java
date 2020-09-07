@@ -29,7 +29,7 @@ public class CustomJWTClaimsSetGenerator extends JWTClaimsSetGenerator {
         super.populateWithUserDetails(builder, userDetails);
         if (userDetails instanceof JwtUserDetails) {
             builder.claim("email", ((JwtUserDetails) userDetails).getEmail());
-            builder.claim("authId", ((JwtUserDetails) userDetails).getClientId());
+            builder.claim("AuthKey", ((JwtUserDetails) userDetails).getClientId());
         }
     }
 }
