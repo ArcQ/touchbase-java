@@ -17,7 +17,8 @@ import java.util.UUID;
 public abstract class TouchBasePostgresDomain {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID uuid;
+    @Column(name="uuid")
+    private UUID id;
 
     @CreationTimestamp
     protected ZonedDateTime createdAt;

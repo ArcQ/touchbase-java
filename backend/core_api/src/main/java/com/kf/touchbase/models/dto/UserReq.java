@@ -20,7 +20,5 @@ public class UserReq {
     String lastName;
 
     String username;
-
-    String chatpiUserId;
 }
 

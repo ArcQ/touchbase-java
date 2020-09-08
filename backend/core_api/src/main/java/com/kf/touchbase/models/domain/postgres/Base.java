@@ -1,5 +1,6 @@
 package com.kf.touchbase.models.domain.postgres;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.kf.touchbase.models.domain.Role;
 import io.micronaut.data.annotation.Where;
@@ -30,6 +31,7 @@ public class Base extends TouchBasePostgresEntity {
     private String imageUrl;
 
     @Builder.Default()
+    @JsonIgnore
     private boolean isActive = true;
 
     @ToString.Exclude
@@ -54,6 +56,6 @@ public class Base extends TouchBasePostgresEntity {
     }
 
     public void removeMember(UUID userUuid) {
-        this.members.removeIf((baseMember) -> baseMember.getUser().getUuid().equals(userUuid));
+        this.members.removeIf((baseMember) -> baseMember.getUser().getId().equals(userUuid));
     }
 }

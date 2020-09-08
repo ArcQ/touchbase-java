@@ -36,7 +36,7 @@ public class BaseMember {
     private Role role;
 
     public BaseMember(Base base, User user, Role role) {
-        this.id = new BaseMemberId(base.getUuid(), user.getUuid());
+        this.id = new BaseMemberId(base.getId(), user.getId());
         this.base = base;
         this.user = user;
         this.role = role;
