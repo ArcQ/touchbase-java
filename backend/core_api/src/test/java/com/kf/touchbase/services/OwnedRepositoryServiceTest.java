@@ -92,7 +92,7 @@ class OwnedRepositoryServiceTest {
     @Test
     void testFindIfAdmin() {
         // Setup
-        Mockito.when(repository.findById(base.getUuid())).thenReturn(Optional.of(base));
+        Mockito.when(repository.findById(base.getId())).thenReturn(Optional.of(base));
 
         // Run the test
         Base result =
@@ -106,12 +106,12 @@ class OwnedRepositoryServiceTest {
     @Test
     void testFindIfAdminId() {
         // Setup
-        Mockito.when(repository.findById(base.getUuid())).thenReturn(Optional.of(base));
+        Mockito.when(repository.findById(base.getId())).thenReturn(Optional.of(base));
 
         // Run the test
         Base result =
                 ownedRepositoryServiceUnderTest.findIfAdminId(base.getAdmins().iterator().next().getAuthKey(),
-                base.getUuid(), Base.class);
+                base.getId(), Base.class);
 
         // Verify the results
         assertThat(result).isEqualTo(base);
@@ -119,7 +119,7 @@ class OwnedRepositoryServiceTest {
 
     @Test
     void testFindIfAdmin_noUserThrowsIllegalArgumentException() {
-        Mockito.when(repository.findById(base.getUuid())).thenReturn(Optional.empty());
+        Mockito.when(repository.findById(base.getId())).thenReturn(Optional.empty());
         assertThrows(IllegalArgumentException.class, () -> {
             ownedRepositoryServiceUnderTest.findIfAdmin("incorrectId", base);
         });
@@ -127,7 +127,7 @@ class OwnedRepositoryServiceTest {
 
     @Test
     void testFindIfAdmin_ThrowsSecurityException() {
-        Mockito.when(repository.findById(base.getUuid())).thenReturn(Optional.ofNullable(base));
+        Mockito.when(repository.findById(base.getId())).thenReturn(Optional.ofNullable(base));
         assertThrows(SecurityException.class, () -> {
             ownedRepositoryServiceUnderTest.findIfAdmin("user2", base);
         });
