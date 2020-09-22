@@ -12,6 +12,8 @@ import com.kf.touchbase.services.postgres.BaseService;
 import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
+import io.micronaut.scheduling.TaskExecutors;
+import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
@@ -30,12 +32,14 @@ public class BaseController {
     private final BaseMapper baseMapper;
 
     @Get("/")
+    @ExecuteOn(TaskExecutors.IO)
     @Produces(MediaType.APPLICATION_JSON)
     public ListRes<Base> getOwnBases(Authentication authentication) {
         return new ListRes<>(baseService.getOwnBases(AuthUtils.getAuthKeyFromAuth(authentication)));
     }
 
     @Post("/")
+    @ExecuteOn(TaskExecutors.IO)
     @Produces(MediaType.APPLICATION_JSON)
     public Base postBase(Authentication authentication, @Body BaseReq baseReq) {
         var base = baseMapper.baseReqToBase(baseReq);
@@ -44,12 +48,14 @@ public class BaseController {
 
     @Get("/{baseId}")
     @Produces(MediaType.APPLICATION_JSON)
+    @ExecuteOn(TaskExecutors.IO)
     public Base getBaseIfOwn(Authentication authentication, UUID baseId) {
         return baseService.getBase(AuthUtils.getAuthKeyFromAuth(authentication), baseId);
     }
 
     @Patch("/{baseId}")
     @Produces(MediaType.APPLICATION_JSON)
+    @ExecuteOn(TaskExecutors.IO)
     public Base patchBase(Authentication authentication, UUID baseId, @Body BaseReq baseReq) {
         var base = baseMapper.baseReqToBase(baseReq);
         return baseService.patchBase(AuthUtils.getAuthKeyFromAuth(authentication), baseId, base);
@@ -59,6 +65,7 @@ public class BaseController {
     @Produces(MediaType.APPLICATION_JSON)
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
+    @ExecuteOn(TaskExecutors.IO)
     public Base removeMembers(Authentication authentication, UUID baseId, @Body ListReq<MemberReq> memberReqs) {
         var memberRefs = baseMapper.memberReqsToMemberRefs(memberReqs.getList());
         return baseService.removeMembers(AuthUtils.getAuthKeyFromAuth(authentication), memberRefs, baseId);
@@ -68,6 +75,7 @@ public class BaseController {
     @Produces(MediaType.APPLICATION_JSON)
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
+    @ExecuteOn(TaskExecutors.IO)
     public Success makeBaseInactive(Authentication authentication, UUID baseId) {
         return baseService.makeBaseInactive(AuthUtils.getAuthKeyFromAuth(authentication), baseId);
     }
