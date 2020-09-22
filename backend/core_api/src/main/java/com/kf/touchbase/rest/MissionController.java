@@ -10,6 +10,8 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
+import io.micronaut.scheduling.TaskExecutors;
+import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
@@ -27,6 +29,7 @@ public class MissionController {
     @Produces(MediaType.APPLICATION_JSON)
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
+    @ExecuteOn(TaskExecutors.IO)
     public Iterable<Mission> getOwnMissions(Authentication authentication) {
         return missionService.findOwnMissions(AuthUtils.getAuthKeyFromAuth(authentication));
     }
@@ -35,6 +38,7 @@ public class MissionController {
     @Produces(MediaType.APPLICATION_JSON)
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
+    @ExecuteOn(TaskExecutors.IO)
     public Mission progressMission(ProgressReq progressReq) {
         return null;
     }
