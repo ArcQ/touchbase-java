@@ -1,11 +1,11 @@
 package com.kf.touchbase.services;
 
 import com.kf.touchbase.models.domain.postgres.TouchBasePostgresEntity;
-import io.micronaut.data.repository.CrudRepository;
+import io.micronaut.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface OwnedRepositoryService<T extends TouchBasePostgresEntity> extends CrudRepository<T, UUID> {
+public interface OwnedRepositoryService<T extends TouchBasePostgresEntity> extends JpaRepository<T, UUID> {
 
     default T findIfAdmin(String adminAuthKey, TouchBasePostgresEntity entity) throws SecurityException {
         return findIfAdminId(adminAuthKey, entity.getId(), entity.getClass());

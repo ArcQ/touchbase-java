@@ -23,7 +23,7 @@ class BaseMapperImplTest {
         final Base expectedResult = Base.builder().isActive(true).name("name").score(0.0).imageUrl("imageUrl").build();
 
         // Run the test
-        final Base result = baseMapperImplUnderTest.baseReqToBase(base);
+        final Base result = baseMapperImplUnderTest.toEntity(base);
 
         // Verify the results
         assertThat(result).isEqualToComparingFieldByField(expectedResult);

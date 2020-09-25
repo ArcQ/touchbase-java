@@ -12,4 +12,4 @@ out/
 .project
 .settings
 .classpath
-/src/main/resources/application-migratedevdb.yml
+/src/main/resources/application-remote-dev.yml

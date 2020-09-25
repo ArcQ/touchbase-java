@@ -2,15 +2,19 @@ package com.kf.touchbase.services;
 
 import com.kf.touchbase.models.domain.postgres.Base;
 import com.kf.touchbase.testUtils.TestObjectFactory;
+import edu.umd.cs.findbugs.annotations.NonNull;
+import io.micronaut.data.jpa.repository.JpaRepository;
+import io.micronaut.data.model.Page;
+import io.micronaut.data.model.Pageable;
+import io.micronaut.data.model.Sort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import io.micronaut.data.repository.CrudRepository;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,15 +29,43 @@ class OwnedRepositoryServiceTest {
     private final Base base = TestObjectFactory.Domain.createBase();
 
     @Mock
-    CrudRepository<Base,UUID> repository;
+    JpaRepository<Base,UUID> repository;
 
     @BeforeEach
     void setUp() {
         initMocks(this);
         ownedRepositoryServiceUnderTest = new OwnedRepositoryService<>() {
+            @NonNull
             @Override
-            public Iterable<Base> findAll() {
+            public <S extends Base> List<S> saveAll(@NonNull @Valid @NotNull Iterable<S> entities) {
                 return null;
+            }
+
+            @Override
+            public List<Base> findAll() {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public List<Base> findAll(@NonNull Sort sort) {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public Page<Base> findAll(@NonNull Pageable pageable) {
+                return null;
+            }
+
+            @Override
+            public <S extends Base> S saveAndFlush(@NonNull @Valid @NotNull S entity) {
+                return null;
+            }
+
+            @Override
+            public void flush() {
+
             }
 
             @Override
@@ -43,11 +75,6 @@ class OwnedRepositoryServiceTest {
 
             @Override
             public <S extends Base> S update(@Valid @NotNull S entity) {
-                return null;
-            }
-
-            @Override
-            public <S extends Base> Iterable<S> saveAll(@Valid @NotNull Iterable<S> entities) {
                 return null;
             }
 
@@ -72,7 +99,7 @@ class OwnedRepositoryServiceTest {
             }
 
             @Override
-            public void deleteAll(@NotNull Iterable<? extends Base> entities) {
+            public void deleteAll(@NonNull @NotNull Iterable<? extends Base> entities) {
 
             }
 

@@ -2,17 +2,18 @@ package com.kf.touchbase.services.postgres.repository;
 
 import com.kf.touchbase.models.domain.postgres.User;
 import io.micronaut.data.annotation.Repository;
-import io.micronaut.data.repository.CrudRepository;
+import io.micronaut.data.jpa.repository.JpaRepository;
 
 import javax.inject.Singleton;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Singleton
 @Repository
-public interface UserRepository extends CrudRepository<User, UUID> {
+public interface UserRepository extends JpaRepository<User, UUID> {
 
-    Iterable<User> findByUsernameContainsOrFirstNameContainsOrLastNameContains(String queryUsername, String queryFirstName, String queryFullName);
+    List<User> findByUsernameContainsOrFirstNameContainsOrLastNameContains(String queryUsername, String queryFirstName, String queryFullName);
 
     Optional<User> findByUsername(String username);
 
@@ -20,5 +21,5 @@ public interface UserRepository extends CrudRepository<User, UUID> {
 
     Optional<User> findByAuthKey(String AuthKey);
 
-    Optional<User> findAllById(Iterable<UUID> uuids);
+    Optional<User> findAllById(List<UUID> uuids);
 }

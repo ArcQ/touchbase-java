@@ -19,11 +19,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Named;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller("/api/v1/baseJoin")
 @Secured(SecurityRule.IS_AUTHENTICATED)
-public class BaseJoinController {
+public class BaseJoinResource {
 
     @Named("BaseInviteService")
     private final BaseJoinService baseInviteService;
@@ -38,7 +39,7 @@ public class BaseJoinController {
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
     @ExecuteOn(TaskExecutors.IO)
-    public Iterable<BaseJoin> getBases(Authentication authentication) {
+    public List<BaseJoin> getBases(Authentication authentication) {
         return baseInviteService.findByAdmin(AuthUtils.getAuthKeyFromAuth(authentication));
     }
 
@@ -48,7 +49,7 @@ public class BaseJoinController {
     @Operation(description = "Not Implemented Yet")
     @ExecuteOn(TaskExecutors.IO)
     public BaseJoin createBaseJoin(Authentication authentication, @Body BaseJoinReq baseJoinReq) {
-        var baseJoin = baseJoinMapper.basejoinReqToRequest(baseJoinReq);
+        var baseJoin = baseJoinMapper.toEntity(baseJoinReq);
         if (baseJoin.getBaseJoinAction().equals(BaseJoinAction.Invite)) {
             return baseInviteService.createBaseJoin(AuthUtils.getAuthKeyFromAuth(authentication),
                     baseJoin);
@@ -63,7 +64,7 @@ public class BaseJoinController {
     @Operation(description = "Not Implemented Yet")
     @ExecuteOn(TaskExecutors.IO)
     public BaseJoin requestIntoBase(Authentication authentication, @Body BaseJoinReq baseJoinReq) {
-        var baseJoin = baseJoinMapper.basejoinReqToRequest(baseJoinReq);
+        var baseJoin = baseJoinMapper.toEntity(baseJoinReq);
         if (baseJoin.getBaseJoinAction().equals(BaseJoinAction.Invite)) {
             return baseInviteService.createBaseJoin(AuthUtils.getAuthKeyFromAuth(authentication),
                     baseJoin);

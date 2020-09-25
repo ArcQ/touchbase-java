@@ -38,26 +38,3 @@ micronaut:
       paths: src/main
       restart: true
 
-datasources:
-  default:
-    url: ${JDBC_URL:`jdbc:postgresql://localhost:5432`}/touchbase
-    username: ${DB_USER:postgres}
-    password: ${DB_PASS:pw123}
-    driverClassName: ${JDBC_DRIVER:org.postgresql.Driver}
-
-liquibase:
-  enabled: ${MIGRATIONS:true}
-  datasources:
-    default:
-      change-log: 'classpath:db/liquibase-changelog.yml'
-
-jpa:
-  default:
-    properties:
-      hibernate:
-        physical_naming_strategy: 'com.vladmihalcea.hibernate.type.util.CamelCaseToSnakeCaseNamingStrategy'
-        dialect: 'org.hibernate.dialect.PostgreSQLDialect'
-        hbm2ddl:
-          auto: validate
-    packages-to-scan:
-      - 'com.kf.touchbase.models.domain.postgres'

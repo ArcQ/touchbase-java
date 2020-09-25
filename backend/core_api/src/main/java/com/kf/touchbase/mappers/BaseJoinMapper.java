@@ -8,7 +8,5 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "jsr330", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BaseJoinMapper {
 
-    BaseJoin basejoinReqToInvite(BaseJoinReq baseJoinReq);
-
-    BaseJoin basejoinReqToRequest(BaseJoinReq baseJoinReq);
+    BaseJoin toEntity(BaseJoinReq baseJoinReq);
 }

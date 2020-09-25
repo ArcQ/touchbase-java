@@ -3,8 +3,6 @@ package com.kf.touchbase.rest;
 import com.kf.touchbase.annotation.NotYetImplemented;
 import com.kf.touchbase.models.domain.postgres.Mission;
 import com.kf.touchbase.models.dto.ProgressReq;
-import com.kf.touchbase.services.postgres.MissionService;
-import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -18,20 +16,20 @@ import io.micronaut.security.rules.SecurityRule;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Controller("/api/v1/mission")
 @Secured(SecurityRule.IS_AUTHENTICATED)
-public class MissionController {
-
-    private final MissionService missionService;
+public class MissionResource {
 
     @Get("/me")
     @Produces(MediaType.APPLICATION_JSON)
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
     @ExecuteOn(TaskExecutors.IO)
-    public Iterable<Mission> getOwnMissions(Authentication authentication) {
-        return missionService.findOwnMissions(AuthUtils.getAuthKeyFromAuth(authentication));
+    public List<Mission> getOwnMissions(Authentication authentication) {
+        return null;
     }
 
     @Post("/progress")

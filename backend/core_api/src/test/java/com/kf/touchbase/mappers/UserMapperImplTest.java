@@ -21,7 +21,7 @@ class UserMapperImplTest {
         // Setup
         final UserReq user = new UserReq("AuthKey", "email", 0.0, "first_name", "last_name", "username");
         final User expectedResult = User.builder()
-                .AuthKey("AuthKey")
+                .authKey("AuthKey")
                 .email("email")
                 .score(0.0)
                 .firstName("first_name")
