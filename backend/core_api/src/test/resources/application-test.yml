@@ -1,0 +1,22 @@
+---
+datasources:
+  default:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: 'sa'
+    dialect: H2
+
+liquibase:
+  enabled: ${MIGRATIONS:true}
+  datasources:
+    default:
+      change-log: 'classpath:db/liquibase-changelog.yml'
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        physical_naming_strategy: 'com.vladmihalcea.hibernate.type.util.CamelCaseToSnakeCaseNamingStrategy'
+    packages-to-scan:
+      - 'com.kf.touchbase.models.domain.postgres'

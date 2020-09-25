@@ -1,5 +1,6 @@
 package com.kf.touchbase.models.dto;
 
+import com.kf.touchbase.models.domain.Role;
 import lombok.*;
 
 import java.util.UUID;
@@ -10,6 +11,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberReq {
-    private UUID baseId;
     private UUID userId;
+    private Role role;
 }

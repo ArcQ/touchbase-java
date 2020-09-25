@@ -1,20 +1,19 @@
 package com.kf.touchbase.services.postgres;
 
-import com.kf.touchbase.models.domain.postgres.BaseJoin;
 import com.kf.touchbase.models.domain.Success;
+import com.kf.touchbase.models.domain.postgres.BaseJoin;
 
 import javax.inject.Singleton;
+import java.util.List;
 
 @Singleton
 public class BaseRequestServiceImpl implements BaseJoinService {
-    private UserService userService;
 
-    public BaseRequestServiceImpl(UserService userService) {
-        this.userService = userService;
+    public BaseRequestServiceImpl() {
     }
 
     @Override
-    public Iterable<BaseJoin> findByAdmin(String adminAuthKey) throws SecurityException {
+    public List<BaseJoin> findByAdmin(String adminAuthKey) throws SecurityException {
         return null;
     }
 
