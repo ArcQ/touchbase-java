@@ -1,5 +1,6 @@
 package com.kf.touchbase.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kf.touchbase.mappers.BaseMapper;
 import com.kf.touchbase.models.domain.postgres.Base;
 import com.kf.touchbase.models.dto.BaseReq;
@@ -87,9 +88,6 @@ public class BaseResourceIT {
         return new TestAuthUtils.StubAuthenticatedJwtTokenValidator();
     }
 
-    //    @Inject
-    //    JwtTokenValidator jwtTokenValidator;
-
     @Inject
     @Client("/")
     RxHttpClient client;
@@ -120,11 +118,11 @@ public class BaseResourceIT {
 
         assertThat(result.getList()).hasSize(databaseSizeBeforeCreate + 1);
 
-//        var expectedResult = TestObjectFactory.Domain.createBase();
-//        var resultBase = new ObjectMapper().convertValue(result.getList().get(0), Base.class);
-//        assertThat(resultBase).usingRecursiveComparison().ignoringFields("active", "createdAt",
-//                "updatedAt",
-//                "id").isEqualTo(expectedResult);
+        var expectedResult = TestObjectFactory.Domain.createBase();
+        var resultBase = new ObjectMapper().convertValue(result.getList().get(0), Base.class);
+        assertThat(resultBase).usingRecursiveComparison().ignoringFields("active", "createdAt",
+                "updatedAt",
+                "id").isEqualTo(expectedResult);
     }
 
     //    @Test
