@@ -20,5 +20,6 @@ public class UserReq {
     String lastName;
 
     String username;
+
 }
 

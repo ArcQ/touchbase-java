@@ -1,0 +1,25 @@
+---
+datasources:
+  default:
+    url: jdbc:postgresql://kfdb1.cihodsllm9ip.us-east-1.rds.amazonaws.com:5432/touchbase
+    username: postgres
+    password: xadgeV-wisvaz-caztu0
+    driverClassName: org.postgresql.Driver
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        physical_naming_strategy: 'com.vladmihalcea.hibernate.type.util.CamelCaseToSnakeCaseNamingStrategy'
+        dialect: 'org.hibernate.dialect.PostgreSQLDialect'
+        hbm2ddl:
+          auto: create
+        show_sql: true
+    packages-to-scan:
+      - 'com.kf.touchbase.models.domain.postgres'
+
+liquibase:
+  enabled: ${MIGRATIONS:false}
+  datasources:
+    default:
+      change-log: 'classpath:db/liquibase--prod-changelog.yml'

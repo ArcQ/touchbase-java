@@ -1,4 +1,4 @@
-package com.kf.touchbase.services.postgres.repository;
+package com.kf.touchbase.repository;
 
 import com.kf.touchbase.models.domain.postgres.User;
 import io.micronaut.data.annotation.Repository;

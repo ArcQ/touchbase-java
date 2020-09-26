@@ -13,12 +13,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EqualsAndHashCode
 public class Chat {
     @EmbeddedId
     private ChatId id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "base_uuid", insertable = false, updatable = false)
+    @EqualsAndHashCode.Exclude
     Base base;
 
     @Column(name="chat_id", insertable = false, updatable = false)

@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -20,9 +20,12 @@ public abstract class TouchBasePostgresDomain {
     @Column(name="uuid")
     private UUID id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User creator;
+
     @CreationTimestamp
-    protected ZonedDateTime createdAt;
+    protected LocalDateTime createdAt;
 
     @UpdateTimestamp
-    protected ZonedDateTime updatedAt;
+    protected LocalDateTime updatedAt;
 }
