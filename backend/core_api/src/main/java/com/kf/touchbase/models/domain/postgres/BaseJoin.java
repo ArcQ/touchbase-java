@@ -12,7 +12,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class BaseJoin extends TouchBasePostgresEntity {
+public class BaseJoin extends TouchBasePostgresDomain {
     String baseId;
     BaseJoinAction baseJoinAction;
 }

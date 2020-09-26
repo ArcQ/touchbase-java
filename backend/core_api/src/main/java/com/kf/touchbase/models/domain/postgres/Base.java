@@ -7,9 +7,8 @@ import io.micronaut.data.annotation.Where;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -22,7 +21,7 @@ import java.util.UUID;
 @Entity
 @Where("isActive = true")
 @JsonIgnoreProperties(value = { "admins" })
-public class Base extends TouchBasePostgresEntity {
+public class Base extends TouchBasePostgresDomain {
 
     private String name;
 
@@ -34,17 +33,15 @@ public class Base extends TouchBasePostgresEntity {
     @JsonIgnore
     private boolean isActive = true;
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "base", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "base", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"id", "base", "createdAt"})
-    private Set<BaseMember> members;
+    @Builder.Default
+    private Set<BaseMember> members = new LinkedHashSet();
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "base", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "base", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"id", "base"})
-    private Set<Chat> chats;
+    @Builder.Default
+    private Set<Chat> chats = new LinkedHashSet();
 
     public void mergeInNotNull(Base base) {
         name = (base.name == null) ? name : base.name;

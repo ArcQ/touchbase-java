@@ -83,9 +83,10 @@ dependencies {
     implementation "javax.annotation:javax.annotation-api"
 
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
+    runtimeOnly("com.h2database:h2")
 
     testCompileOnly "org.projectlombok:lombok:$lombokVersion"
-    testImplementation 'org.assertj:assertj-core:3.9.1'
+    testImplementation 'org.assertj:assertj-core:3.17.1'
     testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
     testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
     testAnnotationProcessor "io.micronaut:micronaut-inject-java"

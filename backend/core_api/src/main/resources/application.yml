@@ -33,8 +33,3 @@ micronaut:
         httpMethod: GET
         access:
           - isAnonymous()
-  io:
-    watch:
-      paths: src/main
-      restart: true
-

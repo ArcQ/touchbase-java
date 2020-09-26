@@ -2,7 +2,7 @@ package com.kf.touchbase.services.postgres;
 
 import com.kf.touchbase.models.domain.Success;
 import com.kf.touchbase.models.domain.postgres.BaseJoin;
-import com.kf.touchbase.services.postgres.repository.BaseJoinRepository;
+import com.kf.touchbase.repository.BaseJoinRepository;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Singleton;

@@ -21,15 +21,15 @@ public class BaseMember {
 	private BaseMemberId id;
 
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "base_uuid", insertable = false, updatable = false)
+    @EqualsAndHashCode.Exclude
     private Base base;
 
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "member_uuid", insertable = false, updatable = false)
+    @EqualsAndHashCode.Exclude
     private User user;
 
     @Enumerated(EnumType.STRING)

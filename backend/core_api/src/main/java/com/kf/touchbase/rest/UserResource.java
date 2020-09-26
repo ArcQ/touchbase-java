@@ -4,7 +4,7 @@ import com.kf.touchbase.mappers.UserMapper;
 import com.kf.touchbase.models.domain.postgres.User;
 import com.kf.touchbase.models.dto.UserPublicRes;
 import com.kf.touchbase.models.dto.UserReq;
-import com.kf.touchbase.services.postgres.repository.UserRepository;
+import com.kf.touchbase.repository.UserRepository;
 import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
