@@ -25,7 +25,6 @@ import io.micronaut.security.rules.SecurityRule;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
-import javax.transaction.Transactional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -49,7 +48,7 @@ public class BaseResource {
     @Post("/")
     @ExecuteOn(TaskExecutors.IO)
     @Produces(MediaType.APPLICATION_JSON)
-    @Transactional
+//    @Transactional
     public HttpResponse<Base> postBase(Authentication authentication, @Body BaseReq baseReq) {
         var adminKey = AuthUtils.getAuthKeyFromAuth(authentication);
 //        var adminKey = SecurityUtils.getCurrentAuthKey();
@@ -57,8 +56,9 @@ public class BaseResource {
         var creator =
                 userRepository.findByAuthKey(adminKey).orElseThrow(AuthenticationException::new);
         base.setCreator(creator);
-        var savedBase = baseRepository.save(base);
-        savedBase.addMember(creator, Role.ADMIN);
+//        var savedBase = baseRepository.save(base);
+//        savedBase.addMember(creator, Role.ADMIN);
+        base.addMember(creator, Role.ADMIN);
         return HttpResponse.created(baseRepository.save(base));
     }
 

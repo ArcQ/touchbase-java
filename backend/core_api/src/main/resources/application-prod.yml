@@ -15,6 +15,7 @@ jpa:
         hbm2ddl:
           auto: create
         show_sql: true
+        format_sql: true
     packages-to-scan:
       - 'com.kf.touchbase.models.domain.postgres'
 

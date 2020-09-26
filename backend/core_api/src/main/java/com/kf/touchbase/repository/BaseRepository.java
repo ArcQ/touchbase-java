@@ -12,12 +12,12 @@ import java.util.UUID;
 @Repository
 public interface BaseRepository extends JpaRepository<Base, UUID> {
 
-    @Query(value = "SELECT b.* FROM base b, base_member m, tb_user u WHERE m.base_uuid=b.uuid AND m.member_uuid=u.uuid AND u.auth_key=:userAuthKey", nativeQuery = true)
+    @Query(value = "SELECT b.* FROM base b, base_member m, tb_user u WHERE m.base_id=b.id AND m.member_id=u.id AND u.auth_key=:userAuthKey", nativeQuery = true)
     List<Base> findAllByMembersUserAuthKey(String userAuthKey);
 
-    @Query(value = "SELECT b.* FROM base b, base_member m, user u WHERE b.uuid='?1' AND m.base_uuid=b.uuid AND m.member_uuid=u.uuid AND u.auth_key='?2'", nativeQuery = true)
+    @Query(value = "SELECT b.* FROM base b, base_member m, user u WHERE b.id='?1' AND m.base_id=b.id AND m.member_id=u.id AND u.auth_key='?2'", nativeQuery = true)
     Optional<Base> findIfMember(UUID baseId, String userAuthKey);
 
-    @Query(value = "SELECT b.* FROM base b, base_member m, user u WHERE b.uuid = ?1 AND m.base_uuid=b.uuid AND m.member_uuid=u.uuid AND u.auth_key='?2' AND m.role='ADMIN'", nativeQuery = true)
+    @Query(value = "SELECT b.* FROM base b, base_member m, user u WHERE b.id = ?1 AND m.base_id=b.id AND m.member_id=u.id AND u.auth_key='?2' AND m.role='ADMIN'", nativeQuery = true)
     Optional<Base> findIfMemberAdmin(UUID baseId, String userAuthKey);
 }

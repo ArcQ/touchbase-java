@@ -1,6 +1,6 @@
 create table mission
 (
-    uuid uuid not null
+    id uuid not null
         constraint mission_pkey
             primary key,
     created_at timestamp,
@@ -13,7 +13,7 @@ create table mission
 
 create table tb_user
 (
-    uuid uuid not null
+    id uuid not null
         constraint tb_user_pkey
             primary key,
     created_at timestamp,
@@ -29,7 +29,7 @@ create table tb_user
 
 create table base
 (
-    uuid uuid not null
+    id uuid not null
         constraint base_pkey
             primary key,
     created_at timestamp,
@@ -38,52 +38,38 @@ create table base
     is_active boolean not null,
     name varchar(255),
     score double precision,
-    creator_uuid uuid
-        constraint fk_base_user_creator_uuid
+    creator_id uuid
+        constraint fk_base_user_creator_id
             references tb_user
 );
 
 create table base_member
 (
+    id uuid not null
+        constraint base_member_pkey
+            primary key,
     created_at timestamp,
     updated_at timestamp,
     role varchar(255) not null,
-    base_uuid uuid not null
-        constraint fk_base_member_base_base_uuid
+    base_id uuid not null
+        constraint fk_base_member_base_base_id
             references base,
-    member_uuid uuid not null
-        constraint fk_base_member_tb_user_member_uuid
-            references tb_user,
-    constraint base_member_pkey
-        primary key (base_uuid, member_uuid)
+    member_id uuid not null
+        constraint fk_base_member_tb_user_member_id
+            references tb_user
 );
 
 create table base_join
 (
-    uuid uuid not null
+    id uuid not null
         constraint base_join_pkey
             primary key,
     created_at timestamp,
     updated_at timestamp,
     base_id varchar(255),
     base_join_action integer,
-    creator_uuid uuid
-        constraint fk_base_join_tb_user_creator_uuid
+    creator_id uuid
+        constraint fk_base_join_tb_user_creator_id
             references tb_user
-);
-
-create table entity_admin
-(
-    base_join_uuid uuid not null
-        constraint fk_entity_admin_base_join_base_join_uuid
-            references base_join,
-    admins_uuid uuid not null
-        constraint fk_entity_admin_tb_user_admins_uuid
-            references tb_user,
-    base_uuid uuid not null
-        constraint fk_entity_admin_base_base_uuid
-            references base,
-    constraint entity_admin_pkey
-        primary key (base_uuid, admins_uuid)
 );
 

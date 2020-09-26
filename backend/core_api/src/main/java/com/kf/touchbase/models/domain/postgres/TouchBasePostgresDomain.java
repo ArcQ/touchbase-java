@@ -17,7 +17,7 @@ import java.util.UUID;
 public abstract class TouchBasePostgresDomain {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="uuid")
+    @Column(name="id")
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
