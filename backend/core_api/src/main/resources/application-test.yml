@@ -5,8 +5,6 @@ micronaut:
       file: openapi-dev.properties
   security:
     enabled: true
-    ip-patterns:
-      - 0.0.0.0
 datasources:
   default:
     url: jdbc:h2:mem:touchbase;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
@@ -15,6 +13,9 @@ datasources:
     poolName: Hikari
     autoCommit: false
     driverClassName: org.h2.Driver
+
+redoc.enabled: false
+swagger-ui.enabled: false
 
 
 #liquibase:
