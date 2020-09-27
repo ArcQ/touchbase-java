@@ -1,7 +1,7 @@
 package com.kf.touchbase.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kf.touchbase.mappers.BaseMapper;
+import com.kf.touchbase.models.domain.Role;
 import com.kf.touchbase.models.domain.postgres.Base;
 import com.kf.touchbase.models.dto.BaseReq;
 import com.kf.touchbase.models.dto.ListReq;
@@ -32,6 +32,8 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.UUID;
 
 import static com.kf.touchbase.testUtils.TestAuthUtils.AUTHED_USER;
@@ -107,22 +109,27 @@ public class BaseResourceIT {
 
         var baseReq = TestObjectFactory.Dto.createBaseReq();
 
-        var response = client.exchange(HttpRequest.POST("/api/v1/bases",
+        var response = client.exchange(HttpRequest.POST("/api/v1/base",
                 baseReq).bearerAuth(AUTHED_USER), BaseReq.class).blockingFirst();
 
         assertThat(response.status().getCode()).isEqualTo(HttpStatus.CREATED.getCode());
 
         var result =
-                client.retrieve(HttpRequest.GET("/api/v1/bases").bearerAuth(AUTHED_USER),
+                client.retrieve(HttpRequest.GET("/api/v1/base").bearerAuth(AUTHED_USER),
                         Argument.of(ListReq.class)).blockingFirst();
 
         assertThat(result.getList()).hasSize(databaseSizeBeforeCreate + 1);
+        LinkedHashMap resultBase = (LinkedHashMap) result.getList().get(0);
+        assertThat(resultBase.get("name")).isEqualTo(TestObjectFactory.BASE_NAME);
+        assertThat(resultBase.get("score")).isEqualTo(0.0);
+        assertThat(resultBase.get("imageUrl")).isEqualTo(TestObjectFactory.IMAGE_URL);
+        assertThat(resultBase.get("active")).isEqualTo(true);
+        assertThat((LinkedHashMap) resultBase.get("creator")).has(TestObjectFactory.testObjectUser);
 
-        var expectedResult = TestObjectFactory.Domain.createBase();
-        var resultBase = new ObjectMapper().convertValue(result.getList().get(0), Base.class);
-        assertThat(resultBase).usingRecursiveComparison().ignoringFields("active", "createdAt",
-                "updatedAt",
-                "id").isEqualTo(expectedResult);
+        var members = (ArrayList) resultBase.get("members");
+        var member = (LinkedHashMap) members.get(0);
+        assertThat((LinkedHashMap) member.get("user")).has(TestObjectFactory.testObjectUser);
+        assertThat(member.get("role")).isEqualTo(Role.ADMIN.getName());
     }
 
     //    @Test

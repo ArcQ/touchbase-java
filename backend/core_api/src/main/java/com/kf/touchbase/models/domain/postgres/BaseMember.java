@@ -17,13 +17,13 @@ public class BaseMember extends TouchBasePostgresDomain {
 
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name = "base_id", insertable = false, updatable = false)
+    @JoinColumn(name = "base_id", updatable = false)
     @EqualsAndHashCode.Exclude
     private Base base;
 
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name = "member_id", insertable = false, updatable = false)
+    @JoinColumn(name = "member_id", updatable = false)
     @EqualsAndHashCode.Exclude
     private User user;
 

@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-@Controller("/api/v1/bases")
+@Controller("/api/v1/base")
 @Secured(SecurityRule.IS_AUTHENTICATED)
 public class BaseResource {
 
@@ -51,7 +51,6 @@ public class BaseResource {
 //    @Transactional
     public HttpResponse<Base> postBase(Authentication authentication, @Body BaseReq baseReq) {
         var adminKey = AuthUtils.getAuthKeyFromAuth(authentication);
-//        var adminKey = SecurityUtils.getCurrentAuthKey();
         var base = baseMapper.toEntity(baseReq);
         var creator =
                 userRepository.findByAuthKey(adminKey).orElseThrow(AuthenticationException::new);
