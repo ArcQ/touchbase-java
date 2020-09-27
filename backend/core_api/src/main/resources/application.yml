@@ -33,3 +33,7 @@ micronaut:
         httpMethod: GET
         access:
           - isAnonymous()
+
+jackson:
+  serialization:
+    write-dates-as-timestamps: false
