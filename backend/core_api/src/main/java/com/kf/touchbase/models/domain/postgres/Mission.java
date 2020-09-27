@@ -5,26 +5,33 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import java.time.ZonedDateTime;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @SuperBuilder(toBuilder = true)
 @ToString
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-public class Mission extends TouchBasePostgresDomain {
-    private ZonedDateTime startedAt;
+public class Mission {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id")
+    private UUID id;
+//    private ZonedDateTime startedAt;
 
-    @ManyToOne
-    @JoinTable(name = "mission_assigned_user")
-    private User assignedUser;
+    @CreationTimestamp
+    protected LocalDateTime createdAt;
 
-    @ManyToOne
-    @JoinTable(name = "mission_base_base")
-    private Base assignedBase;
+//    @ManyToOne
+//    @JoinTable(name = "mission_assigned_user")
+//    private User assignedUser;
+//
+//    @ManyToOne
+//    @JoinTable(name = "mission_base_base")
+//    private Base assignedBase;
 }

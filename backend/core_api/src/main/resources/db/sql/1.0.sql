@@ -4,7 +4,6 @@ create table mission
         constraint mission_pkey
             primary key,
     created_at timestamp,
-    updated_at timestamp,
     description varchar(255),
     mission_type integer,
     name varchar(255),
@@ -24,7 +23,10 @@ create table tb_user
     image_url varchar(255),
     last_name varchar(255),
     score double precision,
-    username varchar(255)
+    username varchar(255),
+    creator_id uuid
+        constraint fk_base_user_creator_id
+            references tb_user
 );
 
 create table base
@@ -51,6 +53,9 @@ create table base_member
     created_at timestamp,
     updated_at timestamp,
     role varchar(255) not null,
+    creator_id uuid
+        constraint fk_base_member_tb_user_creator_id
+            references tb_user,
     base_id uuid not null
         constraint fk_base_member_base_base_id
             references base,

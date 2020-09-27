@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity(name="base_member")
 @EqualsAndHashCode(callSuper = true)
-public class BaseMember extends TouchBasePostgresDomain{
+public class BaseMember extends TouchBasePostgresDomain {
 
     @ToString.Exclude
     @ManyToOne

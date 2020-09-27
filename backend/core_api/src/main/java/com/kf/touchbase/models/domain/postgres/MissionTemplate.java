@@ -7,14 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Entity;
-
 @Data
 @SuperBuilder(toBuilder = true)
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@Entity
+//@Entity
 public class MissionTemplate extends TouchBasePostgresDomain {
     private String name;
     private String description;
