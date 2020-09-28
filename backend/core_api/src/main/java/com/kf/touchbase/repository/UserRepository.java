@@ -3,6 +3,7 @@ package com.kf.touchbase.repository;
 import com.kf.touchbase.models.domain.postgres.User;
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.jpa.repository.JpaRepository;
+import io.reactivex.Maybe;
 
 import javax.inject.Singleton;
 import java.util.List;
@@ -19,7 +20,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByEmail(String email);
 
-    Optional<User> findByAuthKey(String authKey);
+    Maybe<User> findByAuthKey(String authKey);
 
     Optional<User> findAllById(List<UUID> uuids);
 }

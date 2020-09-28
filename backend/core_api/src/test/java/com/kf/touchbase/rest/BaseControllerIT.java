@@ -73,7 +73,7 @@ public class BaseControllerIT {
 
     @Test
     public void createBaseAndThenGet() {
-        int databaseSizeBeforeCreate = baseRepository.findAll().size();
+        int databaseSizeBeforeCreate = baseRepository.findAll().count().blockingGet().intValue();
         var user = TestObjectFactory.Domain.createUser();
         user.setId(null);
         userRepository.save(user);
