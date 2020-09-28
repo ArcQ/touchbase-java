@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Controller("/api/v1/mission")
 @Secured(SecurityRule.IS_AUTHENTICATED)
-public class MissionResource {
+public class MissionController {
 
     @Get("/me")
     @Produces(MediaType.APPLICATION_JSON)

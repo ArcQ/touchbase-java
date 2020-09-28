@@ -24,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Controller("/api/v1/baseJoin")
 @Secured(SecurityRule.IS_AUTHENTICATED)
-public class BaseJoinResource {
+public class BaseJoinController {
 
     @Named("BaseInviteService")
     private final BaseJoinService baseInviteService;

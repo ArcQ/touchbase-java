@@ -30,7 +30,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Controller("/api/v1/base")
 @Secured(SecurityRule.IS_AUTHENTICATED)
-public class BaseResource {
+public class BaseController {
 
     private final BaseRepository baseRepository;
     private final UserRepository userRepository;
@@ -55,8 +55,6 @@ public class BaseResource {
         var creator =
                 userRepository.findByAuthKey(adminKey).orElseThrow(AuthenticationException::new);
         base.setCreator(creator);
-//        var savedBase = baseRepository.save(base);
-//        savedBase.addMember(creator, Role.ADMIN);
         base.addMember(creator, Role.ADMIN);
         return HttpResponse.created(baseRepository.save(base));
     }

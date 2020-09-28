@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @MicronautTest(transactional = false)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Requires(env = "test")
-public class UserResourceIT {
+public class UserControllerIT {
 
     @Inject
     private UserMapper userMapper;
@@ -63,7 +63,6 @@ public class UserResourceIT {
 
     @Test
     public void getMe() {
-        int databaseSizeBeforeCreate = userRepository.findAll().size();
         var user = TestObjectFactory.Domain.createUser();
         user.setId(null);
         userRepository.save(user);

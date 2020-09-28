@@ -49,148 +49,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-  /api/v1/user/{username}:
-    get:
-      operationId: getUser
-      parameters:
-      - name: username
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        default:
-          description: getUser default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-  /api/v1/base:
-    post:
-      operationId: postBase
-      parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BaseReq'
-        required: true
-      responses:
-        default:
-          description: postBase default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Base'
-  /api/v1/base/{baseId}:
-    delete:
-      description: Not Implemented Yet
-      operationId: makeBaseInactive
-      parameters:
-      - name: baseId
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        default:
-          description: makeBaseInactive default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Success'
-    patch:
-      operationId: patchBase
-      parameters:
-      - name: baseId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BaseReq'
-        required: true
-      responses:
-        default:
-          description: patchBase default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Base'
-  /api/v1/base/{baseId}/admin/{authId}:
-    post:
-      description: Not Implemented Yet
-      operationId: addUserToBaseAsAdmin
-      parameters:
-      - name: baseId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: authId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        default:
-          description: addUserToBaseAsAdmin default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Base'
-    delete:
-      description: Not Implemented Yet
-      operationId: removeUserFromBaseAsAdmin
-      parameters:
-      - name: baseId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: authId
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        default:
-          description: removeUserFromBaseAsAdmin default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Base'
-    patch:
-      description: Not Implemented Yet
-      operationId: patchUserToBaseAsAdmin
-      parameters:
-      - name: baseId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: authId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BaseReq'
-        required: true
-      responses:
-        default:
-          description: patchUserToBaseAsAdmin default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Base'
   /api/v1/baseJoin/me:
     get:
       description: Not Implemented Yet
@@ -240,6 +98,113 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Success'
+  /api/v1/base:
+    get:
+      operationId: getOwnBases
+      parameters: []
+      responses:
+        default:
+          description: getOwnBases default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRes_Base_'
+    post:
+      operationId: postBase
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaseReq'
+        required: true
+      responses:
+        default:
+          description: postBase default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Base'
+  /api/v1/base/{baseId}:
+    get:
+      operationId: getBaseIfOwn
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        default:
+          description: getBaseIfOwn default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Base'
+    delete:
+      description: Not Implemented Yet
+      operationId: makeBaseInactive
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        default:
+          description: makeBaseInactive default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Success'
+    patch:
+      operationId: patchBase
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BaseReq'
+        required: true
+      responses:
+        default:
+          description: patchBase default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Base'
+  /api/v1/base/{baseId}/members:
+    delete:
+      description: Not Implemented Yet
+      operationId: removeMembers
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListReq_UUID_'
+        required: true
+      responses:
+        default:
+          description: removeMembers default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Base'
   /api/v1/mission/me:
     get:
       description: Not Implemented Yet
@@ -292,10 +257,12 @@ components:
     TouchBasePostgresDomain:
       type: object
       properties:
-        uuid:
+        id:
           type: string
           format: uuid
           nullable: true
+        creator:
+          $ref: '#/components/schemas/User'
         createdAt:
           type: string
           format: date-time
@@ -307,7 +274,7 @@ components:
       - $ref: '#/components/schemas/TouchBasePostgresDomain'
       - type: object
         properties:
-          authId:
+          authKey:
             type: string
           username:
             type: string
@@ -325,7 +292,7 @@ components:
     UserReq:
       type: object
       properties:
-        authId:
+        authKey:
           type: string
         email:
           type: string
@@ -338,53 +305,8 @@ components:
           type: string
         username:
           type: string
-    TouchBasePostgresEntity:
-      allOf:
-      - $ref: '#/components/schemas/TouchBasePostgresDomain'
-      - type: object
-        properties:
-          creator:
-            $ref: '#/components/schemas/User'
-          admins:
-            type: array
-            items:
-              $ref: '#/components/schemas/User'
-    Base:
-      allOf:
-      - $ref: '#/components/schemas/TouchBasePostgresEntity'
-      - $ref: '#/components/schemas/TouchBasePostgresDomain'
-      - type: object
-        properties:
-          name:
-            type: string
-          score:
-            type: number
-            format: double
-          imageUrl:
-            type: string
-          active:
-            type: boolean
-          members:
-            type: array
-            items:
-              $ref: '#/components/schemas/User'
-          isActive:
-            type: boolean
-    BaseReq:
-      type: object
-      properties:
-        name:
-          type: string
-        imageUrl:
-          type: string
-    Success:
-      type: object
-      properties:
-        status:
-          type: string
     BaseJoin:
       allOf:
-      - $ref: '#/components/schemas/TouchBasePostgresEntity'
       - $ref: '#/components/schemas/TouchBasePostgresDomain'
       - type: object
         properties:
@@ -406,26 +328,105 @@ components:
           type: string
         baseJoinAction:
           $ref: '#/components/schemas/BaseJoinAction'
-    Mission:
+    Success:
+      type: object
+      properties:
+        status:
+          type: string
+    ListRes_Base_:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Base'
+    Base:
       allOf:
       - $ref: '#/components/schemas/TouchBasePostgresDomain'
       - type: object
         properties:
           name:
             type: string
-          description:
-            type: string
-          scoreReward:
+          score:
             type: number
             format: double
-          missonType:
-            $ref: '#/components/schemas/MissonType'
-    MissonType:
+          imageUrl:
+            type: string
+          active:
+            type: boolean
+          members:
+            type: array
+            items:
+              $ref: '#/components/schemas/BaseMember'
+          chats:
+            type: array
+            items:
+              $ref: '#/components/schemas/Chat'
+    BaseMember:
+      allOf:
+      - $ref: '#/components/schemas/TouchBasePostgresDomain'
+      - type: object
+        properties:
+          base:
+            $ref: '#/components/schemas/Base'
+          user:
+            $ref: '#/components/schemas/User'
+          role:
+            $ref: '#/components/schemas/Role'
+    Role:
       type: string
       enum:
-      - PERIODIC
-      - WEEKLY
-      - ONE_TIME
+      - MEMBER
+      - ADMIN
+    Chat:
+      allOf:
+      - $ref: '#/components/schemas/TouchBasePostgresDomain'
+      - type: object
+        properties:
+          base:
+            $ref: '#/components/schemas/Base'
+          chatpiChatId:
+            type: string
+    BaseReq:
+      type: object
+      properties:
+        name:
+          type: string
+        imageUrl:
+          type: string
+    ListReq_MemberReq_:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberReq'
+    MemberReq:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        role:
+          $ref: '#/components/schemas/Role'
+    ListReq_UUID_:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            type: string
+            format: uuid
+    Mission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
     ProgressReq:
       type: object
       properties:

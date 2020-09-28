@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 //@Property(name = "micronaut.security.enabled", value = "false")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Requires(env = "test")
-public class BaseResourceIT {
+public class BaseControllerIT {
 
     @Inject
     private BaseRepository baseRepository;

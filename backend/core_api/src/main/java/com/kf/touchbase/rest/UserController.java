@@ -23,7 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Controller("/api/v1/user")
 @Secured(SecurityRule.IS_AUTHENTICATED)
-public class UserResource {
+public class UserController {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
