@@ -4,6 +4,7 @@ import com.kf.touchbase.models.domain.Role;
 import com.kf.touchbase.models.domain.postgres.Base;
 import com.kf.touchbase.models.domain.postgres.User;
 import com.kf.touchbase.models.dto.BaseReq;
+import com.kf.touchbase.models.dto.UserReq;
 import com.nimbusds.jwt.JWTClaimsSet;
 import org.assertj.core.api.Condition;
 
@@ -74,6 +75,16 @@ public class TestObjectFactory {
     public static class Dto {
         public static BaseReq createBaseReq() {
             return new BaseReq("Tony's Base 1", "imageUrl");
+        }
+
+        public static UserReq createUserReq() {
+            var userReq = new UserReq();
+            userReq.setAuthKey(AUTH_KEY);
+            userReq.setEmail(EMAIL);
+            userReq.setFirstName(FIRST_NAME);
+            userReq.setLastName(LAST_NAME);
+            userReq.setUsername(USERNAME);
+            return userReq;
         }
     }
 }

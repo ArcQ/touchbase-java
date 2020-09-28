@@ -1,8 +1,7 @@
 package com.kf.touchbase.rest;
 
-import com.kf.touchbase.mappers.BaseMapper;
-import com.kf.touchbase.models.domain.Role;
 import com.kf.touchbase.models.domain.postgres.Base;
+import com.kf.touchbase.models.domain.postgres.BaseMember;
 import com.kf.touchbase.models.dto.BaseReq;
 import com.kf.touchbase.models.dto.ListReq;
 import com.kf.touchbase.repository.BaseMemberRepository;
@@ -28,12 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import javax.inject.Inject;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashSet;
 import java.util.UUID;
 
 import static com.kf.touchbase.testUtils.TestAuthUtils.AUTHED_USER;
@@ -49,29 +43,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Requires(env = "test")
 public class BaseResourceIT {
 
-    private static final ZonedDateTime DEFAULT_CREATED_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_CREATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_CREATED_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
-
-    private static final ZonedDateTime DEFAULT_LAST_MODIFIED_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_LAST_MODIFIED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_LAST_MODIFIED_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
-
-    private static final String DEFAULT_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_NAME = "BBBBBBBBBB";
-
-    private static final Double DEFAULT_SCORE = 1D;
-    private static final Double UPDATED_SCORE = 2D;
-    private static final Double SMALLER_SCORE = 1D - 1D;
-
-    private static final String DEFAULT_IMAGE_URL = "AAAAAAAAAA";
-    private static final String UPDATED_IMAGE_URL = "BBBBBBBBBB";
-
-    private static final Boolean DEFAULT_IS_ACTIVE = false;
-    private static final Boolean UPDATED_IS_ACTIVE = true;
-
-    @Inject
-    private BaseMapper baseMapper;
     @Inject
     private BaseRepository baseRepository;
     @Inject
@@ -116,20 +87,20 @@ public class BaseResourceIT {
 
         var result =
                 client.retrieve(HttpRequest.GET("/api/v1/base").bearerAuth(AUTHED_USER),
-                        Argument.of(ListReq.class)).blockingFirst();
+                        Argument.of(ListReq.class, Base.class)).blockingFirst();
+
+        var expectedResult = TestObjectFactory.Domain.createBase();
 
         assertThat(result.getList()).hasSize(databaseSizeBeforeCreate + 1);
-        LinkedHashMap resultBase = (LinkedHashMap) result.getList().get(0);
-        assertThat(resultBase.get("name")).isEqualTo(TestObjectFactory.BASE_NAME);
-        assertThat(resultBase.get("score")).isEqualTo(0.0);
-        assertThat(resultBase.get("imageUrl")).isEqualTo(TestObjectFactory.IMAGE_URL);
-        assertThat(resultBase.get("active")).isEqualTo(true);
-        assertThat((LinkedHashMap) resultBase.get("creator")).has(TestObjectFactory.testObjectUser);
 
-        var members = (ArrayList) resultBase.get("members");
-        var member = (LinkedHashMap) members.get(0);
-        assertThat((LinkedHashMap) member.get("user")).has(TestObjectFactory.testObjectUser);
-        assertThat(member.get("role")).isEqualTo(Role.ADMIN.getName());
+        Base resultBase = (Base) result.getList().get(0);
+
+        assertThat(resultBase).usingRecursiveComparison().ignoringFieldsMatchingRegexes(
+                "(.*?)createdAt", "(.*?)updatedAt", "(.*?)id", "members").isEqualTo(expectedResult);
+
+        var members = (HashSet) resultBase.getMembers();
+        var member = (BaseMember) members.iterator().next();
+        assertThat(member.getUser()).isEqualTo(user);
     }
 
     //    @Test
@@ -138,7 +109,8 @@ public class BaseResourceIT {
     //
     //        BaseReq baseReq = TestObjectFactory.Dto.createBaseReq();
     //
-    //        HttpResponse<BaseReq> response = client.exchange(HttpRequest.PATCH("/api/v1/bases", baseReq)
+    //        HttpResponse<BaseReq> response = client.exchange(HttpRequest.PATCH("/api/v1/bases",
+    //        baseReq)
     //                , BaseReq.class).blockingFirst();
     //
     //        assertThat(response.status().getCode()).isEqualTo(HttpStatus.ACCEPTED.getCode());
@@ -166,8 +138,10 @@ public class BaseResourceIT {
     //
     //        // If the entity doesn't have an ID, it will throw BadRequestAlertException
     //        @SuppressWarnings("unchecked")
-    //        HttpResponse<BaseReq> response = client.exchange(HttpRequest.PUT("/api/bases", baseReq), BaseReq.class)
-    //                .onErrorReturn(t -> (HttpResponse<BaseReq>) ((HttpClientResponseException) t).getResponse()).blockingFirst();
+    //        HttpResponse<BaseReq> response = client.exchange(HttpRequest.PUT("/api/bases",
+    //        baseReq), BaseReq.class)
+    //                .onErrorReturn(t -> (HttpResponse<BaseReq>) ((HttpClientResponseException)
+    //                t).getResponse()).blockingFirst();
     //
     //        assertThat(response.status().getCode()).isEqualTo(HttpStatus.BAD_REQUEST.getCode());
     //
@@ -185,8 +159,10 @@ public class BaseResourceIT {
     //
     //        // Delete the base
     //        @SuppressWarnings("unchecked")
-    //        HttpResponse<BaseReq> response = client.exchange(HttpRequest.DELETE("/api/bases/" + base.getId()), BaseReq.class)
-    //                .onErrorReturn(t -> (HttpResponse<BaseReq>) ((HttpClientResponseException) t).getResponse()).blockingFirst();
+    //        HttpResponse<BaseReq> response = client.exchange(HttpRequest.DELETE("/api/bases/" +
+    //        base.getId()), BaseReq.class)
+    //                .onErrorReturn(t -> (HttpResponse<BaseReq>) ((HttpClientResponseException)
+    //                t).getResponse()).blockingFirst();
     //
     //        assertThat(response.status().getCode()).isEqualTo(HttpStatus.NO_CONTENT.getCode());
     //
