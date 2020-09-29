@@ -246,7 +246,7 @@ definitions:
     properties:
       description:
         type: string
-      missonType:
+      missionType:
         $ref: '#/definitions/MissionType'
       name:
         type: string
@@ -297,10 +297,17 @@ definitions:
       - properties:
           authKey:
             type: string
+          createdAt:
+            format: date-time
+            type: string
           email:
             type: string
           firstName:
             type: string
+          id:
+            format: uuid
+            type: string
+            x-nullable: true
           imageUrl:
             type: string
           lastName:
@@ -308,6 +315,9 @@ definitions:
           score:
             format: double
             type: number
+          updatedAt:
+            format: date-time
+            type: string
           username:
             type: string
         type: object

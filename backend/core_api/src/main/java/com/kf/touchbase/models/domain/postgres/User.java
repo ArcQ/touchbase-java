@@ -2,9 +2,12 @@ package com.kf.touchbase.models.domain.postgres;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @SuperBuilder(toBuilder = true)
@@ -15,6 +18,16 @@ import javax.persistence.Table;
 @Entity
 @Table(name="tb_user")
 public class User extends TouchBasePostgresDomain {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id")
+    private UUID id;
+
+    @CreationTimestamp
+    protected LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    protected LocalDateTime updatedAt;
 
     private String authKey;
 

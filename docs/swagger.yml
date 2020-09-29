@@ -164,6 +164,16 @@ components:
       - $ref: '#/components/schemas/TouchBasePostgresDomain'
       - type: object
         properties:
+          id:
+            type: string
+            format: uuid
+            nullable: true
+          createdAt:
+            type: string
+            format: date-time
+          updatedAt:
+            type: string
+            format: date-time
           authKey:
             type: string
           username:
@@ -283,7 +293,7 @@ components:
         scoreReward:
           type: number
           format: double
-        missonType:
+        missionType:
           $ref: '#/components/schemas/MissionType'
     MissionType:
       type: string

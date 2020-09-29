@@ -1,7 +1,6 @@
 package com.kf.touchbase.testUtils;
 
 import com.kf.touchbase.models.domain.MissionTemplate;
-import com.kf.touchbase.models.domain.MissionType;
 import com.kf.touchbase.models.domain.Role;
 import com.kf.touchbase.models.domain.postgres.Base;
 import com.kf.touchbase.models.domain.postgres.Mission;
@@ -64,7 +63,7 @@ public class TestObjectFactory {
                             .builder()
                             .scoreReward(10.0)
                             .name("test mission one time")
-                            .missonType(MissionType.ONE_TIME)
+//                            .missonType(MissionType.ONE_TIME)
                             .description("test mission earn 10 points")
                             .build())
                     .build();
