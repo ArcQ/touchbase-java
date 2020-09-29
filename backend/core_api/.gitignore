@@ -13,3 +13,4 @@ out/
 .settings
 .classpath
 /src/main/resources/application-remote-dev.yml
+/src/main/resources/application-prod.yml
