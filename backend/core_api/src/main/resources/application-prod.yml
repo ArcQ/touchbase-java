@@ -13,7 +13,7 @@ jpa:
         physical_naming_strategy: 'com.vladmihalcea.hibernate.type.util.CamelCaseToSnakeCaseNamingStrategy'
         dialect: 'org.hibernate.dialect.PostgreSQLDialect'
         hbm2ddl:
-          auto: create
+          auto: validate
         show_sql: true
         format_sql: true
     packages-to-scan:
@@ -23,4 +23,4 @@ liquibase:
   enabled: ${MIGRATIONS:false}
   datasources:
     default:
-      change-log: 'classpath:db/liquibase--prod-changelog.yml'
+      change-log: 'classpath:db/liquibase-changelog.yml'
