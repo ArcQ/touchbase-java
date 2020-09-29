@@ -1,7 +1,10 @@
 package com.kf.touchbase.testUtils;
 
+import com.kf.touchbase.models.domain.MissionType;
 import com.kf.touchbase.models.domain.Role;
 import com.kf.touchbase.models.domain.postgres.Base;
+import com.kf.touchbase.models.domain.postgres.Mission;
+import com.kf.touchbase.models.domain.postgres.StoredMissionTemplate;
 import com.kf.touchbase.models.domain.postgres.User;
 import com.kf.touchbase.models.dto.BaseReq;
 import com.kf.touchbase.models.dto.UserReq;
@@ -47,6 +50,22 @@ public class TestObjectFactory {
                     "testObject user");
 
     public static class Domain {
+        public static Mission createMission() {
+            return Mission.builder()
+                    .assignedBase(createBase())
+                    .assignedUser(createUser())
+                    .build();
+        }
+
+        public static StoredMissionTemplate createOneTimeMissionTemplate() {
+            return StoredMissionTemplate.builder()
+                    .scoreReward(10D)
+                    .name("test mission one time")
+                    .missonType(MissionType.ONE_TIME)
+                    .description("test mission earn 10 points")
+                    .build();
+        }
+
         public static User createUser() {
             return User.builder()
                     .id(USER_ID)

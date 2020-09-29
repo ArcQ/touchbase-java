@@ -1,21 +1,26 @@
-package com.kf.touchbase.models.domain.postgres;
+package com.kf.touchbase.models.domain;
 
-import com.kf.touchbase.models.domain.MissionType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Embeddable;
+
 @Data
 @SuperBuilder(toBuilder = true)
 @ToString
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode
 @NoArgsConstructor
-//@Entity
-public class MissionTemplate extends TouchBasePostgresDomain {
+@Embeddable
+public class MissionTemplate {
+
     private String name;
+
     private String description;
+
     private Double scoreReward;
+
     private MissionType missonType;
 }

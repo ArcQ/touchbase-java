@@ -23,6 +23,7 @@ import io.micronaut.security.token.TokenAuthenticationFetcher;
 import io.micronaut.security.token.validator.TokenValidator;
 import io.micronaut.test.annotation.MicronautTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -65,6 +66,13 @@ public class BaseControllerIT {
     @Client("/")
     RxHttpClient client;
 
+    @BeforeAll
+    public void setup() {
+        var user = TestObjectFactory.Domain.createUser();
+        user.setId(null);
+        userRepository.save(user);
+    }
+
     @AfterEach
     public void cleanUpTest() {
         baseMemberRepository.deleteAll();
@@ -74,9 +82,6 @@ public class BaseControllerIT {
     @Test
     public void createBaseAndThenGet() {
         int databaseSizeBeforeCreate = baseRepository.findAll().count().blockingGet().intValue();
-        var user = TestObjectFactory.Domain.createUser();
-        user.setId(null);
-        userRepository.save(user);
 
         var baseReq = TestObjectFactory.Dto.createBaseReq();
 
@@ -100,7 +105,21 @@ public class BaseControllerIT {
 
         var members = (HashSet) resultBase.getMembers();
         var member = (BaseMember) members.iterator().next();
-        assertThat(member.getUser()).isEqualTo(user);
+        assertThat(member.getUser()).isEqualTo(member);
+    }
+
+    @Test
+    public void testUnAuthorized() {
+        var user = TestObjectFactory.Domain.createUser();
+        user.setId(null);
+        userRepository.save(user);
+
+        var baseReq = TestObjectFactory.Dto.createBaseReq();
+
+        var response = client.exchange(HttpRequest.POST("/api/v1/base",
+                baseReq).bearerAuth("Not a user"), BaseReq.class).blockingFirst();
+
+        assertThat(response.status().getCode()).isEqualTo(HttpStatus.FORBIDDEN.getCode());
     }
 
     //    @Test

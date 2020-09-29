@@ -1,15 +1,3 @@
-create table mission
-(
-    id uuid not null
-        constraint mission_pkey
-            primary key,
-    created_at timestamp,
-    description varchar(255),
-    mission_type integer,
-    name varchar(255),
-    score_reward double precision
-);
-
 create table tb_user
 (
     id uuid not null

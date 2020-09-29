@@ -28,7 +28,7 @@ public class MissionController {
     @NotYetImplemented
     @Operation(description = "Not Implemented Yet")
     @ExecuteOn(TaskExecutors.IO)
-    public List<Mission> getOwnMissions(Authentication authentication) {
+    public List<Mission> getOwnActiveMissions(Authentication authentication) {
         return null;
     }
 
