@@ -3,52 +3,6 @@ info:
   title: core-api
   version: "0.0"
 paths:
-  /api/v1/user:
-    get:
-      summary: Search for users to add
-      operationId: findAllPublic
-      parameters:
-      - name: query
-        in: query
-        required: true
-        schema:
-          type: string
-      responses:
-        default:
-          description: findAllPublic default response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserPublicRes'
-    post:
-      operationId: postUser
-      parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserReq'
-        required: true
-      responses:
-        default:
-          description: postUser default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-  /api/v1/user/me:
-    get:
-      operationId: getMe
-      parameters: []
-      responses:
-        default:
-          description: getMe default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
   /api/v1/baseJoin/me:
     get:
       description: Not Implemented Yet
@@ -98,6 +52,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Success'
+  /api/v1/mission/me:
+    get:
+      description: Not Implemented Yet
+      operationId: getOwnActiveMissions
+      parameters: []
+      responses:
+        default:
+          description: getOwnActiveMissions default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mission'
+  /api/v1/mission/progress:
+    post:
+      description: Not Implemented Yet
+      operationId: progressMission
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                progressReq:
+                  $ref: '#/components/schemas/ProgressReq'
+        required: true
+      responses:
+        default:
+          description: progressMission default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mission'
   /api/v1/base:
     get:
       operationId: getOwnBases
@@ -142,118 +131,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Base'
-    delete:
-      description: Not Implemented Yet
-      operationId: makeBaseInactive
-      parameters:
-      - name: baseId
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      responses:
-        default:
-          description: makeBaseInactive default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Success'
-    patch:
-      operationId: patchBase
-      parameters:
-      - name: baseId
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BaseReq'
-        required: true
-      responses:
-        default:
-          description: patchBase default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Base'
-  /api/v1/base/{baseId}/members:
-    delete:
-      description: Not Implemented Yet
-      operationId: removeMembers
-      parameters:
-      - name: baseId
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ListReq_UUID_'
-        required: true
-      responses:
-        default:
-          description: removeMembers default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Base'
-  /api/v1/mission/me:
+  /api/v1/user/me:
     get:
-      description: Not Implemented Yet
-      operationId: getOwnMissions
+      operationId: getMe
       parameters: []
       responses:
         default:
-          description: getOwnMissions default response
+          description: getMe default response
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Mission'
-  /api/v1/mission/progress:
-    post:
-      description: Not Implemented Yet
-      operationId: progressMission
-      parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                progressReq:
-                  $ref: '#/components/schemas/ProgressReq'
-        required: true
-      responses:
-        default:
-          description: progressMission default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Mission'
+                $ref: '#/components/schemas/User'
 components:
   schemas:
-    UserPublicRes:
-      type: object
-      properties:
-        score:
-          type: number
-          format: double
-        firstName:
-          type: string
-        lastName:
-          type: string
-        username:
-          type: string
     TouchBasePostgresDomain:
       type: object
       properties:
@@ -289,22 +179,6 @@ components:
             type: string
           imageUrl:
             type: string
-    UserReq:
-      type: object
-      properties:
-        authKey:
-          type: string
-        email:
-          type: string
-        score:
-          type: number
-          format: double
-        firstName:
-          type: string
-        lastName:
-          type: string
-        username:
-          type: string
     BaseJoin:
       allOf:
       - $ref: '#/components/schemas/TouchBasePostgresDomain'
@@ -333,13 +207,25 @@ components:
       properties:
         status:
           type: string
-    ListRes_Base_:
+    Mission:
       type: object
       properties:
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/Base'
+        id:
+          type: string
+          format: uuid
+          nullable: true
+        startedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        assignedUser:
+          $ref: '#/components/schemas/User'
+        assignedBase:
+          $ref: '#/components/schemas/Base'
+        storedMissionTemplate:
+          $ref: '#/components/schemas/MissionTemplate'
     Base:
       allOf:
       - $ref: '#/components/schemas/TouchBasePostgresDomain'
@@ -387,6 +273,37 @@ components:
             $ref: '#/components/schemas/Base'
           chatpiChatId:
             type: string
+    MissionTemplate:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        scoreReward:
+          type: number
+          format: double
+        missonType:
+          $ref: '#/components/schemas/MissionType'
+    MissionType:
+      type: string
+      enum:
+      - PERIODIC
+      - WEEKLY
+      - ONE_TIME
+    ProgressReq:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int32
+    ListRes_Base_:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Base'
     BaseReq:
       type: object
       properties:
@@ -394,42 +311,3 @@ components:
           type: string
         imageUrl:
           type: string
-    ListReq_MemberReq_:
-      type: object
-      properties:
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/MemberReq'
-    MemberReq:
-      type: object
-      properties:
-        userId:
-          type: string
-          format: uuid
-        role:
-          $ref: '#/components/schemas/Role'
-    ListReq_UUID_:
-      type: object
-      properties:
-        list:
-          type: array
-          items:
-            type: string
-            format: uuid
-    Mission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          nullable: true
-        createdAt:
-          type: string
-          format: date-time
-    ProgressReq:
-      type: object
-      properties:
-        value:
-          type: integer
-          format: int32

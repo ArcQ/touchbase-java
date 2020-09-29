@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Data
@@ -25,17 +24,17 @@ public class Mission {
     @Column(name="id")
     private UUID id;
 
-    private ZonedDateTime startedAt;
+    private LocalDateTime startedAt;
 
     @CreationTimestamp
     protected LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinTable(name = "mission_assigned_user")
+    @JoinColumn(name = "mission_assigned_user")
     private User assignedUser;
 
     @ManyToOne
-    @JoinTable(name = "mission_assigned_base")
+    @JoinColumn(name = "mission_assigned_base")
     private Base assignedBase;
 
     @Embedded

@@ -7,6 +7,8 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Data
 @SuperBuilder(toBuilder = true)
@@ -22,5 +24,6 @@ public class MissionTemplate {
 
     private Double scoreReward;
 
-    private MissionType missonType;
+    @Enumerated(EnumType.STRING)
+    private MissionType missionType;
 }

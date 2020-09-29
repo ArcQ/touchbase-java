@@ -1,0 +1,315 @@
+swagger: '2.0'
+info:
+  title: core-api
+  version: '0.0'
+paths:
+  /api/v1/base:
+    get:
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        default:
+          description: getOwnBases default response
+          schema:
+            $ref: '#/definitions/ListRes_Base_'
+      operationId: getOwnBases
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/BaseReq'
+      responses:
+        default:
+          description: postBase default response
+          schema:
+            $ref: '#/definitions/Base'
+      operationId: postBase
+  '/api/v1/base/{baseId}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - format: uuid
+          in: path
+          name: baseId
+          required: true
+          type: string
+      responses:
+        default:
+          description: getBaseIfOwn default response
+          schema:
+            $ref: '#/definitions/Base'
+      operationId: getBaseIfOwn
+  /api/v1/baseJoin:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/BaseJoinReq'
+      responses:
+        default:
+          description: requestIntoBase default response
+          schema:
+            $ref: '#/definitions/BaseJoin'
+      description: Not Implemented Yet
+      operationId: requestIntoBase
+  /api/v1/baseJoin/me:
+    get:
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        default:
+          description: getBases default response
+          schema:
+            items:
+              $ref: '#/definitions/BaseJoin'
+            type: array
+      description: Not Implemented Yet
+      operationId: getBases
+  '/api/v1/baseJoin/{baseId}':
+    delete:
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: baseId
+          required: true
+          type: string
+      responses:
+        default:
+          description: deleteBaseInvite default response
+          schema:
+            $ref: '#/definitions/Success'
+      description: Not Implemented Yet
+      operationId: deleteBaseInvite
+  /api/v1/mission/me:
+    get:
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        default:
+          description: getOwnActiveMissions default response
+          schema:
+            items:
+              $ref: '#/definitions/Mission'
+            type: array
+      description: Not Implemented Yet
+      operationId: getOwnActiveMissions
+  /api/v1/mission/progress:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              progressReq:
+                $ref: '#/definitions/ProgressReq'
+            type: object
+      responses:
+        default:
+          description: progressMission default response
+          schema:
+            $ref: '#/definitions/Mission'
+      description: Not Implemented Yet
+      operationId: progressMission
+  /api/v1/user/me:
+    get:
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        default:
+          description: getMe default response
+          schema:
+            $ref: '#/definitions/User'
+      operationId: getMe
+definitions:
+  Base:
+    allOf:
+      - $ref: '#/definitions/TouchBasePostgresDomain'
+      - properties:
+          active:
+            type: boolean
+          chats:
+            items:
+              $ref: '#/definitions/Chat'
+            type: array
+          imageUrl:
+            type: string
+          members:
+            items:
+              $ref: '#/definitions/BaseMember'
+            type: array
+          name:
+            type: string
+          score:
+            format: double
+            type: number
+        type: object
+  BaseJoin:
+    allOf:
+      - $ref: '#/definitions/TouchBasePostgresDomain'
+      - properties:
+          baseId:
+            type: string
+          baseJoinAction:
+            $ref: '#/definitions/BaseJoinAction'
+        type: object
+  BaseJoinAction:
+    enum:
+      - Request
+      - Invite
+    type: string
+  BaseJoinReq:
+    properties:
+      baseId:
+        type: string
+      baseJoinAction:
+        $ref: '#/definitions/BaseJoinAction'
+      userId:
+        type: string
+    type: object
+  BaseMember:
+    allOf:
+      - $ref: '#/definitions/TouchBasePostgresDomain'
+      - properties:
+          base:
+            $ref: '#/definitions/Base'
+          role:
+            $ref: '#/definitions/Role'
+          user:
+            $ref: '#/definitions/User'
+        type: object
+  BaseReq:
+    properties:
+      imageUrl:
+        type: string
+      name:
+        type: string
+    type: object
+  Chat:
+    allOf:
+      - $ref: '#/definitions/TouchBasePostgresDomain'
+      - properties:
+          base:
+            $ref: '#/definitions/Base'
+          chatpiChatId:
+            type: string
+        type: object
+  ListRes_Base_:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/Base'
+        type: array
+    type: object
+  Mission:
+    properties:
+      assignedBase:
+        $ref: '#/definitions/Base'
+      assignedUser:
+        $ref: '#/definitions/User'
+      createdAt:
+        format: date-time
+        type: string
+      id:
+        format: uuid
+        type: string
+        x-nullable: true
+      startedAt:
+        format: date-time
+        type: string
+      storedMissionTemplate:
+        $ref: '#/definitions/MissionTemplate'
+    type: object
+  MissionTemplate:
+    properties:
+      description:
+        type: string
+      missonType:
+        $ref: '#/definitions/MissionType'
+      name:
+        type: string
+      scoreReward:
+        format: double
+        type: number
+    type: object
+  MissionType:
+    enum:
+      - PERIODIC
+      - WEEKLY
+      - ONE_TIME
+    type: string
+  ProgressReq:
+    properties:
+      value:
+        format: int32
+        type: integer
+    type: object
+  Role:
+    enum:
+      - MEMBER
+      - ADMIN
+    type: string
+  Success:
+    properties:
+      status:
+        type: string
+    type: object
+  TouchBasePostgresDomain:
+    properties:
+      createdAt:
+        format: date-time
+        type: string
+      creator:
+        $ref: '#/definitions/User'
+      id:
+        format: uuid
+        type: string
+        x-nullable: true
+      updatedAt:
+        format: date-time
+        type: string
+    type: object
+  User:
+    allOf:
+      - $ref: '#/definitions/TouchBasePostgresDomain'
+      - properties:
+          authKey:
+            type: string
+          email:
+            type: string
+          firstName:
+            type: string
+          imageUrl:
+            type: string
+          lastName:
+            type: string
+          score:
+            format: double
+            type: number
+          username:
+            type: string
+        type: object
+x-components: {}
+

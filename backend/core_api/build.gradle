@@ -101,6 +101,7 @@ test.classpath += configurations.developmentOnly
 mainClassName = "com.kf.touchbase.Application"
 // use JUnit 5 platform
 test {
+    environment "MICRONAUT_ENVIRONMENTS", "test"
     useJUnitPlatform()
 }
 tasks.withType(JavaCompile){
