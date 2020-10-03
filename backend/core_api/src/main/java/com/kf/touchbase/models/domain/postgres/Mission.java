@@ -30,11 +30,11 @@ public class Mission {
     protected LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "mission_assigned_user")
+    @JoinColumn(name = "user_auth_key", referencedColumnName = "auth_key")
     private User assignedUser;
 
     @ManyToOne
-    @JoinColumn(name = "mission_assigned_base")
+    @JoinColumn(name = "base")
     private Base assignedBase;
 
     @Embedded
