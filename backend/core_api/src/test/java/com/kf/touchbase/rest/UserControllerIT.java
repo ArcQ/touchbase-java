@@ -43,7 +43,8 @@ public class UserControllerIT {
 
     @Replaces(TokenAuthenticationFetcher.class)
     @Bean
-    public AuthenticationFetcher stubAuthFetcher(TestAuthUtils.StubJwtTokenValidator stubJwtTokenValidator) {
+    public AuthenticationFetcher stubAuthFetcher(
+            TestAuthUtils.StubJwtTokenValidator stubJwtTokenValidator) {
         return new TestAuthUtils.StubAuthenticationFetcher(stubJwtTokenValidator);
     }
 
@@ -58,20 +59,31 @@ public class UserControllerIT {
 
     @AfterEach
     public void cleanUpTest() {
-        userRepository.deleteAll();
+        userRepository.deleteAll().blockingAwait();
     }
 
     @Test
     public void getMe() {
         var user = TestObjectFactory.Domain.createUser();
         user.setId(null);
-        userRepository.save(user);
+        userRepository.save(user).blockingGet();
 
-        var result =
-                client.retrieve(HttpRequest.GET("/api/v1/user/me").bearerAuth(AUTHED_USER),
-                        Argument.of(User.class)).blockingFirst();
+        var result = client.retrieve(HttpRequest.GET("/api/v1/user/me").bearerAuth(AUTHED_USER),
+                Argument.of(User.class)).blockingFirst();
 
         assertThat(result).isEqualTo(user);
+    }
+
+    @Test
+    public void createUser() {
+        var result = client.retrieve(HttpRequest.POST("/api/v1/user",
+                TestObjectFactory.Dto.createUserReq()).bearerAuth(AUTHED_USER),
+                Argument.of(User.class)).blockingFirst();
+
+        assertThat(result)
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(userRepository.findByAuthKey(TestObjectFactory.AUTH_KEY).blockingGet());
     }
 
     //    @Test
@@ -80,7 +92,8 @@ public class UserControllerIT {
     //
     //        UserReq userReq = TestObjectFactory.Dto.createUserReq();
     //
-    //        HttpResponse<UserReq> response = client.exchange(HttpRequest.PATCH("/api/v1/users", userReq)
+    //        HttpResponse<UserReq> response = client.exchange(HttpRequest.PATCH("/api/v1/users",
+    //        userReq)
     //                , UserReq.class).blockingFirst();
     //
     //        assertThat(response.status().getCode()).isEqualTo(HttpStatus.ACCEPTED.getCode());
@@ -108,8 +121,10 @@ public class UserControllerIT {
     //
     //        // If the entity doesn't have an ID, it will throw BadRequestAlertException
     //        @SuppressWarnings("unchecked")
-    //        HttpResponse<UserReq> response = client.exchange(HttpRequest.PUT("/api/users", userReq), UserReq.class)
-    //                .onErrorReturn(t -> (HttpResponse<UserReq>) ((HttpClientResponseException) t).getResponse()).blockingFirst();
+    //        HttpResponse<UserReq> response = client.exchange(HttpRequest.PUT("/api/users",
+    //        userReq), UserReq.class)
+    //                .onErrorReturn(t -> (HttpResponse<UserReq>) ((HttpClientResponseException)
+    //                t).getResponse()).blockingFirst();
     //
     //        assertThat(response.status().getCode()).isEqualTo(HttpStatus.BAD_REQUEST.getCode());
     //
@@ -118,23 +133,26 @@ public class UserControllerIT {
     //        assertThat(userList).hasSize(databaseSizeBeforeUpdate);
     //    }
     //
-//        @Test
-//        public void deleteUser() throws Exception {
-//            userRepository.saveAndFlush(user);
-//
-//            int databaseSizeBeforeDelete = userRepository.findAll().size();
-//
-//            // Delete the user
-//            @SuppressWarnings("unchecked")
-//            HttpResponse<UserReq> response = client.exchange(HttpRequest.DELETE("/api/users/" + user.getId()), UserReq.class)
-//                    .onErrorReturn(t -> (HttpResponse<UserReq>) ((HttpClientResponseException) t).getResponse()).blockingFirst();
-//
-//            assertThat(response.status().getCode()).isEqualTo(HttpStatus.NO_CONTENT.getCode());
-//
-//            // Validate the database is now empty
-//            List<User> userList = userRepository.findAll();
-//            assertThat(userList).hasSize(databaseSizeBeforeDelete - 1);
-//        }
+    //        @Test
+    //        public void deleteUser() throws Exception {
+    //            userRepository.saveAndFlush(user);
+    //
+    //            int databaseSizeBeforeDelete = userRepository.findAll().size();
+    //
+    //            // Delete the user
+    //            @SuppressWarnings("unchecked")
+    //            HttpResponse<UserReq> response = client.exchange(HttpRequest.DELETE
+    //            ("/api/users/" + user.getId()), UserReq.class)
+    //                    .onErrorReturn(t -> (HttpResponse<UserReq>) (
+    //                    (HttpClientResponseException) t).getResponse()).blockingFirst();
+    //
+    //            assertThat(response.status().getCode()).isEqualTo(HttpStatus.NO_CONTENT.getCode
+    //            ());
+    //
+    //            // Validate the database is now empty
+    //            List<User> userList = userRepository.findAll();
+    //            assertThat(userList).hasSize(databaseSizeBeforeDelete - 1);
+    //        }
 
     @Test
     public void equalsVerifier() throws Exception {

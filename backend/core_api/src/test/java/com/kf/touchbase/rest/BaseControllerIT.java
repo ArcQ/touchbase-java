@@ -19,6 +19,7 @@ import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.client.RxHttpClient;
 import io.micronaut.http.client.annotation.Client;
+import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.security.filters.AuthenticationFetcher;
 import io.micronaut.security.token.TokenAuthenticationFetcher;
 import io.micronaut.security.token.validator.TokenValidator;
@@ -34,6 +35,7 @@ import java.util.UUID;
 
 import static com.kf.touchbase.testUtils.TestAuthUtils.AUTHED_USER;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 
 /**
@@ -73,13 +75,13 @@ public class BaseControllerIT {
     public void setup() {
         user = TestObjectFactory.Domain.createUser();
         user.setId(null);
-        userRepository.save(user);
+        userRepository.save(user).blockingGet();
     }
 
     @AfterEach
     public void cleanUpTest() {
-        baseMemberRepository.deleteAll();
-        baseRepository.deleteAll();
+        baseMemberRepository.deleteAll().blockingAwait();
+        baseRepository.deleteAll().blockingAwait();
     }
 
     @Test
@@ -111,19 +113,19 @@ public class BaseControllerIT {
         assertThat(member.getUser()).usingRecursiveComparison().isEqualTo(user);
     }
 
-//    @Test
-//    public void testUnAuthorized() {
-//        var user = TestObjectFactory.Domain.createUser();
-//        user.setId(null);
-//        userRepository.save(user);
-//
-//        var baseReq = TestObjectFactory.Dto.createBaseReq();
-//
-//        var response = client.exchange(HttpRequest.POST("/api/v1/base",
-//                baseReq), BaseReq.class).blockingFirst();
-//
-//        assertThat(response.status().getCode()).isEqualTo(HttpStatus.FORBIDDEN.getCode());
-//    }
+    @Test
+    public void testUnAuthorized() {
+        var user = TestObjectFactory.Domain.createUser();
+        user.setId(null);
+        userRepository.save(user);
+
+        var baseReq = TestObjectFactory.Dto.createBaseReq();
+
+        assertThatThrownBy(() ->
+                client.exchange(HttpRequest.POST("/api/v1/base",
+                baseReq), BaseReq.class).blockingFirst()).isInstanceOf(
+                HttpClientResponseException.class).hasMessage("Unauthorized");
+    }
 
     //    @Test
     //    public void updateBaseThenGet() throws Exception {

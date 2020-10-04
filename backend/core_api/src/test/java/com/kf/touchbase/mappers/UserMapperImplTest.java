@@ -2,6 +2,7 @@ package com.kf.touchbase.mappers;
 
 import com.kf.touchbase.models.domain.postgres.User;
 import com.kf.touchbase.models.dto.UserReq;
+import com.kf.touchbase.testUtils.TestObjectFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,19 +20,16 @@ class UserMapperImplTest {
     @Test
     void testUserReqToUser() {
         // Setup
-        final UserReq user = new UserReq("AuthKey", "email", 0.0, "first_name", "last_name", "username");
-        final User expectedResult = User.builder()
-                .authKey("AuthKey")
-                .email("email")
-                .score(0.0)
-                .firstName("first_name")
-                .lastName("last_name")
-                .username("username").build();
+        final UserReq user = TestObjectFactory.Dto.createUserReq();
+        final User expectedResult = TestObjectFactory.Domain.createUser();
+        expectedResult.setId(null);
+        expectedResult.setAuthKey(null);
+        expectedResult.setScore(null);
 
         // Run the test
         final User result = userMapperImplUnderTest.userReqToUser(user);
 
         // Verify the results
-        assertThat(result).isEqualToComparingFieldByField(expectedResult);
+        assertThat(result).isEqualTo(expectedResult);
     }
 }

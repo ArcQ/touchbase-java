@@ -29,17 +29,32 @@ public class User extends TouchBasePostgresDomain {
     @UpdateTimestamp
     protected LocalDateTime updatedAt;
 
+    @Column(name="auth_key")
     private String authKey;
 
     private String username;
 
     private String email;
 
-    private Double score;
+    @Builder.Default
+    private Double score = 0.0;
 
     private String firstName;
 
     private String lastName;
 
     private String imageUrl;
+
+    public User merge(User user) {
+        if (user.getUsername() != null) {
+            this.setUsername(email);
+        }
+        this.username = (user.getUsername() == null)  ? this.username : user.getUsername();
+        this.email = (user.getEmail() == null)  ? this.email : user.getEmail();
+        this.firstName = (user.getFirstName() == null)  ? this.firstName : user.getFirstName();
+        this.lastName = (user.getLastName() == null)  ? this.lastName : user.getLastName();
+        this.imageUrl = (user.getImageUrl() == null)  ? this.imageUrl : user.getImageUrl();
+
+        return this;
+    }
 }

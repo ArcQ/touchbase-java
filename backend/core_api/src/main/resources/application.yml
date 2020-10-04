@@ -39,3 +39,11 @@ jackson:
     write-dates-as-timestamps: false
   deserialization:
     fail-on-unknown-properties: false
+
+aws:
+  sns:
+    region: usa-east-1
+    topic: touchbase-topic
+    topics:
+      test:
+        topic: touchbase-topic-test

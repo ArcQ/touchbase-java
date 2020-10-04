@@ -53,13 +53,13 @@ class MissionControllerTest {
     public void setup() {
         var user = TestObjectFactory.Domain.createUser();
         user.setId(null);
-        userRepository.save(user);
+        userRepository.save(user).blockingGet();
     }
 
     @AfterEach
     public void cleanUpTest() {
-        missionRepository.deleteAll();
-        userRepository.deleteAll();
+        missionRepository.deleteAll().blockingAwait();
+        userRepository.deleteAll().blockingAwait();
     }
 
 //    @Test

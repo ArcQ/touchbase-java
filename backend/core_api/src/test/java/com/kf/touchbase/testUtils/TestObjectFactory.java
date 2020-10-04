@@ -77,6 +77,7 @@ public class TestObjectFactory {
                     .firstName(FIRST_NAME)
                     .lastName(LAST_NAME)
                     .username(USERNAME)
+                    .imageUrl(IMAGE_URL)
                     .build();
         }
 
@@ -101,11 +102,11 @@ public class TestObjectFactory {
 
         public static UserReq createUserReq() {
             var userReq = new UserReq();
-            userReq.setAuthKey(AUTH_KEY);
             userReq.setEmail(EMAIL);
             userReq.setFirstName(FIRST_NAME);
             userReq.setLastName(LAST_NAME);
             userReq.setUsername(USERNAME);
+            userReq.setImageUrl(IMAGE_URL);
             return userReq;
         }
     }

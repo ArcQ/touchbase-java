@@ -27,7 +27,7 @@ create table mission
     created_at timestamp,
     mission_assigned_user uuid not null
         constraint fk_mission_assigned_user
-            references tb_user,
+            references tb_user(auth_key),
     mission_assigned_base uuid not null
         constraint fk_mission_base_base
             references base

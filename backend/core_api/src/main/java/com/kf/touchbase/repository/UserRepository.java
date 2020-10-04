@@ -2,7 +2,7 @@ package com.kf.touchbase.repository;
 
 import com.kf.touchbase.models.domain.postgres.User;
 import io.micronaut.data.annotation.Repository;
-import io.micronaut.data.jpa.repository.JpaRepository;
+import io.micronaut.data.repository.reactive.RxJavaCrudRepository;
 import io.reactivex.Maybe;
 
 import javax.inject.Singleton;
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Singleton
 @Repository
-public interface UserRepository extends JpaRepository<User, UUID> {
+public interface UserRepository extends RxJavaCrudRepository<User, UUID> {
 
     List<User> findByUsernameContainsOrFirstNameContainsOrLastNameContains(String queryUsername, String queryFirstName, String queryFullName);
 
