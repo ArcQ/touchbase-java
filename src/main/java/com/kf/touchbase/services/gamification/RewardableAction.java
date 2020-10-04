@@ -1,4 +1,4 @@
-package com.kf.touchbase.services.postgres.gamification;
+package com.kf.touchbase.services.gamification;
 
 public interface RewardableAction {
     double getScoreReward();

@@ -6,7 +6,7 @@ import com.kf.touchbase.models.domain.Success;
 import com.kf.touchbase.models.domain.postgres.BaseJoin;
 import com.kf.touchbase.models.domain.postgres.BaseJoinAction;
 import com.kf.touchbase.models.dto.BaseJoinReq;
-import com.kf.touchbase.services.postgres.BaseJoinService;
+import com.kf.touchbase.services.BaseJoinService;
 import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;

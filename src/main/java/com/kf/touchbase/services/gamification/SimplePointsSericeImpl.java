@@ -1,4 +1,4 @@
-package com.kf.touchbase.services.postgres.gamification;
+package com.kf.touchbase.services.gamification;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

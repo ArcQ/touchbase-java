@@ -1,8 +1,8 @@
-package com.kf.touchbase.services.postgres;
+package com.kf.touchbase.services;
 
 import com.kf.touchbase.models.domain.postgres.Mission;
 import com.kf.touchbase.repository.MissionRepository;
-import com.kf.touchbase.services.postgres.repository.UserRepository;
+import com.kf.touchbase.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Singleton;
