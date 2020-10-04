@@ -22,6 +22,6 @@ public class AuthUtils {
     }
 
     public static Single<String> getAuthKeyFromAuthRx(Authentication authentication) {
-        return  Single.just((String) authentication.getAttributes().get("sub"));
+        return Single.just((String) authentication.getAttributes().get("sub"));
     }
 }

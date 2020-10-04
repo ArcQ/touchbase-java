@@ -9,7 +9,9 @@ import java.util.UUID;
 @Singleton
 public interface UserRepository extends PageableRepository<User, UUID> {
 
-    Iterable<User> findByUsernameContainsOrFirstNameContainsOrLastNameContains(String queryUsername, String queryFirstName, String queryFullName);
+    Iterable<User> findByUsernameContainsOrFirstNameContainsOrLastNameContains(String queryUsername,
+                                                                               String queryFirstName,
+                                                                               String queryFullName);
 
     User findByUsername(String username);
 

@@ -19,16 +19,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 public class Mission {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
-    private UUID id;
-
-    private LocalDateTime startedAt;
-
     @CreationTimestamp
     protected LocalDateTime createdAt;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private UUID id;
+    private LocalDateTime startedAt;
     @ManyToOne
     @JoinColumn(name = "user_auth_key", referencedColumnName = "auth_key")
     private User assignedUser;

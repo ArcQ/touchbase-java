@@ -27,16 +27,18 @@ import javax.inject.Inject;
 class MissionControllerTest {
 
     @Inject
+    @Client("/")
+    RxHttpClient client;
+    @Inject
     private UserRepository userRepository;
-
     @Inject
     private MissionRepository missionRepository;
-
     private MissionController missionControllerUnderTest;
 
     @Replaces(TokenAuthenticationFetcher.class)
     @Bean
-    public AuthenticationFetcher stubAuthFetcher(TestAuthUtils.StubJwtTokenValidator stubJwtTokenValidator) {
+    public AuthenticationFetcher stubAuthFetcher(
+            TestAuthUtils.StubJwtTokenValidator stubJwtTokenValidator) {
         return new TestAuthUtils.StubAuthenticationFetcher(stubJwtTokenValidator);
     }
 
@@ -44,10 +46,6 @@ class MissionControllerTest {
     public TokenValidator getJwtTokenValidator() {
         return new TestAuthUtils.StubAuthenticatedJwtTokenValidator();
     }
-
-    @Inject
-    @Client("/")
-    RxHttpClient client;
 
     @BeforeAll
     public void setup() {
@@ -62,28 +60,30 @@ class MissionControllerTest {
         userRepository.deleteAll().blockingAwait();
     }
 
-//    @Test
-//    public void getMyMissions() {
-//        int databaseSizeBeforeCreate = missionRepository.findAll().count().blockingGet().intValue();
-//
-//        var response = client.exchange(HttpRequest.GET("/api/v1/mission").bearerAuth(AUTHED_USER)).blockingFirst();
-//
-//        assertThat(response.status().getCode()).isEqualTo(HttpStatus.CREATED.getCode());
-//        var result = response.getBody(Argument.of(ListReq.class, Mission.class));
-//
-//        assertThat(result.get().getList().size()).isEqualTo(2);
-//    }
-//
-//    @Test
-//    void testProgressMission() {
-//        // Setup
-//        final ProgressReq progressReq = new ProgressReq(0);
-//        final Mission expectedResult = new Mission();
-//
-//        // Run the test
-//        final Mission result = missionControllerUnderTest.progressMission(progressReq);
-//
-//        // Verify the results
-//        assertThat(expectedResult).isEqualTo(result);
-//    }
+    //    @Test
+    //    public void getMyMissions() {
+    //        int databaseSizeBeforeCreate = missionRepository.findAll().count().blockingGet()
+    //        .intValue();
+    //
+    //        var response = client.exchange(HttpRequest.GET("/api/v1/mission").bearerAuth
+    //        (AUTHED_USER)).blockingFirst();
+    //
+    //        assertThat(response.status().getCode()).isEqualTo(HttpStatus.CREATED.getCode());
+    //        var result = response.getBody(Argument.of(ListReq.class, Mission.class));
+    //
+    //        assertThat(result.get().getList().size()).isEqualTo(2);
+    //    }
+    //
+    //    @Test
+    //    void testProgressMission() {
+    //        // Setup
+    //        final ProgressReq progressReq = new ProgressReq(0);
+    //        final Mission expectedResult = new Mission();
+    //
+    //        // Run the test
+    //        final Mission result = missionControllerUnderTest.progressMission(progressReq);
+    //
+    //        // Verify the results
+    //        assertThat(expectedResult).isEqualTo(result);
+    //    }
 }

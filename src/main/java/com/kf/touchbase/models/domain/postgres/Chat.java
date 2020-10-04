@@ -12,12 +12,12 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @EqualsAndHashCode(callSuper = true)
-public class Chat extends TouchBasePostgresDomain{
+public class Chat extends TouchBasePostgresDomain {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "base_id", insertable = false, updatable = false)
     @EqualsAndHashCode.Exclude
     Base base;
 
-    @Column(name="chat_id", insertable = false, updatable = false)
+    @Column(name = "chat_id", insertable = false, updatable = false)
     String chatpiChatId;
 }

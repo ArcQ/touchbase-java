@@ -23,6 +23,14 @@ public class TestObjectFactory {
     public static String USERNAME = "arcq";
     public static String EMAIL = "tony.stark@gmail.com";
     public static String AUTH_KEY = "710f7b05-8911-4285-98f9-2cc292352e36";
+    public static Condition<LinkedHashMap> testObjectUser =
+            new Condition<>((LinkedHashMap linkedHashMap) -> linkedHashMap.get("id") != null
+                    && linkedHashMap.get("authKey").equals(AUTH_KEY)
+                    && linkedHashMap.get("email").equals(EMAIL)
+                    && linkedHashMap.get("firstName").equals(FIRST_NAME)
+                    && linkedHashMap.get("lastName").equals(LAST_NAME)
+                    && linkedHashMap.get("username").equals(USERNAME), "response matches " +
+                    "testObject user");
 
     public static JWTClaimsSet createJwtClaimsSet() {
         return new JWTClaimsSet.Builder()
@@ -40,15 +48,6 @@ public class TestObjectFactory {
                 .build();
     }
 
-    public static Condition<LinkedHashMap> testObjectUser =
-            new Condition<>((LinkedHashMap linkedHashMap) -> linkedHashMap.get("id") != null
-                    && linkedHashMap.get("authKey").equals(AUTH_KEY)
-                    && linkedHashMap.get("email").equals(EMAIL)
-                    && linkedHashMap.get("firstName").equals(FIRST_NAME)
-                    && linkedHashMap.get("lastName").equals(LAST_NAME)
-                    && linkedHashMap.get("username").equals(USERNAME), "response matches " +
-                    "testObject user");
-
     public static class Domain {
         public static Mission createMission() {
             return Mission.builder()
@@ -63,7 +62,7 @@ public class TestObjectFactory {
                             .builder()
                             .scoreReward(10.0)
                             .name("test mission one time")
-//                            .missonType(MissionType.ONE_TIME)
+                            //                            .missonType(MissionType.ONE_TIME)
                             .description("test mission earn 10 points")
                             .build())
                     .build();

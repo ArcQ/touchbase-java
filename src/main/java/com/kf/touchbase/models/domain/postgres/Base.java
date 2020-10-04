@@ -7,7 +7,10 @@ import io.micronaut.data.annotation.Where;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -20,7 +23,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Where("isActive = true")
-@JsonIgnoreProperties(value = { "admins" })
+@JsonIgnoreProperties(value = {"admins"})
 public class Base extends TouchBasePostgresDomain {
 
     private String name;

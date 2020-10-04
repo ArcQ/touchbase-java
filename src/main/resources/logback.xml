@@ -4,19 +4,20 @@
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
         <encoder>
-            <pattern>%cyan(%d{HH:mm:ss.SSS}) %gray([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n</pattern>
+            <pattern>%cyan(%d{HH:mm:ss.SSS}) %gray([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n
+            </pattern>
         </encoder>
     </appender>
 
     <root level="info">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </root>
     <logger name="io.micronaut.data.query" level="trace">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="io.micronaut.data" level="DEBUG">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="io.micronaut.http.client" level="debug"/>
-<!--    <logger name="io.netty" level="TRACE"/>-->
+    <!--    <logger name="io.netty" level="TRACE"/>-->
 </configuration>

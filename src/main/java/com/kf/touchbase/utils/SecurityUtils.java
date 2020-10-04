@@ -10,7 +10,8 @@ import java.util.Collection;
  */
 public final class SecurityUtils {
 
-    private SecurityUtils() {}
+    private SecurityUtils() {
+    }
 
     /**
      * Get the authKey of the current user.
@@ -19,8 +20,8 @@ public final class SecurityUtils {
      */
     public static String getCurrentAuthKey() {
         return (String) ServerRequestContext.currentRequest()
-            .flatMap(request -> request.getUserPrincipal(Authentication.class))
-            .map(Authentication::getAttributes).orElseThrow().get("sub");
+                .flatMap(request -> request.getUserPrincipal(Authentication.class))
+                .map(Authentication::getAttributes).orElseThrow().get("sub");
     }
 
     /**
@@ -30,8 +31,8 @@ public final class SecurityUtils {
      */
     public static boolean isAuthenticated() {
         return ServerRequestContext.currentRequest()
-            .flatMap(request -> request.getUserPrincipal(Authentication.class))
-            .isPresent();
+                .flatMap(request -> request.getUserPrincipal(Authentication.class))
+                .isPresent();
     }
 
     /**
@@ -45,11 +46,11 @@ public final class SecurityUtils {
     @SuppressWarnings("unchecked")
     public static boolean isCurrentUserInRole(String authority) {
         return ServerRequestContext.currentRequest()
-            .flatMap(request -> request.getUserPrincipal(Authentication.class))
-            .map(authentication -> authentication.getAttributes().get("roles"))
-            .filter(Collection.class::isInstance)
-            .map(Collection.class::cast)
-            .map(roles -> roles.stream().anyMatch(role -> role.equals(authority)))
-            .orElse(false);
+                .flatMap(request -> request.getUserPrincipal(Authentication.class))
+                .map(authentication -> authentication.getAttributes().get("roles"))
+                .filter(Collection.class::isInstance)
+                .map(Collection.class::cast)
+                .map(roles -> roles.stream().anyMatch(role -> role.equals(authority)))
+                .orElse(false);
     }
 }

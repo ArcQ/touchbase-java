@@ -23,7 +23,8 @@ public class JwtUserDetails extends UserDetails {
         super(username, roles);
     }
 
-    public JwtUserDetails(String username, Collection<String> roles, String email, String client_id) {
+    public JwtUserDetails(String username, Collection<String> roles, String email,
+                          String client_id) {
         super(username, roles);
         this.email = email;
         this.clientId = client_id;

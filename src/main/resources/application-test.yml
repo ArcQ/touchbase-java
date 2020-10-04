@@ -11,7 +11,7 @@ datasources:
     username: touchbase
     password: ''
     poolName: Hikari
-#    autoCommit: false
+    #    autoCommit: false
     driverClassName: org.h2.Driver
 
 redoc.enabled: false

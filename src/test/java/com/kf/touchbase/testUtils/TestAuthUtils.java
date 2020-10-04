@@ -16,7 +16,8 @@ public class TestAuthUtils {
 
     public static String AUTHED_USER = "authedUser";
 
-    private TestAuthUtils() {}
+    private TestAuthUtils() {
+    }
 
     public AuthenticationFetcher stubAuthFetcher(StubJwtTokenValidator stubJwtTokenValidator) {
         return new StubAuthenticationFetcher(stubJwtTokenValidator);
@@ -37,7 +38,7 @@ public class TestAuthUtils {
     }
 
     @Singleton
-    public static class StubAuthenticatedJwtTokenValidator extends StubJwtTokenValidator{
+    public static class StubAuthenticatedJwtTokenValidator extends StubJwtTokenValidator {
 
         public StubAuthenticatedJwtTokenValidator() {
             super();
@@ -57,6 +58,7 @@ public class TestAuthUtils {
         @Override
         public Publisher<Authentication> validateToken(String token) {
             return Flowable.just(authentication);
-        };
+        }
+
     }
 }

@@ -37,6 +37,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserControllerIT {
 
     @Inject
+    @Client("/")
+    RxHttpClient client;
+    @Inject
     private UserMapper userMapper;
     @Inject
     private UserRepository userRepository;
@@ -52,10 +55,6 @@ public class UserControllerIT {
     public TokenValidator getJwtTokenValidator() {
         return new TestAuthUtils.StubAuthenticatedJwtTokenValidator();
     }
-
-    @Inject
-    @Client("/")
-    RxHttpClient client;
 
     @AfterEach
     public void cleanUpTest() {

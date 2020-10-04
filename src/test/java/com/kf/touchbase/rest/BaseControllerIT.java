@@ -48,17 +48,20 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 public class BaseControllerIT {
 
     @Inject
+    @Client("/")
+    RxHttpClient client;
+    @Inject
     private BaseRepository baseRepository;
     @Inject
     private BaseMemberRepository baseMemberRepository;
     @Inject
     private UserRepository userRepository;
-
     private User user;
 
     @Replaces(TokenAuthenticationFetcher.class)
     @Bean
-    public AuthenticationFetcher stubAuthFetcher(TestAuthUtils.StubJwtTokenValidator stubJwtTokenValidator) {
+    public AuthenticationFetcher stubAuthFetcher(
+            TestAuthUtils.StubJwtTokenValidator stubJwtTokenValidator) {
         return new TestAuthUtils.StubAuthenticationFetcher(stubJwtTokenValidator);
     }
 
@@ -66,10 +69,6 @@ public class BaseControllerIT {
     public TokenValidator getJwtTokenValidator() {
         return new TestAuthUtils.StubAuthenticatedJwtTokenValidator();
     }
-
-    @Inject
-    @Client("/")
-    RxHttpClient client;
 
     @BeforeAll
     public void setup() {
@@ -123,7 +122,7 @@ public class BaseControllerIT {
 
         assertThatThrownBy(() ->
                 client.exchange(HttpRequest.POST("/api/v1/base",
-                baseReq), BaseReq.class).blockingFirst()).isInstanceOf(
+                        baseReq), BaseReq.class).blockingFirst()).isInstanceOf(
                 HttpClientResponseException.class).hasMessage("Unauthorized");
     }
 

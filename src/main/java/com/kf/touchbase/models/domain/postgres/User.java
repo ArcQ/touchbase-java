@@ -16,20 +16,17 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="tb_user")
+@Table(name = "tb_user")
 public class User extends TouchBasePostgresDomain {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
-    private UUID id;
-
     @CreationTimestamp
     protected LocalDateTime createdAt;
-
     @UpdateTimestamp
     protected LocalDateTime updatedAt;
-
-    @Column(name="auth_key")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private UUID id;
+    @Column(name = "auth_key")
     private String authKey;
 
     private String username;
@@ -49,11 +46,11 @@ public class User extends TouchBasePostgresDomain {
         if (user.getUsername() != null) {
             this.setUsername(email);
         }
-        this.username = (user.getUsername() == null)  ? this.username : user.getUsername();
-        this.email = (user.getEmail() == null)  ? this.email : user.getEmail();
-        this.firstName = (user.getFirstName() == null)  ? this.firstName : user.getFirstName();
-        this.lastName = (user.getLastName() == null)  ? this.lastName : user.getLastName();
-        this.imageUrl = (user.getImageUrl() == null)  ? this.imageUrl : user.getImageUrl();
+        this.username = (user.getUsername() == null) ? this.username : user.getUsername();
+        this.email = (user.getEmail() == null) ? this.email : user.getEmail();
+        this.firstName = (user.getFirstName() == null) ? this.firstName : user.getFirstName();
+        this.lastName = (user.getLastName() == null) ? this.lastName : user.getLastName();
+        this.imageUrl = (user.getImageUrl() == null) ? this.imageUrl : user.getImageUrl();
 
         return this;
     }

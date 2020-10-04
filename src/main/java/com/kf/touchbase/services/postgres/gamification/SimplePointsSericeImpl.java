@@ -15,9 +15,16 @@ public class SimplePointsSericeImpl implements PointsService {
     double LUCKY_MULTIPLER = 1.5;
     double LUCKY_CHANCE = 0.05;
 
+    @Override
+    public Reward calculateReward(RewardableAction rewardableAction) {
+        var rewardMultipler = RewardMultiplier.getOne();
+        var reward = rewardableAction.getScoreReward() * RewardMultiplier.getOne().getVal();
+        return new Reward(reward, rewardMultipler);
+    }
+
     @Getter
     @AllArgsConstructor
-    public static enum RewardMultiplier{
+    public enum RewardMultiplier {
         NONE(1), THIRTY_PERCENT(1.3), FIFTY_PERCENT(1.5), ONE_HUNDRED_PERCENT(2);
 
         double val;
@@ -41,12 +48,5 @@ public class SimplePointsSericeImpl implements PointsService {
     public static class Reward {
         final double scoreReward;
         final RewardMultiplier rewardMultiplier;
-    }
-
-    @Override
-    public Reward calculateReward(RewardableAction rewardableAction) {
-        var rewardMultipler = RewardMultiplier.getOne();
-        var reward = rewardableAction.getScoreReward() * RewardMultiplier.getOne().getVal();
-        return new Reward(reward, rewardMultipler);
     }
 }

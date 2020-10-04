@@ -20,7 +20,8 @@ public class BaseInviteServiceImpl implements BaseJoinService {
     }
 
     @Override
-    public BaseJoin createBaseJoin(String adminAuthKey, BaseJoin baseJoin) throws SecurityException {
+    public BaseJoin createBaseJoin(String adminAuthKey, BaseJoin baseJoin)
+            throws SecurityException {
         return null;
     }
 
@@ -30,7 +31,8 @@ public class BaseInviteServiceImpl implements BaseJoinService {
     }
 
     @Override
-    public Success deleteBaseJoin(String requesterAuthKey, String baseJoinId) throws SecurityException {
+    public Success deleteBaseJoin(String requesterAuthKey, String baseJoinId)
+            throws SecurityException {
         return null;
     }
 }

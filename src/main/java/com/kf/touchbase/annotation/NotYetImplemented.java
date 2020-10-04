@@ -16,4 +16,5 @@ import java.lang.annotation.Target;
 @Around
 @Type(NotYetImplementedInterceptor.class)
 @Internal
-public @interface NotYetImplemented {}
+public @interface NotYetImplemented {
+}

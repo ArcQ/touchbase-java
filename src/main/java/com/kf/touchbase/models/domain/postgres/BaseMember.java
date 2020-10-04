@@ -11,7 +11,7 @@ import javax.persistence.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="base_member")
+@Entity(name = "base_member")
 @EqualsAndHashCode(callSuper = true)
 public class BaseMember extends TouchBasePostgresDomain {
 

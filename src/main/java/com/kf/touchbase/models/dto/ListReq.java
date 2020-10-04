@@ -3,7 +3,6 @@ package com.kf.touchbase.models.dto;
 import lombok.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @ToString

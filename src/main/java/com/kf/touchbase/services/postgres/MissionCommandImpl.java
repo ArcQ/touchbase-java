@@ -17,7 +17,7 @@ public class MissionCommandImpl {
     MissionRepository missionRepository;
 
     //twice a week
-//    @Scheduled(cron = "0 12 0 0 1,4")
+    //    @Scheduled(cron = "0 12 0 0 1,4")
     void executeTwiceAWeek() {
         log.info("Twice a week job: {}",
                 new SimpleDateFormat("dd/M/yyyy hh:mm:ss").format(new Date()));
@@ -25,18 +25,18 @@ public class MissionCommandImpl {
 
     //weekly
     //    @Scheduled(cron = "0 12 0 0 2")
-//    void setMissions() {
-//        LOG.info("Starting to set missions | once a week job: {}",
-//                new SimpleDateFormat("dd/M/yyyy hh:mm:ss").format(new Date()));
-//        Pageable pageRequest = Pageable.from(0, 200);
-//        Page<User> onePage = userRepository.findAll(pageRequest);
-//
-//        while (!onePage.isEmpty()) {
-//            pageRequest = pageRequest.next();
-//            onePage.forEach(user ->);
-//            onePage = userRepository.findAll(pageRequest);
-//        }
-//    }
+    //    void setMissions() {
+    //        LOG.info("Starting to set missions | once a week job: {}",
+    //                new SimpleDateFormat("dd/M/yyyy hh:mm:ss").format(new Date()));
+    //        Pageable pageRequest = Pageable.from(0, 200);
+    //        Page<User> onePage = userRepository.findAll(pageRequest);
+    //
+    //        while (!onePage.isEmpty()) {
+    //            pageRequest = pageRequest.next();
+    //            onePage.forEach(user ->);
+    //            onePage = userRepository.findAll(pageRequest);
+    //        }
+    //    }
 
     Mission addProgress() {
         return null;

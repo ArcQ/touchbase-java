@@ -46,8 +46,9 @@ public class BaseController {
     @Post("/")
     @ExecuteOn(TaskExecutors.IO)
     @Produces(MediaType.APPLICATION_JSON)
-//    @Transactional
-    public Single<HttpResponse<Base>> postBase(Authentication authentication, @Body BaseReq baseReq) {
+    //    @Transactional
+    public Single<HttpResponse<Base>> postBase(Authentication authentication,
+                                               @Body BaseReq baseReq) {
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
                 .flatMapMaybe(userRepository::findByAuthKey)
                 .switchIfEmpty(Single.error(AuthenticationException::new))
@@ -68,59 +69,59 @@ public class BaseController {
                 .flatMapMaybe((authKey) -> baseRepository.findIfMember(baseId, authKey));
     }
 
-//    @Patch("/{baseId}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @ExecuteOn(TaskExecutors.IO)
-//    public Base patchBase(UUID baseId, @Body BaseReq baseReq) {
-//        var adminKey = SecurityUtils.getCurrentAuthKey();
-//        var base = baseMapper.toEntity(baseReq);
-//        var existingBase = findIfMemberAdmin(adminKey, baseId);
-//        existingBase.mergeInNotNull(base);
-//        return baseRepository.save(existingBase);
-//    }
-//
-//    @Delete("/{baseId}/members")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @NotYetImplemented
-//    @Operation(description = "Not Implemented Yet")
-//    @ExecuteOn(TaskExecutors.IO)
-//    public Base addMembers(UUID baseId,
-//                           @Body ListReq<MemberReq> userIds) {
-//        var adminKey = SecurityUtils.getCurrentAuthKey();
-//        var existingBase = findIfMemberAdmin(adminKey, baseId);
-//        return existingBase;
-//    }
-//
-//    @Delete("/{baseId}/members")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @NotYetImplemented
-//    @Operation(description = "Not Implemented Yet")
-//    @ExecuteOn(TaskExecutors.IO)
-//    public Base removeMembers(UUID baseId,
-//                              @Body ListReq<UUID> userIds) {
-//        var adminKey = SecurityUtils.getCurrentAuthKey();
-//        var existingBase = findIfMemberAdmin(adminKey, baseId);
-//        userIds.getList().forEach(existingBase::removeMember);
-//        baseRepository.save(existingBase);
-//        return existingBase;
-//    }
-//
-//    @Delete("/{baseId}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @NotYetImplemented
-//    @Operation(description = "Not Implemented Yet")
-//    @ExecuteOn(TaskExecutors.IO)
-//    public Success makeBaseInactive(UUID baseId) {
-//        var adminKey = SecurityUtils.getCurrentAuthKey();
-//        var existingBase = findIfMemberAdmin(adminKey, baseId);
-//        existingBase.setActive(false);
-//        baseRepository.save(existingBase);
-//        return new Success();
-//    }
-//
-//    private Base findIfMemberAdmin(String adminAuthKey, UUID baseId) {
-//        return baseRepository.findIfMemberAdmin(baseId, adminAuthKey)
-//                .orElseThrow(() -> new SecurityException(String.format("%s not allowed",
-//                        adminAuthKey)));
-//    }
+    //    @Patch("/{baseId}")
+    //    @Produces(MediaType.APPLICATION_JSON)
+    //    @ExecuteOn(TaskExecutors.IO)
+    //    public Base patchBase(UUID baseId, @Body BaseReq baseReq) {
+    //        var adminKey = SecurityUtils.getCurrentAuthKey();
+    //        var base = baseMapper.toEntity(baseReq);
+    //        var existingBase = findIfMemberAdmin(adminKey, baseId);
+    //        existingBase.mergeInNotNull(base);
+    //        return baseRepository.save(existingBase);
+    //    }
+    //
+    //    @Delete("/{baseId}/members")
+    //    @Produces(MediaType.APPLICATION_JSON)
+    //    @NotYetImplemented
+    //    @Operation(description = "Not Implemented Yet")
+    //    @ExecuteOn(TaskExecutors.IO)
+    //    public Base addMembers(UUID baseId,
+    //                           @Body ListReq<MemberReq> userIds) {
+    //        var adminKey = SecurityUtils.getCurrentAuthKey();
+    //        var existingBase = findIfMemberAdmin(adminKey, baseId);
+    //        return existingBase;
+    //    }
+    //
+    //    @Delete("/{baseId}/members")
+    //    @Produces(MediaType.APPLICATION_JSON)
+    //    @NotYetImplemented
+    //    @Operation(description = "Not Implemented Yet")
+    //    @ExecuteOn(TaskExecutors.IO)
+    //    public Base removeMembers(UUID baseId,
+    //                              @Body ListReq<UUID> userIds) {
+    //        var adminKey = SecurityUtils.getCurrentAuthKey();
+    //        var existingBase = findIfMemberAdmin(adminKey, baseId);
+    //        userIds.getList().forEach(existingBase::removeMember);
+    //        baseRepository.save(existingBase);
+    //        return existingBase;
+    //    }
+    //
+    //    @Delete("/{baseId}")
+    //    @Produces(MediaType.APPLICATION_JSON)
+    //    @NotYetImplemented
+    //    @Operation(description = "Not Implemented Yet")
+    //    @ExecuteOn(TaskExecutors.IO)
+    //    public Success makeBaseInactive(UUID baseId) {
+    //        var adminKey = SecurityUtils.getCurrentAuthKey();
+    //        var existingBase = findIfMemberAdmin(adminKey, baseId);
+    //        existingBase.setActive(false);
+    //        baseRepository.save(existingBase);
+    //        return new Success();
+    //    }
+    //
+    //    private Base findIfMemberAdmin(String adminAuthKey, UUID baseId) {
+    //        return baseRepository.findIfMemberAdmin(baseId, adminAuthKey)
+    //                .orElseThrow(() -> new SecurityException(String.format("%s not allowed",
+    //                        adminAuthKey)));
+    //    }
 }

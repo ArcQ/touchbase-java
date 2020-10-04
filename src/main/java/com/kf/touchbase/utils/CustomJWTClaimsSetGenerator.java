@@ -20,7 +20,8 @@ public class CustomJWTClaimsSetGenerator extends JWTClaimsSetGenerator {
     public CustomJWTClaimsSetGenerator(TokenConfiguration tokenConfiguration,
                                        @Nullable JwtIdGenerator jwtIdGenerator,
                                        @Nullable ClaimsAudienceProvider claimsAudienceProvider,
-                                       @Nullable ApplicationConfiguration applicationConfiguration) {
+                                       @Nullable
+                                               ApplicationConfiguration applicationConfiguration) {
         super(tokenConfiguration, jwtIdGenerator, claimsAudienceProvider, applicationConfiguration);
     }
 

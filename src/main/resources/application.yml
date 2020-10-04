@@ -13,9 +13,9 @@ micronaut:
       log-level: TRACE
   router:
     static-resources:
-        swagger:
-            paths: classpath:META-INF/swagger
-            mapping: /swagger/**
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
   security:
     enabled: true
     token:

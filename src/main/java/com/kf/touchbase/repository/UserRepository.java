@@ -14,7 +14,9 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends RxJavaCrudRepository<User, UUID> {
 
-    List<User> findByUsernameContainsOrFirstNameContainsOrLastNameContains(String queryUsername, String queryFirstName, String queryFullName);
+    List<User> findByUsernameContainsOrFirstNameContainsOrLastNameContains(String queryUsername,
+                                                                           String queryFirstName,
+                                                                           String queryFullName);
 
     Optional<User> findByUsername(String username);
 

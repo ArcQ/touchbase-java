@@ -18,17 +18,20 @@ public class BaseRequestServiceImpl implements BaseJoinService {
     }
 
     @Override
-    public BaseJoin createBaseJoin(String requesterAuthKey, BaseJoin baseJoin) throws SecurityException {
+    public BaseJoin createBaseJoin(String requesterAuthKey, BaseJoin baseJoin)
+            throws SecurityException {
         return null;
     }
 
     @Override
-    public Success acceptBaseJoin(String requesterAuthKey, BaseJoin baseJoin) throws SecurityException {
+    public Success acceptBaseJoin(String requesterAuthKey, BaseJoin baseJoin)
+            throws SecurityException {
         return null;
     }
 
     @Override
-    public Success deleteBaseJoin(String requesterAuthKey, String baseJoinId) throws SecurityException {
+    public Success deleteBaseJoin(String requesterAuthKey, String baseJoinId)
+            throws SecurityException {
         return null;
     }
 }

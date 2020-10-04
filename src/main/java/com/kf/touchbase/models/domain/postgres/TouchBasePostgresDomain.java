@@ -15,17 +15,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @MappedSuperclass
 public abstract class TouchBasePostgresDomain {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
-    private UUID id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User creator;
-
     @CreationTimestamp
     protected LocalDateTime createdAt;
-
     @UpdateTimestamp
     protected LocalDateTime updatedAt;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private UUID id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User creator;
 }
