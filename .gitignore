@@ -1,1 +1,16 @@
-.DS_STORE
+Thumbs.db
+.DS_Store
+.gradle
+build/
+runtime/
+target/
+out/
+.idea
+*.iml
+*.ipr
+*.iws
+.project
+.settings
+.classpath
+/src/main/resources/application-remote-dev.yml
+/src/main/resources/application-prod.yml
