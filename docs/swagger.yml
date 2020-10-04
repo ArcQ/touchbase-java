@@ -142,6 +142,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+  /api/v1/user:
+    post:
+      summary: Create user
+      operationId: postUser
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserReq'
+        required: true
+      responses:
+        default:
+          description: postUser default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
 components:
   schemas:
     TouchBasePostgresDomain:
@@ -318,6 +336,22 @@ components:
       type: object
       properties:
         name:
+          type: string
+        imageUrl:
+          type: string
+    UserReq:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        score:
+          type: number
+          format: double
+        firstName:
+          type: string
+        lastName:
           type: string
         imageUrl:
           type: string
