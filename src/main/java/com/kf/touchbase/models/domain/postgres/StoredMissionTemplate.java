@@ -7,16 +7,20 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.util.UUID;
 
 @Data
 @SuperBuilder(toBuilder = true)
 @ToString
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode()
 @NoArgsConstructor
 @Entity(name = "mission_template")
-public class StoredMissionTemplate extends TouchBasePostgresDomain {
+public class StoredMissionTemplate {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private UUID id;
     @Embedded
     private MissionTemplate storedMissionTemplate;
 }

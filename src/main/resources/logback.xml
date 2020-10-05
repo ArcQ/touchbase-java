@@ -20,4 +20,15 @@
     </logger>
     <logger name="io.micronaut.http.client" level="debug"/>
     <!--    <logger name="io.netty" level="TRACE"/>-->
+    <!-- ### log just the SQL ### -->
+    <logger name="org.hibernate.SQL" level="DEBUG"/>
+
+    <!-- ### log JDBC bind parameters ### -->
+    <logger name="org.hibernate.type" level="TRACE"/>
+
+    <logger name="org.hibernate.tool.hbm2ddl" level="DEBUG"/>
+
+    <root level="ERROR">
+        <appender-ref ref="STDOUT"/>
+    </root>
 </configuration>

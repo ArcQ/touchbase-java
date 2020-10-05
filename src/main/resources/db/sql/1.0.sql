@@ -5,7 +5,7 @@ create table tb_user
             primary key,
     created_at timestamp,
     updated_at timestamp,
-    auth_key   varchar(255),
+    auth_key   varchar(255) NOT NULL UNIQUE,
     email      varchar(255),
     first_name varchar(255),
     image_url  varchar(255),
