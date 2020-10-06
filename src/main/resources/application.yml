@@ -43,7 +43,36 @@ jackson:
 aws:
   sns:
     region: usa-east-1
-    topic: touchbase-topic
+    topic: TouchbaseSNSTopic
     topics:
       test:
-        topic: touchbase-topic-test
+        topic: TouchbaseSNSTopicTest
+  sqs:
+    region: usa-east-1
+    # related to service behaviour
+    autoCreateQueue: false
+    cache: false
+
+    # related to default queue
+    queue: TouchbaseQueue
+    fifo: true
+    delaySeconds: 0
+    messageRetentionPeriod: 345600
+    maximumMessageSize: 262144
+    visibilityTimeout: 30
+
+    queues:
+      test:
+        queue: TouchbaseQueueTest
+
+kafka:
+  health.enabled: false
+  bootstrap:
+    servers: pkc-4nym6.us-east-1.aws.confluent.cloud:9092
+  security.protocol: SASL_SSL
+  sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="6ODF77U6UIWD5XSA" password="QaAVBLnNwMmI63udv4lQYnaIyEglBgjgCo0fcnXKDpIsY6GDG0k4a+jlHw4t4pYe";
+  ssl.endpoint.identification.algorithm: https
+  sasl.mechanism: PLAIN
+  producers:
+    default:
+      retries: 5

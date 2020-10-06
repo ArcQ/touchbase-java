@@ -1,5 +1,5 @@
 ---
-micronaut:openapi.config.file: openapi-dev.properties
+#micronaut:openapi.config.file: openapi-dev.properties
 datasources:
   default:
     url: ${JDBC_URL:`jdbc:postgresql://localhost:5432`}/touchbase

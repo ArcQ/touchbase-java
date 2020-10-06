@@ -3,6 +3,7 @@ package com.kf.touchbase.rest;
 import com.kf.touchbase.mappers.UserMapper;
 import com.kf.touchbase.models.domain.postgres.User;
 import com.kf.touchbase.repository.UserRepository;
+import com.kf.touchbase.services.EventsPublisher;
 import com.kf.touchbase.testUtils.TestAuthUtils;
 import com.kf.touchbase.testUtils.TestObjectFactory;
 import com.kf.touchbase.testUtils.TestRestUtils;
@@ -18,6 +19,7 @@ import io.micronaut.security.token.TokenAuthenticationFetcher;
 import io.micronaut.security.token.validator.TokenValidator;
 import io.micronaut.test.annotation.MicronautTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -26,6 +28,7 @@ import java.util.UUID;
 
 import static com.kf.touchbase.testUtils.TestAuthUtils.AUTHED_USER;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 
 /**
@@ -43,6 +46,8 @@ public class UserControllerIT {
     private UserMapper userMapper;
     @Inject
     private UserRepository userRepository;
+    @Inject
+    private EventsPublisher eventsPublisher;
 
     @Replaces(TokenAuthenticationFetcher.class)
     @Bean
@@ -54,6 +59,11 @@ public class UserControllerIT {
     @Bean
     public TokenValidator getJwtTokenValidator() {
         return new TestAuthUtils.StubAuthenticatedJwtTokenValidator();
+    }
+
+    @BeforeEach
+    public void setup() {
+        eventsPublisher = mock(EventsPublisher.class);
     }
 
     @AfterEach

@@ -1,9 +1,11 @@
 package com.kf.touchbase.rest;
 
 import com.kf.touchbase.mappers.UserMapper;
+import com.kf.touchbase.models.domain.postgres.Event;
 import com.kf.touchbase.models.domain.postgres.User;
 import com.kf.touchbase.models.dto.UserReq;
 import com.kf.touchbase.repository.UserRepository;
+import com.kf.touchbase.services.EventsPublisher;
 import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.annotation.*;
 import io.micronaut.scheduling.TaskExecutors;
@@ -23,6 +25,7 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final EventsPublisher eventsPublisher;
 
     //    @Get("/{?query}")
     //    @Produces(MediaType.APPLICATION_JSON)
@@ -51,6 +54,7 @@ public class UserController {
     @ExecuteOn(TaskExecutors.IO)
     public Single<User> postUser(Authentication authentication, @Body UserReq userReq) {
         var newUser = userMapper.userReqToUser(userReq);
+        eventsPublisher.publishMessage("create user", new Event(newUser));
         //TODO, if update username or email, should update cognito as well
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
                 .flatMapMaybe(userRepository::findByAuthKey)
