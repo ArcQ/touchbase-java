@@ -70,6 +70,7 @@ dependencies {
 
     implementation 'com.agorapulse:micronaut-aws-sdk-sns:1.3.7.1'
     implementation 'com.agorapulse:micronaut-aws-sdk-sqs:1.3.7.1'
+    implementation 'com.agorapulse:micronaut-aws-sdk-s3:1.3.7.1'
     implementation("io.micronaut.kafka:micronaut-kafka")
 
     annotationProcessor "javax.persistence:javax.persistence-api:2.2"

@@ -64,6 +64,13 @@ aws:
     queues:
       test:
         queue: TouchbaseQueueTest
+  s3:
+    region: usa-east-1
+    bucket: touchbase
+
+    buckets:
+      test:
+        bucket: test-bucket
 
 kafka:
   health.enabled: false

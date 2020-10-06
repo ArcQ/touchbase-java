@@ -9,6 +9,8 @@ import com.kf.touchbase.models.domain.postgres.User;
 import com.kf.touchbase.models.dto.BaseReq;
 import com.kf.touchbase.models.dto.UserReq;
 import com.nimbusds.jwt.JWTClaimsSet;
+import io.micronaut.security.authentication.Authentication;
+import io.micronaut.security.token.jwt.validator.AuthenticationJWTClaimsSetAdapter;
 import org.assertj.core.api.Condition;
 
 import java.util.LinkedHashMap;
@@ -23,6 +25,10 @@ public class TestObjectFactory {
     public static String USERNAME = "arcq";
     public static String EMAIL = "tony.stark@gmail.com";
     public static String AUTH_KEY = "710f7b05-8911-4285-98f9-2cc292352e36";
+
+    public static Authentication authentication =
+            new AuthenticationJWTClaimsSetAdapter(createJwtClaimsSet());
+
     public static Condition<LinkedHashMap> testObjectUser =
             new Condition<>((LinkedHashMap linkedHashMap) -> linkedHashMap.get("id") != null
                     && linkedHashMap.get("authKey").equals(AUTH_KEY)
