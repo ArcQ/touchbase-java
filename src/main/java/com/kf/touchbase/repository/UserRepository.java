@@ -4,6 +4,7 @@ import com.kf.touchbase.models.domain.postgres.User;
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.repository.reactive.RxJavaCrudRepository;
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 import javax.inject.Singleton;
 import java.util.List;
@@ -23,6 +24,8 @@ public interface UserRepository extends RxJavaCrudRepository<User, UUID> {
     Optional<User> findByEmail(String email);
 
     Maybe<User> findByAuthKey(String authKey);
+
+    Single<User> update(User user);
 
     Optional<User> findAllById(List<UUID> uuids);
 }

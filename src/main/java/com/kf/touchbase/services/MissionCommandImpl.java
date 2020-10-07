@@ -27,7 +27,7 @@ public class MissionCommandImpl {
    }
 
     //twice a week
-    @Scheduled(cron = "0 12 0 0 1,4")
+    @Scheduled(cron = "0 30 4 1/1 * ?")
     void setMissions() {
         log.info("Twice a week job: {}",
                 new SimpleDateFormat("dd/M/yyyy hh:mm:ss").format(new Date()));

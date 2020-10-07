@@ -71,15 +71,3 @@ aws:
     buckets:
       test:
         bucket: test-bucket
-
-kafka:
-  health.enabled: false
-  bootstrap:
-    servers: ${KAFKA_HOST}:9092
-  security.protocol: SASL_SSL
-  sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username=${KAFKA_USER} password=${KAFKA_PASSWORD};
-  ssl.endpoint.identification.algorithm: https
-  sasl.mechanism: PLAIN
-  producers:
-    default:
-      retries: 5

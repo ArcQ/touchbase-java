@@ -48,17 +48,48 @@ public class UserController {
                 .switchIfEmpty(Single.error(AuthenticationException::new));
     }
 
-    @Post
-    @Patch
     @Operation(summary = "Create user")
     @ExecuteOn(TaskExecutors.IO)
+    @Post
     public Single<User> postUser(Authentication authentication, @Body UserReq userReq) {
         var newUser = userMapper.userReqToUser(userReq);
+        eventsPublisher.publishMessage("create user", new Event(newUser));
+        //TODO, if update username or email, should update cognito as well
+        return createOrUpdateUser(authentication, newUser);
+    }
+
+    @Operation(summary = "Create user")
+    @ExecuteOn(TaskExecutors.IO)
+    @Patch
+    public Single<User> patchUser(Authentication authentication, @Body UserReq userReq) {
+        var newUser = userMapper.userReqToUser(userReq);
+        return createOrUpdateUser(authentication, newUser);
+    }
+
+    private Single<User> createOrUpdateUser(Authentication authentication, User newUser) {
         eventsPublisher.publishMessage("create user", new Event(newUser));
         //TODO, if update username or email, should update cognito as well
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
                 .flatMapMaybe(userRepository::findByAuthKey)
                 .switchIfEmpty(AuthUtils.buildNewUser(authentication))
-                .flatMap(userSingle -> userRepository.save(userSingle.merge(newUser)));
+                .flatMap(user -> {
+                    if (user.getId() == null) {
+                        return userRepository.save(user.merge(newUser));
+                    }
+                    return userRepository.update(user.merge(newUser));
+                });
     }
+
+//    @Operation(summary = "Create user")
+//    @ExecuteOn(TaskExecutors.IO)
+//    @Post
+//    public Single<User> postUser(Authentication authentication, @Body UserReq userReq) {
+//        var newUser = userMapper.userReqToUser(userReq);
+////        eventsPublisher.publishMessage("create user", new Event(newUser));
+//        //TODO, if update username or email, should update cognito as well
+//        return AuthUtils.getAuthKeyFromAuthRx(authentication)
+//                .flatMapMaybe(userRepository::findByAuthKey)
+//                .switchIfEmpty(AuthUtils.buildNewUser(authentication))
+//                .flatMap(userSingle -> userRepository.save(userSingle.merge(newUser)));
+//    }
 }

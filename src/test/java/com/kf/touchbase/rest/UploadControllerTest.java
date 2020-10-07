@@ -5,16 +5,10 @@ import com.kf.touchbase.models.domain.postgres.Base;
 import com.kf.touchbase.models.dto.SignedUrlRes;
 import com.kf.touchbase.testUtils.TestObjectFactory;
 import com.kf.touchbase.testUtils.TestRestUtils;
-import io.micronaut.context.annotation.Requires;
-import io.micronaut.http.client.RxHttpClient;
-import io.micronaut.http.client.annotation.Client;
 import io.micronaut.security.authentication.Authentication;
-import io.micronaut.test.annotation.MicronautTest;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 
-import javax.inject.Inject;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,23 +23,15 @@ import static org.mockito.Mockito.when;
 /**
  * Integration tests for the {@Link BaseResource} REST controller.
  */
-@MicronautTest(transactional = false)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Requires(env = "test")
 public class UploadControllerTest {
-
-    @Inject
-    @Client("/")
-    RxHttpClient client;
 
     private UploadController uploadController;
 
-    @Inject
     private SimpleStorageService simpleStorageService;
 
     private Authentication authentication = TestObjectFactory.authentication;
 
-    @BeforeAll
+    @BeforeEach
     public void setup() {
         simpleStorageService = mock(SimpleStorageService.class);
         when(simpleStorageService.generatePresignedUrl(eq("testKey"), any(Date.class))).thenReturn(

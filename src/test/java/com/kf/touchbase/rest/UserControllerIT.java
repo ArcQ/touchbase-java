@@ -95,31 +95,21 @@ public class UserControllerIT {
                 .isEqualTo(userRepository.findByAuthKey(TestObjectFactory.AUTH_KEY).blockingGet());
     }
 
-    //    @Test
-    //    public void updateUserThenGet() throws Exception {
-    //        int databaseSizeBeforeCreate = userRepository.findAll().size();
-    //
-    //        UserReq userReq = TestObjectFactory.Dto.createUserReq();
-    //
-    //        HttpResponse<UserReq> response = client.exchange(HttpRequest.PATCH("/api/v1/users",
-    //        userReq)
-    //                , UserReq.class).blockingFirst();
-    //
-    //        assertThat(response.status().getCode()).isEqualTo(HttpStatus.ACCEPTED.getCode());
-    //
-    //        List<User> result = client.retrieve(HttpRequest.GET("/api/users?eagerload=true"),
-    //                Argument.listOf(User.class)).blockingFirst();
-    //
-    //        assertThat(result).hasSize(databaseSizeBeforeCreate + 1);
-    //
-    //        User resultUser = result.get(0);
-    //        assertThat(resultUser.getCreatedAt()).isEqualTo(DEFAULT_CREATED_DATE);
-    //        assertThat(resultUser.getUpdatedAt()).isEqualTo(DEFAULT_LAST_MODIFIED_DATE);
-    //        assertThat(resultUser.getName()).isEqualTo(DEFAULT_NAME);
-    //        assertThat(resultUser.getScore()).isEqualTo(DEFAULT_SCORE);
-    //        assertThat(resultUser.getImageUrl()).isEqualTo(DEFAULT_IMAGE_URL);
-    //        assertThat(resultUser.isActive()).isEqualTo(DEFAULT_IS_ACTIVE);
-    //    }
+        @Test
+        public void updateUser() throws Exception {
+            var user = TestObjectFactory.Domain.createUser();
+            user.setId(null);
+            userRepository.save(user).blockingGet();
+
+            var result = client.retrieve(HttpRequest.PATCH("/api/v1/user",
+                    TestObjectFactory.Dto.createUserReq()).bearerAuth(AUTHED_USER),
+                    Argument.of(User.class)).blockingFirst();
+
+            assertThat(result)
+                    .usingRecursiveComparison()
+                    .ignoringFields("id")
+                    .isEqualTo(userRepository.findByAuthKey(TestObjectFactory.AUTH_KEY).blockingGet());
+        }
 
     //    @Test
     //    public void updateNonExistingUser() throws Exception {

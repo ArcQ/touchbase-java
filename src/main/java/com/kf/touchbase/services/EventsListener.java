@@ -8,7 +8,7 @@ import io.reactivex.Single;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@KafkaListener(groupId = "touchbaseCore", threads = 5)
+@KafkaListener(groupId = "touchbaseCore", threads = 1)
 public class EventsListener {
 
     @Topic("chatpi")

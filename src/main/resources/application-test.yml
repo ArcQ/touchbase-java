@@ -23,7 +23,6 @@ swagger-ui.enabled: false
 #  datasources:
 #    default:
 #      change-log: 'classpath:db/liquibase-changelog.yml'
-
 jpa:
   default:
     properties:
@@ -37,3 +36,12 @@ jpa:
     packages-to-scan:
       - 'com.kf.touchbase.models.domain.postgres'
       - 'com.kf.touchbase.repository'
+
+kafka:
+  bootstrap:
+    servers: localhost:${random.port}
+  embedded:
+    enabled: true
+    topics:
+    - touchbase-app
+    - chatpi
