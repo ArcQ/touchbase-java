@@ -44,4 +44,5 @@ kafka:
     enabled: true
     topics:
     - touchbase-app
+    - chatpi-out
     - chatpi

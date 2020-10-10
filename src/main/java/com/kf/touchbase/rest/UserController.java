@@ -1,11 +1,11 @@
 package com.kf.touchbase.rest;
 
 import com.kf.touchbase.mappers.UserMapper;
-import com.kf.touchbase.models.domain.postgres.Event;
+import com.kf.touchbase.models.domain.event.UserEvent;
 import com.kf.touchbase.models.domain.postgres.User;
 import com.kf.touchbase.models.dto.UserReq;
 import com.kf.touchbase.repository.UserRepository;
-import com.kf.touchbase.services.EventsPublisher;
+import com.kf.touchbase.services.TouchbaseEventPublisher;
 import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.annotation.*;
 import io.micronaut.scheduling.TaskExecutors;
@@ -25,7 +25,7 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final EventsPublisher eventsPublisher;
+    private final TouchbaseEventPublisher touchbaseEventPublisher;
 
     //    @Get("/{?query}")
     //    @Produces(MediaType.APPLICATION_JSON)
@@ -53,12 +53,11 @@ public class UserController {
     @Post
     public Single<User> postUser(Authentication authentication, @Body UserReq userReq) {
         var newUser = userMapper.userReqToUser(userReq);
-        eventsPublisher.publishMessage("create user", new Event(newUser));
         //TODO, if update username or email, should update cognito as well
         return createOrUpdateUser(authentication, newUser);
     }
 
-    @Operation(summary = "Create user")
+    @Operation(summary = "Update user")
     @ExecuteOn(TaskExecutors.IO)
     @Patch
     public Single<User> patchUser(Authentication authentication, @Body UserReq userReq) {
@@ -67,29 +66,16 @@ public class UserController {
     }
 
     private Single<User> createOrUpdateUser(Authentication authentication, User newUser) {
-        eventsPublisher.publishMessage("create user", new Event(newUser));
         //TODO, if update username or email, should update cognito as well
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
                 .flatMapMaybe(userRepository::findByAuthKey)
                 .switchIfEmpty(AuthUtils.buildNewUser(authentication))
                 .flatMap(user -> {
+                    touchbaseEventPublisher.publishEvent(new UserEvent(user));
                     if (user.getId() == null) {
                         return userRepository.save(user.merge(newUser));
                     }
                     return userRepository.update(user.merge(newUser));
                 });
     }
-
-//    @Operation(summary = "Create user")
-//    @ExecuteOn(TaskExecutors.IO)
-//    @Post
-//    public Single<User> postUser(Authentication authentication, @Body UserReq userReq) {
-//        var newUser = userMapper.userReqToUser(userReq);
-////        eventsPublisher.publishMessage("create user", new Event(newUser));
-//        //TODO, if update username or email, should update cognito as well
-//        return AuthUtils.getAuthKeyFromAuthRx(authentication)
-//                .flatMapMaybe(userRepository::findByAuthKey)
-//                .switchIfEmpty(AuthUtils.buildNewUser(authentication))
-//                .flatMap(userSingle -> userRepository.save(userSingle.merge(newUser)));
-//    }
 }

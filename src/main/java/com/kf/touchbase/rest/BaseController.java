@@ -2,11 +2,13 @@ package com.kf.touchbase.rest;
 
 import com.kf.touchbase.mappers.BaseMapper;
 import com.kf.touchbase.models.domain.Role;
+import com.kf.touchbase.models.domain.event.ChatEntityEvent;
 import com.kf.touchbase.models.domain.postgres.Base;
 import com.kf.touchbase.models.dto.BaseReq;
 import com.kf.touchbase.models.dto.ListRes;
 import com.kf.touchbase.repository.BaseRepository;
 import com.kf.touchbase.repository.UserRepository;
+import com.kf.touchbase.services.TouchbaseEventPublisher;
 import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
@@ -31,6 +33,7 @@ public class BaseController {
     private final BaseRepository baseRepository;
     private final UserRepository userRepository;
     private final BaseMapper baseMapper;
+    private final TouchbaseEventPublisher touchbaseEventPublisher;
 
     @Get("/")
     @ExecuteOn(TaskExecutors.IO)
@@ -56,6 +59,7 @@ public class BaseController {
                     var base = baseMapper.toEntity(baseReq);
                     base.setCreator(creator);
                     base.addMember(creator, Role.ADMIN);
+                    touchbaseEventPublisher.publishEvent(new ChatEntityEvent(base));
                     return baseRepository.save(base);
                 })
                 .flatMap((savedBase) -> Single.just(HttpResponse.created(savedBase)));

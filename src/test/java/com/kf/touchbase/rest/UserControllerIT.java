@@ -3,7 +3,7 @@ package com.kf.touchbase.rest;
 import com.kf.touchbase.mappers.UserMapper;
 import com.kf.touchbase.models.domain.postgres.User;
 import com.kf.touchbase.repository.UserRepository;
-import com.kf.touchbase.services.EventsPublisher;
+import com.kf.touchbase.services.TouchbaseEventPublisher;
 import com.kf.touchbase.testUtils.TestAuthUtils;
 import com.kf.touchbase.testUtils.TestObjectFactory;
 import com.kf.touchbase.testUtils.TestRestUtils;
@@ -47,7 +47,7 @@ public class UserControllerIT {
     @Inject
     private UserRepository userRepository;
     @Inject
-    private EventsPublisher eventsPublisher;
+    private TouchbaseEventPublisher touchbaseEventPublisher;
 
     @Replaces(TokenAuthenticationFetcher.class)
     @Bean
@@ -63,7 +63,7 @@ public class UserControllerIT {
 
     @BeforeEach
     public void setup() {
-        eventsPublisher = mock(EventsPublisher.class);
+        touchbaseEventPublisher = mock(TouchbaseEventPublisher.class);
     }
 
     @AfterEach

@@ -1,5 +1,6 @@
 package com.kf.touchbase.rest;
 
+import com.kf.touchbase.models.domain.event.ChatEntityEvent;
 import com.kf.touchbase.models.domain.postgres.Base;
 import com.kf.touchbase.models.domain.postgres.BaseMember;
 import com.kf.touchbase.models.domain.postgres.User;
@@ -8,9 +9,12 @@ import com.kf.touchbase.models.dto.ListReq;
 import com.kf.touchbase.repository.BaseMemberRepository;
 import com.kf.touchbase.repository.BaseRepository;
 import com.kf.touchbase.repository.UserRepository;
+import com.kf.touchbase.services.EventPublisher;
 import com.kf.touchbase.testUtils.TestAuthUtils;
+import com.kf.touchbase.testUtils.TestBeanUtils;
 import com.kf.touchbase.testUtils.TestObjectFactory;
 import com.kf.touchbase.testUtils.TestRestUtils;
+import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
@@ -24,14 +28,14 @@ import io.micronaut.security.filters.AuthenticationFetcher;
 import io.micronaut.security.token.TokenAuthenticationFetcher;
 import io.micronaut.security.token.validator.TokenValidator;
 import io.micronaut.test.annotation.MicronautTest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 
 import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.UUID;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.TimeUnit;
 
 import static com.kf.touchbase.testUtils.TestAuthUtils.AUTHED_USER;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,6 +49,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 //@Property(name = "micronaut.security.enabled", value = "false")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Requires(env = "test")
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class BaseControllerIT {
 
     @Inject
@@ -53,10 +58,20 @@ public class BaseControllerIT {
     @Inject
     private BaseRepository baseRepository;
     @Inject
+    private ApplicationContext applicationContext;
+    @Inject
     private BaseMemberRepository baseMemberRepository;
     @Inject
     private UserRepository userRepository;
     private User user;
+
+    private BlockingQueue<TestBeanUtils.EventWithKey> messages = new LinkedBlockingDeque<>();
+
+    @Replaces(EventPublisher.class)
+    @Bean
+    public TestBeanUtils.StubTouchbaseEventPublisher stubEventsPublisher() {
+        return new TestBeanUtils.StubTouchbaseEventPublisher(messages);
+    }
 
     @Replaces(TokenAuthenticationFetcher.class)
     @Bean
@@ -81,10 +96,11 @@ public class BaseControllerIT {
     public void cleanUpTest() {
         baseMemberRepository.deleteAll().blockingAwait();
         baseRepository.deleteAll().blockingAwait();
+        //        chatpiListener.getMessages().clear();
     }
 
     @Test
-    public void createBaseAndThenGet() {
+    public void create_base_and_then_get_should_be_correct() throws InterruptedException {
         int databaseSizeBeforeCreate = baseRepository.findAll().count().blockingGet().intValue();
 
         var baseReq = TestObjectFactory.Dto.createBaseReq();
@@ -100,6 +116,15 @@ public class BaseControllerIT {
 
         var expectedResult = TestObjectFactory.Domain.createBase();
 
+        var bodyOfMessage = messages.poll(2, TimeUnit.SECONDS);
+
+        assertThat(bodyOfMessage.getKey()).isEqualTo("upsert-chat-entity");
+
+        var event = (ChatEntityEvent) bodyOfMessage.getEvent().getData();
+
+        assertThat(event.getEntity()).usingRecursiveComparison().ignoringFieldsMatchingRegexes(
+                "(.*?)createdAt", "(.*?)updatedAt", "(.*?)id", "chats", "members").isEqualTo(expectedResult);
+
         assertThat(result.getList()).hasSize(databaseSizeBeforeCreate + 1);
 
         Base resultBase = (Base) result.getList().get(0);
@@ -113,7 +138,7 @@ public class BaseControllerIT {
     }
 
     @Test
-    public void testUnAuthorized() {
+    public void create_base_and_then_get_should_fail() {
         var user = TestObjectFactory.Domain.createUser();
         user.setId(null);
         userRepository.save(user);
@@ -195,7 +220,7 @@ public class BaseControllerIT {
     //    }
 
     @Test
-    public void equalsVerifier() throws Exception {
+    public void equals_verifier_should_match_all_conditions() throws Exception {
         UUID uuid1 = UUID.randomUUID();
         UUID uuid2 = UUID.randomUUID();
         TestRestUtils.equalsVerifier(Base.class);

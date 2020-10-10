@@ -1,4 +1,4 @@
-package com.kf.touchbase.models.domain.postgres;
+package com.kf.touchbase.models.domain.event;
 
 import lombok.ToString;
 import lombok.Value;
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Value
 @ToString
-public class Event {
+public class Event<T> {
 
     String publisher = "touchbase";
 
@@ -15,7 +15,7 @@ public class Event {
 
     Object data;
 
-    public Event(Object data) {
+    public Event(T data) {
         this.publishedAt = LocalDateTime.now();
         this.data = data;
     }

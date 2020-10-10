@@ -7,7 +7,6 @@ import com.kf.touchbase.testUtils.TestAuthUtils;
 import com.kf.touchbase.testUtils.TestObjectFactory;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Replaces;
-import io.micronaut.context.annotation.Requires;
 import io.micronaut.http.client.RxHttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.security.filters.AuthenticationFetcher;
@@ -23,7 +22,6 @@ import javax.inject.Inject;
 @MicronautTest(transactional = false)
 //@Property(name = "micronaut.security.enabled", value = "false")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Requires(env = "test")
 class MissionControllerTest {
 
     @Inject
