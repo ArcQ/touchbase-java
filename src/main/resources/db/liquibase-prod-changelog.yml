@@ -1,7 +1,0 @@
-databaseChangeLog:
-  - includeAll:
-      path: sql
-      relativeToChangelogFile: true
-  - includeAll:
-      path: seed/dev
-      relativeToChangelogFile: true

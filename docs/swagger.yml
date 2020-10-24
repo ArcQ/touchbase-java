@@ -131,6 +131,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Base'
+  /api/v1/upload/signed-url:
+    get:
+      operationId: upload
+      parameters:
+      - name: key
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: upload default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignedUrlRes'
   /api/v1/user/me:
     get:
       operationId: getMe
@@ -160,38 +176,55 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+    patch:
+      summary: Update user
+      operationId: patchUser
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserReq'
+        required: true
+      responses:
+        default:
+          description: patchUser default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
 components:
   schemas:
     TouchBasePostgresDomain:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-          nullable: true
-        creator:
-          $ref: '#/components/schemas/User'
         createdAt:
           type: string
           format: date-time
         updatedAt:
           type: string
           format: date-time
+        id:
+          type: string
+          format: uuid
+          nullable: true
+        creator:
+          $ref: '#/components/schemas/User'
     User:
       allOf:
       - $ref: '#/components/schemas/TouchBasePostgresDomain'
       - type: object
         properties:
-          id:
-            type: string
-            format: uuid
-            nullable: true
           createdAt:
             type: string
             format: date-time
           updatedAt:
             type: string
             format: date-time
+          id:
+            type: string
+            format: uuid
+            nullable: true
           authKey:
             type: string
           username:
@@ -238,14 +271,14 @@ components:
     Mission:
       type: object
       properties:
+        createdAt:
+          type: string
+          format: date-time
         id:
           type: string
           format: uuid
           nullable: true
         startedAt:
-          type: string
-          format: date-time
-        createdAt:
           type: string
           format: date-time
         assignedUser:
@@ -338,6 +371,11 @@ components:
         name:
           type: string
         imageUrl:
+          type: string
+    SignedUrlRes:
+      type: object
+      properties:
+        url:
           type: string
     UserReq:
       type: object

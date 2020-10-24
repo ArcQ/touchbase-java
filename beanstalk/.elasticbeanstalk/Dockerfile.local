@@ -1,0 +1,2 @@
+FROM 670564539270.dkr.ecr.us-east-1.amazonaws.com/touchbase-core:latest
+EXPOSE 8080
