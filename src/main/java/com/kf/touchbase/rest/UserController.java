@@ -1,7 +1,7 @@
 package com.kf.touchbase.rest;
 
 import com.kf.touchbase.mappers.UserMapper;
-import com.kf.touchbase.models.domain.event.UserEvent;
+import com.kf.touchbase.models.domain.event.UserEventData;
 import com.kf.touchbase.models.domain.postgres.User;
 import com.kf.touchbase.models.dto.UserReq;
 import com.kf.touchbase.repository.UserRepository;
@@ -71,7 +71,7 @@ public class UserController {
                 .flatMapMaybe(userRepository::findByAuthKey)
                 .switchIfEmpty(AuthUtils.buildNewUser(authentication))
                 .flatMap(user -> {
-                    touchbaseEventPublisher.publishEvent(new UserEvent(user));
+                    touchbaseEventPublisher.publishEvent(new UserEventData(user));
                     if (user.getId() == null) {
                         return userRepository.save(user.merge(newUser));
                     }

@@ -44,7 +44,7 @@ public class Base extends TouchBasePostgresDomain {
     @OneToMany(mappedBy = "base", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"id", "base"})
     @Builder.Default
-    private Set<Chat> chats = new LinkedHashSet();
+    private Set<Chat> chats = new LinkedHashSet<>();
 
     public void mergeInNotNull(Base base) {
         name = (base.name == null) ? name : base.name;

@@ -2,7 +2,7 @@ package com.kf.touchbase.rest;
 
 import com.kf.touchbase.mappers.BaseMapper;
 import com.kf.touchbase.models.domain.Role;
-import com.kf.touchbase.models.domain.event.ChatEntityEvent;
+import com.kf.touchbase.models.domain.event.ChatEntityEventData;
 import com.kf.touchbase.models.domain.postgres.Base;
 import com.kf.touchbase.models.dto.BaseReq;
 import com.kf.touchbase.models.dto.ListRes;
@@ -59,7 +59,7 @@ public class BaseController {
                     var base = baseMapper.toEntity(baseReq);
                     base.setCreator(creator);
                     base.addMember(creator, Role.ADMIN);
-                    touchbaseEventPublisher.publishEvent(new ChatEntityEvent(base));
+                    touchbaseEventPublisher.publishEvent(new ChatEntityEventData(base));
                     return baseRepository.save(base);
                 })
                 .flatMap((savedBase) -> Single.just(HttpResponse.created(savedBase)));

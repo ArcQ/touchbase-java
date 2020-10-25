@@ -1,6 +1,6 @@
 package com.kf.touchbase.rest;
 
-import com.kf.touchbase.models.domain.event.ChatEntityEvent;
+import com.kf.touchbase.models.domain.event.ChatEntityEventData;
 import com.kf.touchbase.models.domain.postgres.Base;
 import com.kf.touchbase.models.domain.postgres.BaseMember;
 import com.kf.touchbase.models.domain.postgres.User;
@@ -120,7 +120,7 @@ public class BaseControllerIT {
 
         assertThat(bodyOfMessage.getKey()).isEqualTo("upsert-chat-entity");
 
-        var event = (ChatEntityEvent) bodyOfMessage.getEvent().getData();
+        var event = (ChatEntityEventData) bodyOfMessage.getEvent().getData();
 
         assertThat(event.getEntity()).usingRecursiveComparison().ignoringFieldsMatchingRegexes(
                 "(.*?)createdAt", "(.*?)updatedAt", "(.*?)id", "chats", "members").isEqualTo(expectedResult);

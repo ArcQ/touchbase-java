@@ -6,7 +6,7 @@ import com.kf.touchbase.models.domain.Success;
 import com.kf.touchbase.models.domain.postgres.BaseJoin;
 import com.kf.touchbase.models.domain.postgres.BaseJoinAction;
 import com.kf.touchbase.models.dto.BaseJoinReq;
-import com.kf.touchbase.services.BaseJoinService;
+import com.kf.touchbase.services.basejoin.BaseJoinService;
 import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
@@ -19,7 +19,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Named;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Controller("/api/v1/baseJoin")
@@ -33,15 +32,6 @@ public class BaseJoinController {
     private final BaseJoinService baseRequestService;
 
     private final BaseJoinMapper baseJoinMapper;
-
-    @Get("/me")
-    @Produces(MediaType.APPLICATION_JSON)
-    @NotYetImplemented
-    @Operation(description = "Not Implemented Yet")
-    @ExecuteOn(TaskExecutors.IO)
-    public List<BaseJoin> getBases(Authentication authentication) {
-        return baseInviteService.findByAdmin(AuthUtils.getAuthKeyFromAuth(authentication));
-    }
 
     @Post
     @Produces(MediaType.APPLICATION_JSON)

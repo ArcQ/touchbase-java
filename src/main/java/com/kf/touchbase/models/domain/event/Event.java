@@ -7,13 +7,13 @@ import java.time.LocalDateTime;
 
 @Value
 @ToString
-public class Event<T> {
+public class Event<T extends EventData> {
 
     String publisher = "touchbase";
 
     LocalDateTime publishedAt;
 
-    Object data;
+    T data;
 
     public Event(T data) {
         this.publishedAt = LocalDateTime.now();

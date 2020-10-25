@@ -1,4 +1,4 @@
-package com.kf.touchbase.services;
+package com.kf.touchbase.services.basejoin;
 
 import com.kf.touchbase.models.domain.Success;
 import com.kf.touchbase.models.domain.postgres.BaseJoin;

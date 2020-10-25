@@ -1,10 +1,12 @@
 package com.kf.touchbase.models.domain.event;
 
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
 
 @Value
 @ToString
-public class ChatEntityEvent {
+@EqualsAndHashCode(callSuper = false)
+public class ChatEntityEventData extends EventData {
     Object entity;
 }
