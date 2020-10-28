@@ -3,7 +3,7 @@ package com.kf.touchbase.models.domain.postgres;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Data
 @SuperBuilder(toBuilder = true)
@@ -13,6 +13,14 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 @Entity
 public class BaseJoin extends TouchBasePostgresDomain {
-    String baseId;
+    @ManyToOne
+    @JoinColumn(name = "base_id", updatable = false)
+    Base base;
+
+    @ManyToOne
+    @JoinColumn(name = "joining_user_auth_key", referencedColumnName = "auth_key")
+    User joiningUser;
+
+    @Enumerated(EnumType.STRING)
     BaseJoinAction baseJoinAction;
 }

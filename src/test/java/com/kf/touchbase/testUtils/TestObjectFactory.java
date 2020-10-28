@@ -2,10 +2,9 @@ package com.kf.touchbase.testUtils;
 
 import com.kf.touchbase.models.domain.MissionTemplate;
 import com.kf.touchbase.models.domain.Role;
-import com.kf.touchbase.models.domain.postgres.Base;
-import com.kf.touchbase.models.domain.postgres.Mission;
-import com.kf.touchbase.models.domain.postgres.StoredMissionTemplate;
-import com.kf.touchbase.models.domain.postgres.User;
+import com.kf.touchbase.models.domain.postgres.*;
+import com.kf.touchbase.models.dto.BaseJoinListRes;
+import com.kf.touchbase.models.dto.BaseJoinReq;
 import com.kf.touchbase.models.dto.BaseReq;
 import com.kf.touchbase.models.dto.UserReq;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -14,6 +13,7 @@ import io.micronaut.security.token.jwt.validator.AuthenticationJWTClaimsSetAdapt
 import org.assertj.core.api.Condition;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class TestObjectFactory {
@@ -25,17 +25,25 @@ public class TestObjectFactory {
     public static String USERNAME = "arcq";
     public static String EMAIL = "tony.stark@gmail.com";
     public static String AUTH_KEY = "710f7b05-8911-4285-98f9-2cc292352e36";
+    public static UUID BASE_UUID = UUID.randomUUID();
+    public static UUID BASE_INVITE_UUID = UUID.randomUUID();
+    public static UUID BASE_REQUEST_UUID = UUID.randomUUID();
 
     public static Authentication authentication =
             new AuthenticationJWTClaimsSetAdapter(createJwtClaimsSet());
 
     public static Condition<LinkedHashMap> testObjectUser =
             new Condition<>((LinkedHashMap linkedHashMap) -> linkedHashMap.get("id") != null
-                    && linkedHashMap.get("authKey").equals(AUTH_KEY)
-                    && linkedHashMap.get("email").equals(EMAIL)
-                    && linkedHashMap.get("firstName").equals(FIRST_NAME)
-                    && linkedHashMap.get("lastName").equals(LAST_NAME)
-                    && linkedHashMap.get("username").equals(USERNAME), "response matches " +
+                    && linkedHashMap.get("authKey")
+                    .equals(AUTH_KEY)
+                    && linkedHashMap.get("email")
+                    .equals(EMAIL)
+                    && linkedHashMap.get("firstName")
+                    .equals(FIRST_NAME)
+                    && linkedHashMap.get("lastName")
+                    .equals(LAST_NAME)
+                    && linkedHashMap.get("username")
+                    .equals(USERNAME), "response matches " +
                     "testObject user");
 
     public static JWTClaimsSet createJwtClaimsSet() {
@@ -89,7 +97,7 @@ public class TestObjectFactory {
         public static Base createBase() {
             User user = createUser();
             Base base = Base.builder()
-                    .id(UUID.randomUUID())
+                    .id(BASE_UUID)
                     .name(BASE_NAME)
                     .score(0.0)
                     .imageUrl(IMAGE_URL)
@@ -97,6 +105,40 @@ public class TestObjectFactory {
                     .build();
             base.addMember(user, Role.ADMIN);
             return base;
+        }
+
+        public static BaseJoin createBaseInviteJoin() {
+            User user = createUser();
+            Base base = createBase();
+            return BaseJoin.builder()
+                    .id(BASE_INVITE_UUID)
+                    .base(base)
+                    .joiningUser(user)
+                    .baseJoinAction(BaseJoinAction.Invite)
+                    .creator(user)
+                    .build();
+        }
+
+        public static BaseJoin createBaseRequestJoin() {
+            User user = createUser();
+            Base base = createBase();
+            return BaseJoin.builder()
+                    .id(BASE_INVITE_UUID)
+                    .base(base)
+                    .joiningUser(user)
+                    .baseJoinAction(BaseJoinAction.Invite)
+                    .creator(user)
+                    .build();
+        }
+
+        public static BaseMember createBaseMember() {
+            var creator = createUser();
+            return BaseMember.builder()
+                    .base(createBase())
+                    .user(creator)
+                    .creator(creator)
+                    .role(Role.ADMIN)
+                    .build();
         }
     }
 
@@ -113,6 +155,19 @@ public class TestObjectFactory {
             userReq.setUsername(USERNAME);
             userReq.setImageUrl(IMAGE_URL);
             return userReq;
+        }
+
+        public static BaseJoinListRes createBaseJoinListRes() {
+            var requestsList = List.of(Domain.createBaseInviteJoin());
+            var invitesList = List.of(Domain.createBaseRequestJoin());
+            return new BaseJoinListRes(requestsList, invitesList);
+        }
+
+        public static BaseJoinReq createBaseJoinListReq() {
+            User user = Domain.createUser();
+            Base base = Domain.createBase();
+            base.addMember(user, Role.ADMIN);
+            return new BaseJoinReq(BASE_UUID.toString(), AUTH_KEY, BaseJoinAction.Invite);
         }
     }
 }

@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -17,15 +18,19 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "tb_user")
-public class User extends TouchBasePostgresDomain {
+public class User extends TouchBasePostgresDomain implements Serializable {
+
     @CreationTimestamp
     protected LocalDateTime createdAt;
+
     @UpdateTimestamp
     protected LocalDateTime updatedAt;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private UUID id;
+
     @Column(name = "auth_key")
     private String authKey;
 
@@ -53,5 +58,17 @@ public class User extends TouchBasePostgresDomain {
         this.imageUrl = (user.getImageUrl() == null) ? this.imageUrl : user.getImageUrl();
 
         return this;
+    }
+
+    public static User fromId(UUID userId) {
+        var user = new User();
+        user.setId(userId);
+        return user;
+    }
+
+    public static User fromAuthKey(String authKey) {
+        var user = new User();
+        user.setAuthKey(authKey);
+        return user;
     }
 }

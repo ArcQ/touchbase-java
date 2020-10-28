@@ -27,5 +27,5 @@ public interface UserRepository extends RxJavaCrudRepository<User, UUID> {
 
     Single<User> update(User user);
 
-    Optional<User> findAllById(List<UUID> uuids);
+    Maybe<User> findAllById(UUID uuid);
 }

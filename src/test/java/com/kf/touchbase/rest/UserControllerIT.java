@@ -2,6 +2,7 @@ package com.kf.touchbase.rest;
 
 import com.kf.touchbase.mappers.UserMapper;
 import com.kf.touchbase.models.domain.postgres.User;
+import com.kf.touchbase.models.dto.UserReq;
 import com.kf.touchbase.repository.UserRepository;
 import com.kf.touchbase.services.TouchbaseEventPublisher;
 import com.kf.touchbase.testUtils.TestAuthUtils;
@@ -24,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.UUID;
 
 import static com.kf.touchbase.testUtils.TestAuthUtils.AUTHED_USER;
@@ -68,17 +70,21 @@ public class UserControllerIT {
 
     @AfterEach
     public void cleanUpTest() {
-        userRepository.deleteAll().blockingAwait();
+        userRepository.deleteAll()
+                .blockingAwait();
     }
 
     @Test
     public void getMe() {
         var user = TestObjectFactory.Domain.createUser();
         user.setId(null);
-        userRepository.save(user).blockingGet();
+        userRepository.save(user)
+                .blockingGet();
 
-        var result = client.retrieve(HttpRequest.GET("/api/v1/user/me").bearerAuth(AUTHED_USER),
-                Argument.of(User.class)).blockingFirst();
+        var result = client.retrieve(HttpRequest.GET("/api/v1/user/me")
+                        .bearerAuth(AUTHED_USER),
+                Argument.of(User.class))
+                .blockingFirst();
 
         assertThat(result).isEqualTo(user);
     }
@@ -86,72 +92,68 @@ public class UserControllerIT {
     @Test
     public void createUser() {
         var result = client.retrieve(HttpRequest.POST("/api/v1/user",
-                TestObjectFactory.Dto.createUserReq()).bearerAuth(AUTHED_USER),
-                Argument.of(User.class)).blockingFirst();
+                TestObjectFactory.Dto.createUserReq())
+                        .bearerAuth(AUTHED_USER),
+                Argument.of(User.class))
+                .blockingFirst();
 
         assertThat(result)
                 .usingRecursiveComparison()
                 .ignoringFields("id")
-                .isEqualTo(userRepository.findByAuthKey(TestObjectFactory.AUTH_KEY).blockingGet());
+                .isEqualTo(userRepository.findByAuthKey(TestObjectFactory.AUTH_KEY)
+                        .blockingGet());
     }
 
-        @Test
-        public void updateUser() throws Exception {
-            var user = TestObjectFactory.Domain.createUser();
-            user.setId(null);
-            userRepository.save(user).blockingGet();
+    @Test
+    public void updateUser() {
+        var user = TestObjectFactory.Domain.createUser();
+        user.setId(null);
+        userRepository.save(user)
+                .blockingGet();
 
-            var result = client.retrieve(HttpRequest.PATCH("/api/v1/user",
-                    TestObjectFactory.Dto.createUserReq()).bearerAuth(AUTHED_USER),
-                    Argument.of(User.class)).blockingFirst();
+        var result = client.retrieve(HttpRequest.PUT("/api/v1/user",
+                TestObjectFactory.Dto.createUserReq())
+                        .bearerAuth(AUTHED_USER),
+                Argument.of(User.class))
+                .blockingFirst();
 
-            assertThat(result)
-                    .usingRecursiveComparison()
-                    .ignoringFields("id")
-                    .isEqualTo(userRepository.findByAuthKey(TestObjectFactory.AUTH_KEY).blockingGet());
-        }
+        assertThat(result)
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(userRepository.findByAuthKey(TestObjectFactory.AUTH_KEY)
+                        .blockingGet());
+    }
 
-    //    @Test
-    //    public void updateNonExistingUser() throws Exception {
-    //        int databaseSizeBeforeUpdate = userRepository.findAll().size();
-    //
-    //        // Create the User
-    //        UserReq userReq = TestObjectFactory.Dto.createUserReq();
-    //
-    //        // If the entity doesn't have an ID, it will throw BadRequestAlertException
-    //        @SuppressWarnings("unchecked")
-    //        HttpResponse<UserReq> response = client.exchange(HttpRequest.PUT("/api/users",
-    //        userReq), UserReq.class)
-    //                .onErrorReturn(t -> (HttpResponse<UserReq>) ((HttpClientResponseException)
-    //                t).getResponse()).blockingFirst();
-    //
-    //        assertThat(response.status().getCode()).isEqualTo(HttpStatus.BAD_REQUEST.getCode());
-    //
-    //        // Validate the User in the database
-    //        List<User> userList = userRepository.findAll();
-    //        assertThat(userList).hasSize(databaseSizeBeforeUpdate);
-    //    }
-    //
-    //        @Test
-    //        public void deleteUser() throws Exception {
-    //            userRepository.saveAndFlush(user);
-    //
-    //            int databaseSizeBeforeDelete = userRepository.findAll().size();
-    //
-    //            // Delete the user
-    //            @SuppressWarnings("unchecked")
-    //            HttpResponse<UserReq> response = client.exchange(HttpRequest.DELETE
-    //            ("/api/users/" + user.getId()), UserReq.class)
-    //                    .onErrorReturn(t -> (HttpResponse<UserReq>) (
-    //                    (HttpClientResponseException) t).getResponse()).blockingFirst();
-    //
-    //            assertThat(response.status().getCode()).isEqualTo(HttpStatus.NO_CONTENT.getCode
-    //            ());
-    //
-    //            // Validate the database is now empty
-    //            List<User> userList = userRepository.findAll();
-    //            assertThat(userList).hasSize(databaseSizeBeforeDelete - 1);
-    //        }
+    @Test
+    public void update_nonExistingUserShouldCreate() {
+        int databaseSizeBeforeUpdate = userRepository.findAll()
+                .toList()
+                .blockingGet()
+                .size();
+
+        // Create the User
+        UserReq userReq = TestObjectFactory.Dto.createUserReq();
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        @SuppressWarnings("unchecked")
+        var result = client.retrieve(HttpRequest.POST("/api/v1/user",
+                TestObjectFactory.Dto.createUserReq())
+                        .bearerAuth(AUTHED_USER),
+                Argument.of(User.class))
+                .blockingFirst();
+
+        assertThat(result)
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(userRepository.findByAuthKey(TestObjectFactory.AUTH_KEY)
+                        .blockingGet());
+
+        // Validate the User in the database
+        List<User> userList = userRepository.findAll()
+                .toList()
+                .blockingGet();
+        assertThat(userList).hasSize(databaseSizeBeforeUpdate + 1);
+    }
 
     @Test
     public void equalsVerifier() throws Exception {

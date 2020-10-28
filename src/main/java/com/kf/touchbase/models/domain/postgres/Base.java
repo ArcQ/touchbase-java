@@ -58,4 +58,10 @@ public class Base extends TouchBasePostgresDomain {
     public void removeMember(UUID userUuid) {
         this.members.removeIf((baseMember) -> baseMember.getUser().getId().equals(userUuid));
     }
+
+    public static Base fromId(UUID baseId) {
+        var base = new Base();
+        base.setId(baseId);
+        return base;
+    }
 }

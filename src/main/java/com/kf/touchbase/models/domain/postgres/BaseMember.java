@@ -23,10 +23,11 @@ public class BaseMember extends TouchBasePostgresDomain {
 
     @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name = "member_id", updatable = false)
+    @JoinColumn(name = "member_auth_key", updatable = false, referencedColumnName = "auth_key")
     @EqualsAndHashCode.Exclude
     private User user;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    @Builder.Default
+    private Role role = Role.MEMBER;
 }

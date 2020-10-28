@@ -41,7 +41,7 @@ public class BaseController {
     public Single<ListRes<Base>> getOwnBases(Authentication authentication) {
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
                 .toFlowable()
-                .flatMap(baseRepository::findAllByMembersUserAuthKey)
+                .flatMap(baseRepository::findAllByMemberUserAuthKey)
                 .toList()
                 .flatMap(ListRes::toSingle);
     }
@@ -50,8 +50,9 @@ public class BaseController {
     @ExecuteOn(TaskExecutors.IO)
     @Produces(MediaType.APPLICATION_JSON)
     //    @Transactional
-    public Single<HttpResponse<Base>> postBase(Authentication authentication,
-                                               @Body BaseReq baseReq) {
+    public Single<HttpResponse<Base>> postBase(
+            Authentication authentication,
+            @Body BaseReq baseReq) {
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
                 .flatMapMaybe(userRepository::findByAuthKey)
                 .switchIfEmpty(Single.error(AuthenticationException::new))
@@ -84,31 +85,6 @@ public class BaseController {
     //        return baseRepository.save(existingBase);
     //    }
     //
-    //    @Delete("/{baseId}/members")
-    //    @Produces(MediaType.APPLICATION_JSON)
-    //    @NotYetImplemented
-    //    @Operation(description = "Not Implemented Yet")
-    //    @ExecuteOn(TaskExecutors.IO)
-    //    public Base addMembers(UUID baseId,
-    //                           @Body ListReq<MemberReq> userIds) {
-    //        var adminKey = SecurityUtils.getCurrentAuthKey();
-    //        var existingBase = findIfMemberAdmin(adminKey, baseId);
-    //        return existingBase;
-    //    }
-    //
-    //    @Delete("/{baseId}/members")
-    //    @Produces(MediaType.APPLICATION_JSON)
-    //    @NotYetImplemented
-    //    @Operation(description = "Not Implemented Yet")
-    //    @ExecuteOn(TaskExecutors.IO)
-    //    public Base removeMembers(UUID baseId,
-    //                              @Body ListReq<UUID> userIds) {
-    //        var adminKey = SecurityUtils.getCurrentAuthKey();
-    //        var existingBase = findIfMemberAdmin(adminKey, baseId);
-    //        userIds.getList().forEach(existingBase::removeMember);
-    //        baseRepository.save(existingBase);
-    //        return existingBase;
-    //    }
     //
     //    @Delete("/{baseId}")
     //    @Produces(MediaType.APPLICATION_JSON)

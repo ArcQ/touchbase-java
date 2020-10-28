@@ -52,21 +52,19 @@ public class UserController {
     @ExecuteOn(TaskExecutors.IO)
     @Post
     public Single<User> postUser(Authentication authentication, @Body UserReq userReq) {
-        var newUser = userMapper.userReqToUser(userReq);
         //TODO, if update username or email, should update cognito as well
-        return createOrUpdateUser(authentication, newUser);
+        return AuthUtils.buildNewUser(authentication)
+                .flatMap(user -> {
+                    touchbaseEventPublisher.publishEvent(new UserEventData(user));
+                    return userRepository.save(user);
+                });
     }
 
     @Operation(summary = "Update user")
     @ExecuteOn(TaskExecutors.IO)
-    @Patch
-    public Single<User> patchUser(Authentication authentication, @Body UserReq userReq) {
+    @Put
+    public Single<User> putUser(Authentication authentication, @Body UserReq userReq) {
         var newUser = userMapper.userReqToUser(userReq);
-        return createOrUpdateUser(authentication, newUser);
-    }
-
-    private Single<User> createOrUpdateUser(Authentication authentication, User newUser) {
-        //TODO, if update username or email, should update cognito as well
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
                 .flatMapMaybe(userRepository::findByAuthKey)
                 .switchIfEmpty(AuthUtils.buildNewUser(authentication))

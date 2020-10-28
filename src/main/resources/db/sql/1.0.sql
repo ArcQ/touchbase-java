@@ -12,9 +12,9 @@ create table tb_user
     last_name  varchar(255),
     score      double precision,
     username   varchar(255),
-    creator_id uuid
-        constraint fk_base_user_creator_id
-            references tb_user
+    creator_auth_key varchar(255)
+        constraint fk_base_user_creator_auth_key
+            references tb_user (auth_key)
 );
 
 create table base
@@ -28,9 +28,9 @@ create table base
     is_active  boolean not null,
     name       varchar(255),
     score      double precision,
-    creator_id uuid
-        constraint fk_base_user_creator_id
-            references tb_user
+    creator_auth_key varchar(255)
+        constraint fk_base_user_creator_auth_key
+            references tb_user (auth_key)
 );
 
 create table base_member
@@ -41,28 +41,13 @@ create table base_member
     created_at timestamp,
     updated_at timestamp,
     role       varchar(255) not null,
-    creator_id uuid
-        constraint fk_base_member_tb_user_creator_id
-            references tb_user,
+    creator_auth_key       varchar(255)
+        constraint fk_base_member_tb_user_creator_auth_key
+            references tb_user (auth_key),
     base_id    uuid         not null
         constraint fk_base_member_base_base_id
             references base,
-    member_id  uuid         not null
-        constraint fk_base_member_tb_user_member_id
-            references tb_user
+    member_auth_key  varchar(255)         not null
+        constraint fk_base_member_tb_user_member_auth_key
+            references tb_user (auth_key)
 );
-
-create table base_join
-(
-    id               uuid not null
-        constraint base_join_pkey
-            primary key,
-    created_at       timestamp,
-    updated_at       timestamp,
-    base_id          varchar(255),
-    base_join_action integer,
-    creator_id       uuid
-        constraint fk_base_join_tb_user_creator_id
-            references tb_user
-);
-
