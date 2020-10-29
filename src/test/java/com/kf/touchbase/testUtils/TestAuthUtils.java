@@ -14,13 +14,10 @@ import javax.inject.Singleton;
 
 public class TestAuthUtils {
 
-    public static String AUTHED_USER = "authedUser";
+    public static String AUTH_TOKEN = "authedUser";
+    public static String AUTH_TOKEN_2 = "authedUser2";
 
     private TestAuthUtils() {
-    }
-
-    public AuthenticationFetcher stubAuthFetcher(StubJwtTokenValidator stubJwtTokenValidator) {
-        return new StubAuthenticationFetcher(stubJwtTokenValidator);
     }
 
     @AllArgsConstructor
@@ -30,34 +27,30 @@ public class TestAuthUtils {
 
         @Override
         public Publisher<Authentication> fetchAuthentication(HttpRequest<?> request) {
-            if (request.getHeaders().getAuthorization().isPresent()) {
-                return stubJwtTokenValidator.validateToken("");
-            }
-            return Flowable.empty();
-        }
-    }
-
-    @Singleton
-    public static class StubAuthenticatedJwtTokenValidator extends StubJwtTokenValidator {
-
-        public StubAuthenticatedJwtTokenValidator() {
-            super();
-            var jwtClaimsSet = TestObjectFactory.createJwtClaimsSet();
-
-            Authentication authentication = new AuthenticationJWTClaimsSetAdapter(jwtClaimsSet);
-            super.authentication = authentication;
+            return stubJwtTokenValidator.validateToken(request.getHeaders()
+                    .getAuthorization()
+                    .orElse("").replaceAll("Bearer ", ""));
         }
     }
 
     @NoArgsConstructor
-    @AllArgsConstructor
+    @Singleton
     public static class StubJwtTokenValidator implements TokenValidator {
-
-        Authentication authentication;
 
         @Override
         public Publisher<Authentication> validateToken(String token) {
-            return Flowable.just(authentication);
+            if (token.equals(AUTH_TOKEN)) {
+                var jwtClaimsSet = TestObjectFactory.createJwtClaimsSet();
+                Authentication authentication = new AuthenticationJWTClaimsSetAdapter(jwtClaimsSet);
+                return Flowable.just(authentication);
+            } else if (token.equals(AUTH_TOKEN_2)) {
+                var jwtClaimsSet2 = TestObjectFactory.createJwtClaimsSet2();
+                Authentication authentication2 =
+                        new AuthenticationJWTClaimsSetAdapter(jwtClaimsSet2);
+                return Flowable.just(authentication2);
+            } else {
+                return Flowable.empty();
+            }
         }
 
     }

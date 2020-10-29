@@ -1,24 +1,20 @@
 package com.kf.touchbase.services;
 
-import com.kf.touchbase.annotation.NotYetImplemented;
-import com.kf.touchbase.models.domain.postgres.*;
-import com.kf.touchbase.models.dto.BaseJoinAcceptReq;
+import com.kf.touchbase.models.domain.postgres.Base;
+import com.kf.touchbase.models.domain.postgres.BaseJoin;
+import com.kf.touchbase.models.domain.postgres.BaseJoinAction;
+import com.kf.touchbase.models.domain.postgres.BaseMember;
 import com.kf.touchbase.models.dto.BaseJoinListRes;
 import com.kf.touchbase.repository.BaseJoinRepository;
 import com.kf.touchbase.repository.BaseMemberRepository;
 import com.kf.touchbase.repository.BaseRepository;
 import com.kf.touchbase.repository.UserRepository;
-import io.micronaut.http.MediaType;
-import io.micronaut.http.annotation.Produces;
-import io.micronaut.scheduling.TaskExecutors;
-import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.authentication.AuthenticationException;
-import io.reactivex.Completable;
 import io.reactivex.Single;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Singleton;
+import java.util.Map;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -30,27 +26,20 @@ public class BaseMemberServiceImpl {
     private final BaseMemberRepository baseMemberRepository;
     private final UserRepository userRepository;
 
-    @Produces(MediaType.APPLICATION_JSON)
-    @NotYetImplemented
-    @Operation(description = "Not Implemented Yet")
-    @ExecuteOn(TaskExecutors.IO)
     public Single<BaseJoinListRes> getOwnBaseJoins(String requesterAuthKey) {
         return baseJoinRepository.findAllByUserAuthKeyAndBaseJoinAction(requesterAuthKey,
-                BaseJoinAction.Invite)
+                BaseJoinAction.Request.name())
                 .toList()
                 .zipWith(baseJoinRepository.findAllByUserAuthKeyAndBaseJoinAction(requesterAuthKey,
-                        BaseJoinAction.Request).toList(),
+                        BaseJoinAction.Invite.name())
+                                .toList(),
                         BaseJoinListRes::new);
     }
 
-    @Produces(MediaType.APPLICATION_JSON)
-    @NotYetImplemented
-    @Operation(description = "Not Implemented Yet")
-    @ExecuteOn(TaskExecutors.IO)
     public Single<BaseJoin> createBaseJoin(
             String requesterAuthKey,
             UUID baseId,
-            UUID userId,
+            String userAuthKey,
             BaseJoinAction baseJoinAction) {
         var baseSingle = (baseJoinAction.equals(BaseJoinAction.Invite))
                 ? baseRepository.findIfMemberAdmin(baseId, requesterAuthKey)
@@ -58,18 +47,14 @@ public class BaseMemberServiceImpl {
                 : Single.just(Base.fromId(baseId));
 
         return baseSingle
-                .flatMap((base) -> {
-                    var baseJoin = new BaseJoin(base, User.fromId(userId), baseJoinAction);
-                    return baseJoinRepository.save(baseJoin);
-                });
+                .zipWith(userRepository.findByAuthKey(userAuthKey)
+                        .toSingle(), Map::entry)
+                .flatMap((entry) -> baseJoinRepository.save(
+                        new BaseJoin(entry.getKey(), entry.getValue(), baseJoinAction)));
     }
 
-    @Produces(MediaType.APPLICATION_JSON)
-    @NotYetImplemented
-    @Operation(description = "Not Implemented Yet")
-    @ExecuteOn(TaskExecutors.IO)
-    public Single<BaseMember> acceptBaseJoin(String authKey, BaseJoinAcceptReq baseJoinAcceptReq) {
-        return baseJoinRepository.findById(baseJoinAcceptReq.getBaseJoinId())
+    public Single<BaseMember> acceptBaseJoin(String authKey, UUID baseJoinId) {
+        return baseJoinRepository.findById(baseJoinId)
                 .toSingle()
                 .flatMap((baseJoin) -> {
                     if (baseJoin.getJoiningUser()
@@ -92,30 +77,4 @@ public class BaseMemberServiceImpl {
                     );
                 });
     }
-
-    @Produces(MediaType.APPLICATION_JSON)
-    @NotYetImplemented
-    @Operation(description = "Not Implemented Yet")
-    @ExecuteOn(TaskExecutors.IO)
-    public Single<BaseMember> addMember(
-            UUID baseId,
-            String userAuthKey) {
-        return baseMemberRepository.save(BaseMember.builder()
-                .base(Base.fromId(baseId))
-                .user(User.fromAuthKey(userAuthKey))
-                .build());
-    }
-
-    @Produces(MediaType.APPLICATION_JSON)
-    @NotYetImplemented
-    @Operation(description = "Not Implemented Yet")
-    @ExecuteOn(TaskExecutors.IO)
-    public Completable removeMember(
-            UUID baseId,
-            String userAuthKey) {
-        return baseMemberRepository
-                .findByUserAuthKeyAndBaseId(userAuthKey, baseId)
-                .flatMapCompletable(baseMemberRepository::delete);
-    }
-
 }

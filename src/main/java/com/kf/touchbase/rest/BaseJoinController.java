@@ -1,14 +1,12 @@
 package com.kf.touchbase.rest;
 
-import com.kf.touchbase.annotation.NotYetImplemented;
 import com.kf.touchbase.models.domain.Success;
 import com.kf.touchbase.models.domain.postgres.BaseJoin;
 import com.kf.touchbase.models.domain.postgres.BaseMember;
-import com.kf.touchbase.models.dto.BaseJoinAcceptReq;
 import com.kf.touchbase.models.dto.BaseJoinListRes;
 import com.kf.touchbase.models.dto.BaseJoinReq;
+import com.kf.touchbase.repository.BaseJoinRepository;
 import com.kf.touchbase.services.BaseMemberServiceImpl;
-import com.kf.touchbase.services.basejoin.BaseJoinService;
 import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
@@ -17,13 +15,11 @@ import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
+import io.micronaut.security.authentication.AuthenticationException;
 import io.micronaut.security.rules.SecurityRule;
 import io.reactivex.Single;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
-import javax.inject.Named;
-import java.util.Map;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -31,63 +27,66 @@ import java.util.UUID;
 @Secured(SecurityRule.IS_AUTHENTICATED)
 public class BaseJoinController {
 
-    @Named("BaseInviteService")
-    private final BaseJoinService baseInviteService;
-
     private final BaseMemberServiceImpl baseMemberService;
+    private final BaseJoinRepository baseJoinRepository;
 
-    @Get
+    @Get("/")
     @Produces(MediaType.APPLICATION_JSON)
-    @NotYetImplemented
-    @Operation(description = "Not Implemented Yet")
     @ExecuteOn(TaskExecutors.IO)
     public Single<BaseJoinListRes> getOwnBaseJoins(Authentication authentication) {
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
                 .flatMap(baseMemberService::getOwnBaseJoins);
     }
 
-    @Post
+    @Post("/")
     @Produces(MediaType.APPLICATION_JSON)
-    @NotYetImplemented
-    @Operation(description = "Not Implemented Yet")
     @ExecuteOn(TaskExecutors.IO)
     public Single<HttpResponse<BaseJoin>> createBaseJoin(
             Authentication authentication,
             @Body BaseJoinReq baseJoinReq) {
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
                 .flatMap((authKey) -> baseMemberService
-                        .createBaseJoin(authKey, UUID.fromString(baseJoinReq.getBaseId()),
-                                UUID.fromString(baseJoinReq.getUserId()),
+                        .createBaseJoin(authKey, baseJoinReq.getBaseId(),
+                                baseJoinReq.getUserId(),
                                 baseJoinReq.getBaseJoinAction()))
                 .flatMap((baseJoin) -> Single.just(
                         HttpResponse.created(baseJoin)));
     }
 
-    @Post
+    @Post("/{baseJoinId}")
     @Produces(MediaType.APPLICATION_JSON)
-    @NotYetImplemented
-    @Operation(description = "Not Implemented Yet")
     @ExecuteOn(TaskExecutors.IO)
     public Single<HttpResponse<BaseMember>> acceptBaseJoin(
             Authentication authentication,
-            @Body BaseJoinAcceptReq baseJoinAcceptReq) {
+            UUID baseJoinId) {
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
-                .zipWith(Single.just(baseJoinAcceptReq), Map::entry)
-                .flatMap((entry) -> baseMemberService.acceptBaseJoin(entry.getKey(),
-                        entry.getValue()))
+                .flatMap((authKey) -> baseMemberService.acceptBaseJoin(authKey,
+                        baseJoinId))
                 .flatMap((baseMember) -> Single.just(
                         HttpResponse.created(baseMember)));
     }
 
-    @Delete("{baseId}")
+    @Delete("/{baseJoinId}")
     @Produces(MediaType.APPLICATION_JSON)
-    @NotYetImplemented
-    @Operation(description = "Not Implemented Yet")
     @ExecuteOn(TaskExecutors.IO)
-    public Success declineBaseJoin(
+    public Single<HttpResponse<Success>> declineBaseJoin(
             Authentication authentication,
-            String baseId) {
-        return baseInviteService.deleteBaseJoin(AuthUtils.getAuthKeyFromAuth(authentication),
-                baseId);
+            UUID baseJoinId) {
+        return AuthUtils.getAuthKeyFromAuthRx(authentication)
+                .zipWith(baseJoinRepository.findById(baseJoinId)
+                                .toSingle(),
+                        (authKey, baseJoin) -> {
+                            if (baseJoin.getJoiningUser()
+                                    .getAuthKey()
+                                    .equals(authKey) || baseJoin.getCreator()
+                                    .getAuthKey()
+                                    .equals(authKey)) {
+                                return baseJoinRepository.delete(baseJoin);
+                            }
+                            throw new AuthenticationException(
+                                    "User not allowed to decline base " +
+                                            "join");
+                        })
+                .flatMap((baseMember) -> Single.just( HttpResponse.ok(new Success())));
     }
 }

@@ -37,8 +37,10 @@ micronaut:
 jackson:
   serialization:
     write-dates-as-timestamps: false
+    fail-on-empty-beans: false
   deserialization:
     fail-on-unknown-properties: false
+    fail-on-empty-beans: false
 
 aws:
   sns:

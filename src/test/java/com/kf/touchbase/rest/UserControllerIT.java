@@ -28,7 +28,7 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.UUID;
 
-import static com.kf.touchbase.testUtils.TestAuthUtils.AUTHED_USER;
+import static com.kf.touchbase.testUtils.TestAuthUtils.AUTH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -60,7 +60,7 @@ public class UserControllerIT {
 
     @Bean
     public TokenValidator getJwtTokenValidator() {
-        return new TestAuthUtils.StubAuthenticatedJwtTokenValidator();
+        return new TestAuthUtils.StubJwtTokenValidator();
     }
 
     @BeforeEach
@@ -82,7 +82,7 @@ public class UserControllerIT {
                 .blockingGet();
 
         var result = client.retrieve(HttpRequest.GET("/api/v1/user/me")
-                        .bearerAuth(AUTHED_USER),
+                        .bearerAuth(AUTH_TOKEN),
                 Argument.of(User.class))
                 .blockingFirst();
 
@@ -93,7 +93,7 @@ public class UserControllerIT {
     public void createUser() {
         var result = client.retrieve(HttpRequest.POST("/api/v1/user",
                 TestObjectFactory.Dto.createUserReq())
-                        .bearerAuth(AUTHED_USER),
+                        .bearerAuth(AUTH_TOKEN),
                 Argument.of(User.class))
                 .blockingFirst();
 
@@ -113,7 +113,7 @@ public class UserControllerIT {
 
         var result = client.retrieve(HttpRequest.PUT("/api/v1/user",
                 TestObjectFactory.Dto.createUserReq())
-                        .bearerAuth(AUTHED_USER),
+                        .bearerAuth(AUTH_TOKEN),
                 Argument.of(User.class))
                 .blockingFirst();
 
@@ -138,7 +138,7 @@ public class UserControllerIT {
         @SuppressWarnings("unchecked")
         var result = client.retrieve(HttpRequest.POST("/api/v1/user",
                 TestObjectFactory.Dto.createUserReq())
-                        .bearerAuth(AUTHED_USER),
+                        .bearerAuth(AUTH_TOKEN),
                 Argument.of(User.class))
                 .blockingFirst();
 

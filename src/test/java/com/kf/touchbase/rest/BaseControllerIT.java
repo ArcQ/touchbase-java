@@ -37,7 +37,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 
-import static com.kf.touchbase.testUtils.TestAuthUtils.AUTHED_USER;
+import static com.kf.touchbase.testUtils.TestAuthUtils.AUTH_TOKEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -82,7 +82,7 @@ public class BaseControllerIT {
 
     @Bean
     public TokenValidator getJwtTokenValidator() {
-        return new TestAuthUtils.StubAuthenticatedJwtTokenValidator();
+        return new TestAuthUtils.StubJwtTokenValidator();
     }
 
     @BeforeAll
@@ -96,7 +96,6 @@ public class BaseControllerIT {
     public void cleanUpTest() {
         baseMemberRepository.deleteAll().blockingAwait();
         baseRepository.deleteAll().blockingAwait();
-        //        chatpiListener.getMessages().clear();
     }
 
     @Test
@@ -106,12 +105,12 @@ public class BaseControllerIT {
         var baseReq = TestObjectFactory.Dto.createBaseReq();
 
         var response = client.exchange(HttpRequest.POST("/api/v1/base",
-                baseReq).bearerAuth(AUTHED_USER), BaseReq.class).blockingFirst();
+                baseReq).bearerAuth(AUTH_TOKEN), BaseReq.class).blockingFirst();
 
         assertThat(response.status().getCode()).isEqualTo(HttpStatus.CREATED.getCode());
 
         var result =
-                client.retrieve(HttpRequest.GET("/api/v1/base").bearerAuth(AUTHED_USER),
+                client.retrieve(HttpRequest.GET("/api/v1/base").bearerAuth(AUTH_TOKEN),
                         Argument.of(ListReq.class, Base.class)).blockingFirst();
 
         var expectedResult = TestObjectFactory.Domain.createBase();
@@ -146,7 +145,7 @@ public class BaseControllerIT {
         var baseReq = TestObjectFactory.Dto.createBaseReq();
 
         assertThatThrownBy(() ->
-                client.exchange(HttpRequest.POST("/api/v1/base",
+                client.exchange(HttpRequest.POST("/api/v1/base?",
                         baseReq), BaseReq.class).blockingFirst()).isInstanceOf(
                 HttpClientResponseException.class).hasMessage("Unauthorized");
     }

@@ -5,11 +5,13 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
 
+import java.util.UUID;
+
 @Value
 @ToString
 @EqualsAndHashCode
 public class BaseJoinReq {
-    String baseId;
+    UUID baseId;
     String userId;
     BaseJoinAction baseJoinAction;
 }

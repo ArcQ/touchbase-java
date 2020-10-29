@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseJoinListRes {
-    List<BaseJoin> requestsList;
-    List<BaseJoin> invitesList;
+    List<BaseJoin> requestsList = List.of();
+    List<BaseJoin> invitesList = List.of();
 }

@@ -42,7 +42,7 @@ class MissionControllerTest {
 
     @Bean
     public TokenValidator getJwtTokenValidator() {
-        return new TestAuthUtils.StubAuthenticatedJwtTokenValidator();
+        return new TestAuthUtils.StubJwtTokenValidator();
     }
 
     @BeforeAll

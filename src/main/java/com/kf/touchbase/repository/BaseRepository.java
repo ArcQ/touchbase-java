@@ -17,12 +17,12 @@ public interface BaseRepository extends RxJavaCrudRepository<Base, UUID> {
             nativeQuery = true)
     Flowable<Base> findAllByMemberUserAuthKey(String userAuthKey);
 
-    @Query(value = "SELECT b.* FROM base b, base_member m, user u WHERE b.id=:baseId AND m" +
+    @Query(value = "SELECT b.* FROM base b, base_member m, tb_user u WHERE b.id=:baseId AND m" +
             ".base_id=:baseId AND m.member_auth_key=:userAuthKey AND u.auth_key=:userAuthKey",
             nativeQuery = true)
     Maybe<Base> findIfMember(UUID baseId, String userAuthKey);
 
-    @Query(value = "SELECT b.* FROM base b, base_member m, user u WHERE b.id = :baseId AND m" +
+    @Query(value = "SELECT b.* FROM base b, base_member m, tb_user u WHERE b.id = :baseId AND m" +
             ".base_id=b.id AND m.member_auth_key=:userAuthKey AND u.auth_key=:userAuthKey AND m" +
             ".role='ADMIN'",
             nativeQuery = true)
