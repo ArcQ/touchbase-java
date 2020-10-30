@@ -1,18 +1,18 @@
 package com.kf.touchbase.models.dto;
 
 import com.kf.touchbase.models.domain.postgres.BaseJoinAction;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.Value;
+import lombok.*;
 
 import java.util.UUID;
 
-@Value
+@Data
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class BaseJoinReq {
     UUID baseId;
-    String userId;
+    String userAuthKey;
     BaseJoinAction baseJoinAction;
 }
 

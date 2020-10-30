@@ -107,7 +107,7 @@ class BaseJoinControllerIT {
     @Test
     void testInviteNewMember() {
         // invite a new member
-        var baseInviteReq = new BaseJoinReq(base.getId(), AUTH_KEY_2, BaseJoinAction.Invite);
+        var baseInviteReq = new BaseJoinReq(base.getId(), AUTH_KEY_2, BaseJoinAction.INVITE);
 
         var response = client.exchange(HttpRequest.POST("/api/v1/baseJoin",
                 baseInviteReq)
@@ -127,7 +127,7 @@ class BaseJoinControllerIT {
         assertThat(result.getInvitesList()).hasSize(1);
         assertThat(result.getRequestsList()).hasSize(0);
 
-        var expectedResult = new BaseJoin(base, newMember, BaseJoinAction.Invite);
+        var expectedResult = new BaseJoin(base, newMember, BaseJoinAction.INVITE);
         var invite = result.getInvitesList()
                 .get(0);
         assertThat(invite).usingRecursiveComparison()
@@ -165,7 +165,7 @@ class BaseJoinControllerIT {
         @Test
         void testRequestBaseJoin() {
             // as a new member request into group
-            var baseInviteReq = new BaseJoinReq(base.getId(), AUTH_KEY_2, BaseJoinAction.Request);
+            var baseInviteReq = new BaseJoinReq(base.getId(), AUTH_KEY_2, BaseJoinAction.REQUEST);
 
             var response = client.exchange(HttpRequest.POST("/api/v1/baseJoin",
                     baseInviteReq)
@@ -185,7 +185,7 @@ class BaseJoinControllerIT {
             assertThat(result.getInvitesList()).hasSize(0);
             assertThat(result.getRequestsList()).hasSize(1);
 
-            var expectedResult = new BaseJoin(base, newMember, BaseJoinAction.Invite);
+            var expectedResult = new BaseJoin(base, newMember, BaseJoinAction.INVITE);
             var invite = result.getRequestsList()
                     .get(0);
             assertThat(invite).usingRecursiveComparison()
@@ -237,7 +237,7 @@ class BaseJoinControllerIT {
         @Test
         void testDeclineBaseJoin() {
             // as a new member request into group
-            var baseInviteReq = new BaseJoinReq(base.getId(), AUTH_KEY_2, BaseJoinAction.Request);
+            var baseInviteReq = new BaseJoinReq(base.getId(), AUTH_KEY_2, BaseJoinAction.REQUEST);
 
             var response = client.exchange(HttpRequest.POST("/api/v1/baseJoin",
                     baseInviteReq)
@@ -257,7 +257,7 @@ class BaseJoinControllerIT {
             assertThat(result.getInvitesList()).hasSize(1);
             assertThat(result.getRequestsList()).hasSize(0);
 
-            var expectedResult = new BaseJoin(base, newMember, BaseJoinAction.Invite);
+            var expectedResult = new BaseJoin(base, newMember, BaseJoinAction.INVITE);
             var invite = result.getInvitesList()
                     .get(0);
             assertThat(invite).usingRecursiveComparison()

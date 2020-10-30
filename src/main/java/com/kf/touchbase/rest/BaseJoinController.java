@@ -30,7 +30,7 @@ public class BaseJoinController {
     private final BaseMemberServiceImpl baseMemberService;
     private final BaseJoinRepository baseJoinRepository;
 
-    @Get("/")
+    @Get
     @Produces(MediaType.APPLICATION_JSON)
     @ExecuteOn(TaskExecutors.IO)
     public Single<BaseJoinListRes> getOwnBaseJoins(Authentication authentication) {
@@ -38,7 +38,7 @@ public class BaseJoinController {
                 .flatMap(baseMemberService::getOwnBaseJoins);
     }
 
-    @Post("/")
+    @Post
     @Produces(MediaType.APPLICATION_JSON)
     @ExecuteOn(TaskExecutors.IO)
     public Single<HttpResponse<BaseJoin>> createBaseJoin(
@@ -47,7 +47,7 @@ public class BaseJoinController {
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
                 .flatMap((authKey) -> baseMemberService
                         .createBaseJoin(authKey, baseJoinReq.getBaseId(),
-                                baseJoinReq.getUserId(),
+                                baseJoinReq.getUserAuthKey(),
                                 baseJoinReq.getBaseJoinAction()))
                 .flatMap((baseJoin) -> Single.just(
                         HttpResponse.created(baseJoin)));

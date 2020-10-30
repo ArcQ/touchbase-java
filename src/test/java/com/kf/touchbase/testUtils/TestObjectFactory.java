@@ -152,7 +152,7 @@ public class TestObjectFactory {
                     .id(BASE_INVITE_UUID)
                     .base(base)
                     .joiningUser(newUser)
-                    .baseJoinAction(BaseJoinAction.Invite)
+                    .baseJoinAction(BaseJoinAction.INVITE)
                     .creator(user)
                     .build();
         }
@@ -161,10 +161,10 @@ public class TestObjectFactory {
             User newUser = createNewUser();
             Base base = createBase();
             return BaseJoin.builder()
-                    .id(BASE_INVITE_UUID)
+                    .id(BASE_REQUEST_UUID)
                     .base(base)
                     .joiningUser(newUser)
-                    .baseJoinAction(BaseJoinAction.Request)
+                    .baseJoinAction(BaseJoinAction.REQUEST)
                     .creator(newUser)
                     .build();
         }
@@ -202,11 +202,11 @@ public class TestObjectFactory {
         }
 
         public static BaseJoinReq createBaseInviteReq() {
-            return new BaseJoinReq(BASE_UUID, AUTH_KEY_2, BaseJoinAction.Invite);
+            return new BaseJoinReq(BASE_UUID, AUTH_KEY_2, BaseJoinAction.INVITE);
         }
 
         public static BaseJoinReq createBaseJoinRequestReq() {
-            return new BaseJoinReq(BASE_UUID, AUTH_KEY_2, BaseJoinAction.Request);
+            return new BaseJoinReq(BASE_UUID, AUTH_KEY_2, BaseJoinAction.REQUEST);
         }
     }
 }

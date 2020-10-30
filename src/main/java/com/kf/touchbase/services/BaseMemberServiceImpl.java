@@ -28,10 +28,10 @@ public class BaseMemberServiceImpl {
 
     public Single<BaseJoinListRes> getOwnBaseJoins(String requesterAuthKey) {
         return baseJoinRepository.findAllByUserAuthKeyAndBaseJoinAction(requesterAuthKey,
-                BaseJoinAction.Request.name())
+                BaseJoinAction.REQUEST.name())
                 .toList()
                 .zipWith(baseJoinRepository.findAllByUserAuthKeyAndBaseJoinAction(requesterAuthKey,
-                        BaseJoinAction.Invite.name())
+                        BaseJoinAction.INVITE.name())
                                 .toList(),
                         BaseJoinListRes::new);
     }
@@ -41,7 +41,7 @@ public class BaseMemberServiceImpl {
             UUID baseId,
             String userAuthKey,
             BaseJoinAction baseJoinAction) {
-        var baseSingle = (baseJoinAction.equals(BaseJoinAction.Invite))
+        var baseSingle = (baseJoinAction.equals(BaseJoinAction.INVITE))
                 ? baseRepository.findIfMemberAdmin(baseId, requesterAuthKey)
                 .switchIfEmpty(Single.error(AuthorizationException::new))
                 : Single.just(Base.fromId(baseId));
@@ -58,14 +58,14 @@ public class BaseMemberServiceImpl {
                 .toSingle()
                 .flatMap((baseJoin) -> {
                     if (baseJoin.getBaseJoinAction()
-                            .equals(BaseJoinAction.Invite) && baseJoin.getJoiningUser()
+                            .equals(BaseJoinAction.INVITE) && baseJoin.getJoiningUser()
                             .getAuthKey()
                             .equals(accepterAuthKey)) {
                         return Single.just(baseJoin);
                     }
                     if (baseJoin.getBaseJoinAction()
-                            .equals(BaseJoinAction.Request)) {
-                        baseRepository.findIfMemberAdmin(baseJoin.getBase()
+                            .equals(BaseJoinAction.REQUEST)) {
+                        return baseRepository.findIfMemberAdmin(baseJoin.getBase()
                                         .getId(),
                                 accepterAuthKey)
                                 .switchIfEmpty(Single.error(AuthorizationException::new))
