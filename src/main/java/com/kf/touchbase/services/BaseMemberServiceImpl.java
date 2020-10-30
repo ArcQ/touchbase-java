@@ -1,5 +1,6 @@
 package com.kf.touchbase.services;
 
+import com.kf.touchbase.exception.AuthorizationException;
 import com.kf.touchbase.models.domain.postgres.Base;
 import com.kf.touchbase.models.domain.postgres.BaseJoin;
 import com.kf.touchbase.models.domain.postgres.BaseJoinAction;
@@ -9,7 +10,6 @@ import com.kf.touchbase.repository.BaseJoinRepository;
 import com.kf.touchbase.repository.BaseMemberRepository;
 import com.kf.touchbase.repository.BaseRepository;
 import com.kf.touchbase.repository.UserRepository;
-import io.micronaut.security.authentication.AuthenticationException;
 import io.reactivex.Single;
 import lombok.RequiredArgsConstructor;
 
@@ -43,7 +43,7 @@ public class BaseMemberServiceImpl {
             BaseJoinAction baseJoinAction) {
         var baseSingle = (baseJoinAction.equals(BaseJoinAction.Invite))
                 ? baseRepository.findIfMemberAdmin(baseId, requesterAuthKey)
-                .switchIfEmpty(Single.error(AuthenticationException::new))
+                .switchIfEmpty(Single.error(AuthorizationException::new))
                 : Single.just(Base.fromId(baseId));
 
         return baseSingle
@@ -53,14 +53,23 @@ public class BaseMemberServiceImpl {
                         new BaseJoin(entry.getKey(), entry.getValue(), baseJoinAction)));
     }
 
-    public Single<BaseMember> acceptBaseJoin(String authKey, UUID baseJoinId) {
+    public Single<BaseMember> acceptBaseJoin(String accepterAuthKey, UUID baseJoinId) {
         return baseJoinRepository.findById(baseJoinId)
                 .toSingle()
                 .flatMap((baseJoin) -> {
-                    if (baseJoin.getJoiningUser()
+                    if (baseJoin.getBaseJoinAction()
+                            .equals(BaseJoinAction.Invite) && baseJoin.getJoiningUser()
                             .getAuthKey()
-                            .equals(authKey)) {
+                            .equals(accepterAuthKey)) {
                         return Single.just(baseJoin);
+                    }
+                    if (baseJoin.getBaseJoinAction()
+                            .equals(BaseJoinAction.Request)) {
+                        baseRepository.findIfMemberAdmin(baseJoin.getBase()
+                                        .getId(),
+                                accepterAuthKey)
+                                .switchIfEmpty(Single.error(AuthorizationException::new))
+                                .flatMap((base) -> Single.just(baseJoin));
                     }
                     throw new IllegalArgumentException("User could not be matched with " +
                             "base join");
