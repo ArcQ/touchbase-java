@@ -3,24 +3,19 @@ info:
   title: core-api
   version: "0.0"
 paths:
-  /api/v1/baseJoin/me:
+  /api/v1/baseJoin:
     get:
-      description: Not Implemented Yet
-      operationId: getBases
+      operationId: getOwnBaseJoins
       parameters: []
       responses:
         default:
-          description: getBases default response
+          description: getOwnBaseJoins default response
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BaseJoin'
-  /api/v1/baseJoin:
+                $ref: '#/components/schemas/BaseJoinListRes'
     post:
-      description: Not Implemented Yet
-      operationId: requestIntoBase
+      operationId: createBaseJoin
       parameters: []
       requestBody:
         content:
@@ -30,24 +25,40 @@ paths:
         required: true
       responses:
         default:
-          description: requestIntoBase default response
+          description: createBaseJoin default response
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BaseJoin'
-  /api/v1/baseJoin/{baseId}:
-    delete:
-      description: Not Implemented Yet
-      operationId: deleteBaseInvite
+  /api/v1/baseJoin/{baseJoinId}:
+    post:
+      operationId: acceptBaseJoin
       parameters:
-      - name: baseId
+      - name: baseJoinId
         in: path
         required: true
         schema:
           type: string
+          format: uuid
       responses:
         default:
-          description: deleteBaseInvite default response
+          description: acceptBaseJoin default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseMember'
+    delete:
+      operationId: declineBaseJoin
+      parameters:
+      - name: baseJoinId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        default:
+          description: declineBaseJoin default response
           content:
             application/json:
               schema:
@@ -159,6 +170,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
   /api/v1/user:
+    put:
+      summary: Update user
+      operationId: putUser
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserReq'
+        required: true
+      responses:
+        default:
+          description: putUser default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
     post:
       summary: Create user
       operationId: postUser
@@ -176,25 +204,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-    patch:
-      summary: Update user
-      operationId: patchUser
-      parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserReq'
-        required: true
-      responses:
-        default:
-          description: patchUser default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
 components:
   schemas:
+    BaseJoinListRes:
+      type: object
+      properties:
+        requestsList:
+          type: array
+          items:
+            $ref: '#/components/schemas/BaseJoin'
+        invitesList:
+          type: array
+          items:
+            $ref: '#/components/schemas/BaseJoin'
     TouchBasePostgresDomain:
       type: object
       properties:
@@ -245,48 +267,12 @@ components:
       - $ref: '#/components/schemas/TouchBasePostgresDomain'
       - type: object
         properties:
-          baseId:
-            type: string
+          base:
+            $ref: '#/components/schemas/Base'
+          joiningUser:
+            $ref: '#/components/schemas/User'
           baseJoinAction:
             $ref: '#/components/schemas/BaseJoinAction'
-    BaseJoinAction:
-      type: string
-      enum:
-      - Request
-      - Invite
-    BaseJoinReq:
-      type: object
-      properties:
-        baseId:
-          type: string
-        userId:
-          type: string
-        baseJoinAction:
-          $ref: '#/components/schemas/BaseJoinAction'
-    Success:
-      type: object
-      properties:
-        status:
-          type: string
-    Mission:
-      type: object
-      properties:
-        createdAt:
-          type: string
-          format: date-time
-        id:
-          type: string
-          format: uuid
-          nullable: true
-        startedAt:
-          type: string
-          format: date-time
-        assignedUser:
-          $ref: '#/components/schemas/User'
-        assignedBase:
-          $ref: '#/components/schemas/Base'
-        storedMissionTemplate:
-          $ref: '#/components/schemas/MissionTemplate'
     Base:
       allOf:
       - $ref: '#/components/schemas/TouchBasePostgresDomain'
@@ -334,6 +320,45 @@ components:
             $ref: '#/components/schemas/Base'
           chatpiChatId:
             type: string
+    BaseJoinAction:
+      type: string
+      enum:
+      - REQUEST
+      - INVITE
+    BaseJoinReq:
+      type: object
+      properties:
+        baseId:
+          type: string
+          format: uuid
+        userAuthKey:
+          type: string
+        baseJoinAction:
+          $ref: '#/components/schemas/BaseJoinAction'
+    Success:
+      type: object
+      properties:
+        status:
+          type: string
+    Mission:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        id:
+          type: string
+          format: uuid
+          nullable: true
+        startedAt:
+          type: string
+          format: date-time
+        assignedUser:
+          $ref: '#/components/schemas/User'
+        assignedBase:
+          $ref: '#/components/schemas/Base'
+        storedMissionTemplate:
+          $ref: '#/components/schemas/MissionTemplate'
     MissionTemplate:
       type: object
       properties:

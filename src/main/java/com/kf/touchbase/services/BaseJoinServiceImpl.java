@@ -6,10 +6,7 @@ import com.kf.touchbase.models.domain.postgres.BaseJoin;
 import com.kf.touchbase.models.domain.postgres.BaseJoinAction;
 import com.kf.touchbase.models.domain.postgres.BaseMember;
 import com.kf.touchbase.models.dto.BaseJoinListRes;
-import com.kf.touchbase.repository.BaseJoinRepository;
-import com.kf.touchbase.repository.BaseMemberRepository;
-import com.kf.touchbase.repository.BaseRepository;
-import com.kf.touchbase.repository.UserRepository;
+import com.kf.touchbase.repository.*;
 import io.reactivex.Single;
 import lombok.RequiredArgsConstructor;
 
@@ -19,21 +16,19 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Singleton
-public class BaseMemberServiceImpl {
+public class BaseJoinServiceImpl {
 
     private final BaseJoinRepository baseJoinRepository;
     private final BaseRepository baseRepository;
     private final BaseMemberRepository baseMemberRepository;
     private final UserRepository userRepository;
 
-    public Single<BaseJoinListRes> getOwnBaseJoins(String requesterAuthKey) {
-        return baseJoinRepository.findAllByUserAuthKeyAndBaseJoinAction(requesterAuthKey,
-                BaseJoinAction.REQUEST.name())
-                .toList()
-                .zipWith(baseJoinRepository.findAllByUserAuthKeyAndBaseJoinAction(requesterAuthKey,
-                        BaseJoinAction.INVITE.name())
-                                .toList(),
-                        BaseJoinListRes::new);
+    public Single<BaseJoinListRes> getCreatedBaseJoins(Boolean isCreated, String authKey) {
+        var requests = isCreated ? baseJoinRepository.findMyCreatedRequests(authKey) :
+                baseJoinRepository.findRequestsToMyBases(authKey);
+        var invites = isCreated ? baseJoinRepository.findMyCreatedInvites(authKey) :
+                baseJoinRepository.findInvitesToMe(authKey);
+        return requests.toList().zipWith(invites.toList(), BaseJoinListRes::new);
     }
 
     public Single<BaseJoin> createBaseJoin(

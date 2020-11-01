@@ -111,6 +111,8 @@ mainClassName = "com.kf.touchbase.Application"
 test {
     environment "MICRONAUT_ENVIRONMENTS", "test"
     useJUnitPlatform()
+    minHeapSize = "128m"
+    maxHeapSize = "1024m"
 }
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"

@@ -13,8 +13,6 @@ import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
-import io.micronaut.scheduling.TaskExecutors;
-import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.authentication.AuthenticationException;
@@ -36,7 +34,6 @@ public class BaseController {
     private final TouchbaseEventPublisher touchbaseEventPublisher;
 
     @Get("/")
-    @ExecuteOn(TaskExecutors.IO)
     @Produces(MediaType.APPLICATION_JSON)
     public Single<ListRes<Base>> getOwnBases(Authentication authentication) {
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
@@ -47,9 +44,7 @@ public class BaseController {
     }
 
     @Post("/")
-    @ExecuteOn(TaskExecutors.IO)
     @Produces(MediaType.APPLICATION_JSON)
-    //    @Transactional
     public Single<HttpResponse<Base>> postBase(
             Authentication authentication,
             @Body BaseReq baseReq) {
@@ -68,7 +63,6 @@ public class BaseController {
 
     @Get("/{baseId}")
     @Produces(MediaType.APPLICATION_JSON)
-    @ExecuteOn(TaskExecutors.IO)
     public Maybe<Base> getBaseIfOwn(Authentication authentication, UUID baseId) {
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
                 .flatMapMaybe((authKey) -> baseRepository.findIfMember(baseId, authKey));

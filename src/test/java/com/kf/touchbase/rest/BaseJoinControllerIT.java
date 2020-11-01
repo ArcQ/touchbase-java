@@ -1,14 +1,15 @@
 package com.kf.touchbase.rest;
 
 import com.kf.touchbase.models.domain.Role;
+import com.kf.touchbase.models.domain.Success;
 import com.kf.touchbase.models.domain.postgres.*;
 import com.kf.touchbase.models.dto.BaseJoinListRes;
 import com.kf.touchbase.models.dto.BaseJoinReq;
 import com.kf.touchbase.models.dto.BaseReq;
+import com.kf.touchbase.repository.BaseJoinRepository;
 import com.kf.touchbase.repository.BaseMemberRepository;
 import com.kf.touchbase.repository.BaseRepository;
 import com.kf.touchbase.repository.UserRepository;
-import com.kf.touchbase.services.BaseMemberServiceImpl;
 import com.kf.touchbase.services.EventPublisher;
 import com.kf.touchbase.testUtils.TestAuthUtils;
 import com.kf.touchbase.testUtils.TestBeanUtils;
@@ -36,10 +37,10 @@ import java.util.concurrent.LinkedBlockingDeque;
 import static com.kf.touchbase.testUtils.TestAuthUtils.AUTH_TOKEN;
 import static com.kf.touchbase.testUtils.TestAuthUtils.AUTH_TOKEN_2;
 import static com.kf.touchbase.testUtils.TestObjectFactory.AUTH_KEY_2;
+import static com.kf.touchbase.testUtils.TestObjectFactory.BASE_UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@MicronautTest(transactional = false)
-//@Property(name = "micronaut.security.enabled", value = "false")
+@MicronautTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Requires(env = "test")
 @Slf4j
@@ -52,21 +53,17 @@ class BaseJoinControllerIT {
     @Inject
     private BaseRepository baseRepository;
     @Inject
+    private BaseJoinRepository baseJoinRepository;
+    @Inject
     private BaseMemberRepository baseMemberRepository;
     @Inject
     private UserRepository userRepository;
-    @Inject
-    private BaseMemberServiceImpl baseMemberService;
-    @Inject
-    private BaseJoinController baseJoinControllerUnderTest;
 
     private User admin;
 
     private User newMember;
 
     private Base base;
-
-    private BaseMember baseMember;
 
     private BlockingQueue<TestBeanUtils.EventWithKey> messages = new LinkedBlockingDeque<>();
 
@@ -97,11 +94,21 @@ class BaseJoinControllerIT {
         base = TestObjectFactory.Domain.createBase();
         base.setId(null);
         base.setCreator(null);
-        baseMember = TestObjectFactory.Domain.createBaseMember();
         userRepository.saveAll(List.of(newMember, admin))
                 .blockingSubscribe();
         baseRepository.save(base)
                 .blockingGet();
+    }
+
+    @AfterEach
+    public void cleanUpTest() {
+        try {
+            baseMemberRepository.findByUserAuthKeyAndBaseId(AUTH_KEY_2, BASE_UUID)
+                    .flatMapCompletable((baseMember) -> baseMemberRepository.delete(baseMember))
+                    .blockingAwait();
+        } catch (Exception e) {
+        }
+        baseJoinRepository.deleteAll().blockingAwait();
     }
 
     @Test
@@ -135,10 +142,6 @@ class BaseJoinControllerIT {
                         "(.*?)createdAt", "(.*?)updatedAt", "(.*?)id", "(.*?)members")
                 .isEqualTo(expectedResult);
 
-        assertThat(invite
-                .getBase()
-                .getMembers()).hasSize(1);
-
         //        var bodyOfMessage = messages.poll(2, TimeUnit.SECONDS);
         //        assertThat(bodyOfMessage.getKey()).isEqualTo("upsert-chat-entity");
         //        var event = (ChatEntityEventData) bodyOfMessage.getEvent()
@@ -162,140 +165,90 @@ class BaseJoinControllerIT {
         assertThat(baseMember.getRole()).isEqualTo(Role.MEMBER);
     }
 
-        @Test
-        void testRequestBaseJoin() {
-            // as a new member request into group
-            var baseInviteReq = new BaseJoinReq(base.getId(), AUTH_KEY_2, BaseJoinAction.REQUEST);
+    @Test
+    void testRequestBaseJoin() {
+        // as a new member request into group
+        var baseInviteReq = new BaseJoinReq(base.getId(), AUTH_KEY_2, BaseJoinAction.REQUEST);
 
-            var response = client.exchange(HttpRequest.POST("/api/v1/baseJoin",
-                    baseInviteReq)
-                    .bearerAuth(AUTH_TOKEN), BaseReq.class)
-                    .blockingFirst();
+        var response = client.exchange(HttpRequest.POST("/api/v1/baseJoin",
+                baseInviteReq)
+                .bearerAuth(AUTH_TOKEN), BaseJoin.class)
+                .blockingFirst();
 
-            assertThat(response.status()
-                    .getCode()).isEqualTo(HttpStatus.CREATED.getCode());
+        assertThat(response.status()
+                .getCode()).isEqualTo(HttpStatus.CREATED.getCode());
 
-            // get baseJoin requests
-            var result =
-                    client.retrieve(HttpRequest.GET("/api/v1/baseJoin")
-                                    .bearerAuth(AUTH_TOKEN),
-                            Argument.of(BaseJoinListRes.class))
-                            .blockingFirst();
+        // get baseJoin requests
+        var result =
+                client.retrieve(HttpRequest.GET("/api/v1/baseJoin")
+                                .bearerAuth(AUTH_TOKEN),
+                        Argument.of(BaseJoinListRes.class))
+                        .blockingFirst();
 
-            assertThat(result.getInvitesList()).hasSize(0);
-            assertThat(result.getRequestsList()).hasSize(1);
+        assertThat(result.getInvitesList()).hasSize(0);
+        assertThat(result.getRequestsList()).hasSize(1);
 
-            var expectedResult = new BaseJoin(base, newMember, BaseJoinAction.INVITE);
-            var invite = result.getRequestsList()
-                    .get(0);
-            assertThat(invite).usingRecursiveComparison()
-                    .ignoringFieldsMatchingRegexes(
-                            "(.*?)createdAt", "(.*?)updatedAt", "(.*?)id", "(.*?)members")
-                    .isEqualTo(expectedResult);
+        var expectedResult = new BaseJoin(base, newMember, BaseJoinAction.REQUEST);
+        var invite = result.getRequestsList()
+                .get(0);
+        assertThat(invite).usingRecursiveComparison()
+                .ignoringFieldsMatchingRegexes(
+                        "(.*?)createdAt", "(.*?)updatedAt", "(.*?)id", "(.*?)members")
+                .isEqualTo(expectedResult);
 
-            assertThat(invite
-                    .getBase()
-                    .getMembers()).hasSize(1);
+        //        var bodyOfMessage = messages.poll(2, TimeUnit.SECONDS);
+        //        assertThat(bodyOfMessage.getKey()).isEqualTo("upsert-chat-entity");
+        //        var event = (ChatEntityEventData) bodyOfMessage.getEvent()
+        //                .getData();
 
-            //        var bodyOfMessage = messages.poll(2, TimeUnit.SECONDS);
-            //        assertThat(bodyOfMessage.getKey()).isEqualTo("upsert-chat-entity");
-            //        var event = (ChatEntityEventData) bodyOfMessage.getEvent()
-            //                .getData();
+        // then admin accepts
+        var acceptedResponse =
+                client.exchange(HttpRequest.POST("/api/v1/baseJoin/" + invite.getId(), new Object())
+                        .bearerAuth(AUTH_TOKEN), BaseMember.class)
+                        .blockingFirst();
 
-            // then admin accepts
-            var acceptedResponse =
-                    client.exchange(HttpRequest.POST("/api/v1/baseJoin/" + invite.getId(), new Object())
-                            .bearerAuth(AUTH_TOKEN), BaseMember.class)
-                            .blockingFirst();
+        assertThat(acceptedResponse.status()
+                .getCode()).isEqualTo(HttpStatus.CREATED.getCode());
+        var baseMember = acceptedResponse.getBody()
+                .get();
+        assertThat(baseMember.getUser()
+                .getAuthKey()).isEqualTo(newMember.getAuthKey());
+        assertThat(baseMember.getBase()
+                .getId()).isEqualTo(invite.getBase()
+                .getId());
+        assertThat(baseMember.getRole()).isEqualTo(Role.MEMBER);
 
-            assertThat(acceptedResponse.status()
-                    .getCode()).isEqualTo(HttpStatus.CREATED.getCode());
-            var baseMember = acceptedResponse.getBody()
-                    .get();
-            assertThat(baseMember.getUser()
-                    .getAuthKey()).isEqualTo(newMember.getAuthKey());
-            assertThat(baseMember.getBase()
-                    .getId()).isEqualTo(invite.getBase()
-                    .getId());
-            assertThat(baseMember.getRole()).isEqualTo(Role.MEMBER);
+        // after, should have no more base joins
+        var resultAfter =
+                client.retrieve(HttpRequest.GET("/api/v1/baseJoin")
+                                .bearerAuth(AUTH_TOKEN),
+                        Argument.of(BaseJoinListRes.class))
+                        .blockingFirst();
 
-            // after, should have no more base joins
-            var resultAfter =
-                    client.retrieve(HttpRequest.GET("/api/v1/baseJoin")
-                                    .bearerAuth(AUTH_TOKEN),
-                            Argument.of(BaseJoinListRes.class))
-                            .blockingFirst();
+        assertThat(resultAfter.getInvitesList()).hasSize(0);
+        assertThat(resultAfter.getRequestsList()).hasSize(0);
 
-            assertThat(resultAfter.getInvitesList()).hasSize(0);
-            assertThat(resultAfter.getRequestsList()).hasSize(0);
+        //base member created
+        assertThat(baseMemberRepository.findByUserAuthKeyAndBaseId(AUTH_KEY_2, base.getId())
+                .blockingGet()).isNotNull();
+    }
 
-            //base member created
-            assertThat(baseMemberRepository.findByUserAuthKeyAndBaseId(AUTH_TOKEN_2,
-                    base.getId()).isEmpty().blockingGet()).isFalse();
-        }
+    @Test
+    void testDeclineBaseJoin_byJoining() {
+        var baseInviteReq = new BaseJoinReq(base.getId(), AUTH_KEY_2, BaseJoinAction.REQUEST);
 
-        @Test
-        void testDeclineBaseJoin() {
-            // as a new member request into group
-            var baseInviteReq = new BaseJoinReq(base.getId(), AUTH_KEY_2, BaseJoinAction.REQUEST);
+        var response = client.exchange(HttpRequest.POST("/api/v1/baseJoin",
+                baseInviteReq)
+                .bearerAuth(AUTH_TOKEN_2), BaseJoin.class)
+                .blockingFirst();
 
-            var response = client.exchange(HttpRequest.POST("/api/v1/baseJoin",
-                    baseInviteReq)
-                    .bearerAuth(AUTH_TOKEN), BaseReq.class)
-                    .blockingFirst();
+        client.exchange(HttpRequest.POST("/api/v1/baseJoin/" + response.body().getId(),
+                baseInviteReq)
+                .bearerAuth(AUTH_TOKEN), Success.class)
+                .blockingFirst();
 
-            assertThat(response.status()
-                    .getCode()).isEqualTo(HttpStatus.CREATED.getCode());
-
-            // get baseJoin requests
-            var result =
-                    client.retrieve(HttpRequest.GET("/api/v1/baseJoin")
-                                    .bearerAuth(AUTH_TOKEN),
-                            Argument.of(BaseJoinListRes.class))
-                            .blockingFirst();
-
-            assertThat(result.getInvitesList()).hasSize(1);
-            assertThat(result.getRequestsList()).hasSize(0);
-
-            var expectedResult = new BaseJoin(base, newMember, BaseJoinAction.INVITE);
-            var invite = result.getInvitesList()
-                    .get(0);
-            assertThat(invite).usingRecursiveComparison()
-                    .ignoringFieldsMatchingRegexes(
-                            "(.*?)createdAt", "(.*?)updatedAt", "(.*?)id", "(.*?)members")
-                    .isEqualTo(expectedResult);
-
-            assertThat(invite
-                    .getBase()
-                    .getMembers()).hasSize(1);
-
-            //        var bodyOfMessage = messages.poll(2, TimeUnit.SECONDS);
-            //        assertThat(bodyOfMessage.getKey()).isEqualTo("upsert-chat-entity");
-            //        var event = (ChatEntityEventData) bodyOfMessage.getEvent()
-            //                .getData();
-
-            // then admin accepts
-            var acceptedResponse =
-                    client.exchange(HttpRequest.DELETE("/api/v1/baseJoin/" + invite.getId(),
-                            new Object())
-                            .bearerAuth(AUTH_TOKEN_2), BaseMember.class)
-                            .blockingFirst();
-
-            assertThat(acceptedResponse.status()
-                    .getCode()).isEqualTo(HttpStatus.OK.getCode());
-
-            // after, should have no more basejoins
-            var resultAfter =
-                    client.retrieve(HttpRequest.GET("/api/v1/baseJoin")
-                                    .bearerAuth(AUTH_TOKEN),
-                            Argument.of(BaseJoinListRes.class))
-                            .blockingFirst();
-
-            assertThat(resultAfter.getInvitesList()).hasSize(0);
-            assertThat(resultAfter.getRequestsList()).hasSize(0);
-
-            // base member created
-            assertThat(baseMemberRepository.findByUserAuthKeyAndBaseId(AUTH_TOKEN_2,
-                    base.getId()).isEmpty().blockingGet()).isFalse();
-        }
+        assertThat(baseJoinRepository.findInvitesToMe(AUTH_TOKEN_2)
+                .toList()
+                .blockingGet()).hasSize(0);
+    }
 }

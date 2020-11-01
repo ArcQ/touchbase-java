@@ -8,8 +8,6 @@ import com.kf.touchbase.repository.UserRepository;
 import com.kf.touchbase.services.TouchbaseEventPublisher;
 import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.annotation.*;
-import io.micronaut.scheduling.TaskExecutors;
-import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.authentication.AuthenticationException;
@@ -41,7 +39,6 @@ public class UserController {
     //    }
 
     @Get("/me")
-    @ExecuteOn(TaskExecutors.IO)
     public Single<User> getMe(Authentication authentication) {
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
                 .flatMapMaybe(userRepository::findByAuthKey)
@@ -49,7 +46,6 @@ public class UserController {
     }
 
     @Operation(summary = "Create user")
-    @ExecuteOn(TaskExecutors.IO)
     @Post
     public Single<User> postUser(Authentication authentication, @Body UserReq userReq) {
         //TODO, if update username or email, should update cognito as well
@@ -61,7 +57,6 @@ public class UserController {
     }
 
     @Operation(summary = "Update user")
-    @ExecuteOn(TaskExecutors.IO)
     @Put
     public Single<User> putUser(Authentication authentication, @Body UserReq userReq) {
         var newUser = userMapper.userReqToUser(userReq);

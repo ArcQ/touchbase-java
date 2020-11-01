@@ -28,3 +28,4 @@ docker push $ECR_DOMAIN/$PROJECT_NAME:latest
 
 cd beanstalk
 eb deploy
+cd -

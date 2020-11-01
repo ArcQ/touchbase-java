@@ -38,6 +38,7 @@ class AuthUtilsTest {
 
         // Verify the results
         assertThat(result).isEqualTo("arcq");
+        assertThat(result).isEqualTo("arcq");
     }
 
     @Test

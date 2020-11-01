@@ -15,9 +15,11 @@ import io.reactivex.Single;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.kf.touchbase.testUtils.TestObjectFactory.*;
@@ -27,7 +29,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class BaseMemberServiceImplTest {
+class BaseJoinServiceImplTest {
 
     @Mock
     private BaseJoinRepository mockBaseJoinRepository;
@@ -38,13 +40,14 @@ class BaseMemberServiceImplTest {
     @Mock
     private UserRepository mockUserRepository;
 
-    private BaseMemberServiceImpl baseMemberServiceImplUnderTest;
+    @Mock
+    private EntityManager entityManager;
+
+    @InjectMocks
+    private BaseJoinServiceImpl baseJoinServiceImplUnderTest;
 
     @BeforeEach
     void setUp() {
-        baseMemberServiceImplUnderTest =
-                new BaseMemberServiceImpl(mockBaseJoinRepository, mockBaseRepository,
-                        mockBaseMemberRepository, mockUserRepository);
     }
 
     @Test
@@ -57,7 +60,7 @@ class BaseMemberServiceImplTest {
         when(mockUserRepository.findByAuthKey(any(String.class))).thenReturn(Maybe.empty());
 
         // Run the test
-        assertThatThrownBy(() -> baseMemberServiceImplUnderTest.createBaseJoin(AUTH_KEY_2,
+        assertThatThrownBy(() -> baseJoinServiceImplUnderTest.createBaseJoin(AUTH_KEY_2,
                 BASE_UUID, AUTH_KEY,
                 BaseJoinAction.INVITE)
                 .blockingGet()).isInstanceOf(AuthorizationException.class);
@@ -68,6 +71,7 @@ class BaseMemberServiceImplTest {
 
     @Test
     void testAcceptBaseJoin_inviteAcceptedByMatchingUserShouldInsertAndDelete() {
+
         // Setup
         final Maybe<BaseJoin> baseJoinMaybe =
                 Maybe.just(TestObjectFactory.Domain.createBaseInviteJoin());
@@ -83,7 +87,7 @@ class BaseMemberServiceImplTest {
                 .save(any(BaseMember.class));
 
         // Run the test
-        baseMemberServiceImplUnderTest.acceptBaseJoin(AUTH_KEY_2,
+        baseJoinServiceImplUnderTest.acceptBaseJoin(AUTH_KEY_2,
                 BASE_INVITE_UUID)
                 .blockingGet();
 
@@ -116,7 +120,7 @@ class BaseMemberServiceImplTest {
 
         // Run the test
 
-        assertThatThrownBy(() -> baseMemberServiceImplUnderTest.acceptBaseJoin(AUTH_KEY,
+        assertThatThrownBy(() -> baseJoinServiceImplUnderTest.acceptBaseJoin(AUTH_KEY,
                         BASE_INVITE_UUID)
                         .blockingGet()).isInstanceOf(AuthorizationException.class);
 
@@ -151,7 +155,7 @@ class BaseMemberServiceImplTest {
                 .save(any(BaseMember.class));
 
         // Run the test
-        baseMemberServiceImplUnderTest.acceptBaseJoin(AUTH_KEY_2,
+        baseJoinServiceImplUnderTest.acceptBaseJoin(AUTH_KEY_2,
                 BASE_REQUEST_UUID)
                 .blockingGet();
 

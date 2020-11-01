@@ -14,7 +14,6 @@ import com.kf.touchbase.testUtils.TestAuthUtils;
 import com.kf.touchbase.testUtils.TestBeanUtils;
 import com.kf.touchbase.testUtils.TestObjectFactory;
 import com.kf.touchbase.testUtils.TestRestUtils;
-import io.micronaut.context.ApplicationContext;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
@@ -45,8 +44,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 /**
  * Integration tests for the {@Link BaseResource} REST controller.
  */
-@MicronautTest(transactional = false)
-//@Property(name = "micronaut.security.enabled", value = "false")
+@MicronautTest()
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Requires(env = "test")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -57,8 +55,6 @@ public class BaseControllerIT {
     RxHttpClient client;
     @Inject
     private BaseRepository baseRepository;
-    @Inject
-    private ApplicationContext applicationContext;
     @Inject
     private BaseMemberRepository baseMemberRepository;
     @Inject

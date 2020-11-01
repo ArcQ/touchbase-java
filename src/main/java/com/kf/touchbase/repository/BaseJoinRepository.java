@@ -10,11 +10,21 @@ import java.util.UUID;
 
 @Repository
 public interface BaseJoinRepository extends RxJavaCrudRepository<BaseJoin, UUID> {
-    @Query(value = "SELECT j.* FROM base_join j, tb_user u, base b WHERE b.id=j.base_id AND " +
-            "j.joining_user_auth_key=:userAuthKey AND u.auth_key=:userAuthKey AND j" +
-            ".base_join_action=:baseJoinAction",
-            nativeQuery = true)
-    Flowable<BaseJoin> findAllByUserAuthKeyAndBaseJoinAction(
-            String userAuthKey,
-            String baseJoinAction);
+
+    @Query(value = "SELECT j.* FROM base_join j, base b, base_member m WHERE b.id=j.base_id AND " +
+            "b.id=m.base_id AND m.member_auth_key=:userAuthKey AND m.role='ADMIN' AND j" +
+            ".base_join_action='REQUEST'", nativeQuery = true)
+    Flowable<BaseJoin> findRequestsToMyBases(String userAuthKey);
+
+    @Query(value = "SELECT j.* FROM base_join j WHERE j.joining_user_auth_key=:" +
+            "userAuthKey AND j.base_join_action='INVITE'", nativeQuery = true)
+    Flowable<BaseJoin> findInvitesToMe(String userAuthKey);
+
+    @Query(value = "SELECT j.* FROM base_join j WHERE j.creator_auth_key=:userAuthKey AND j" +
+            ".base_join_action='INVITE'", nativeQuery = true)
+    Flowable<BaseJoin> findMyCreatedInvites(String userAuthKey);
+
+    @Query(value = "SELECT j.* FROM base_join j WHERE j.creator_auth_key=:userAuthKey AND j" +
+            ".base_join_action='REQUEST'", nativeQuery = true)
+    Flowable<BaseJoin> findMyCreatedRequests(String userAuthKey);
 }
