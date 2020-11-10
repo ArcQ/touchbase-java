@@ -43,5 +43,9 @@ public class TestBeanUtils {
         public void publishMessage(@KafkaKey String key, Event event) {
             messages.add(new EventWithKey(key, event));
         };
+
+        public void reset() {
+            messages.clear();
+        };
     }
 }

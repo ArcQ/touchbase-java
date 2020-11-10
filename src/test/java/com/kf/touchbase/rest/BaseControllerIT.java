@@ -1,5 +1,6 @@
 package com.kf.touchbase.rest;
 
+import com.kf.touchbase.models.domain.Role;
 import com.kf.touchbase.models.domain.event.ChatEntityEventData;
 import com.kf.touchbase.models.domain.postgres.Base;
 import com.kf.touchbase.models.domain.postgres.BaseMember;
@@ -37,6 +38,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 
 import static com.kf.touchbase.testUtils.TestAuthUtils.AUTH_TOKEN;
+import static com.kf.touchbase.testUtils.TestAuthUtils.AUTH_TOKEN_2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -60,13 +62,15 @@ public class BaseControllerIT {
     @Inject
     private UserRepository userRepository;
     private User user;
+    private TestBeanUtils.StubTouchbaseEventPublisher stubTouchbaseEventPublisher;
 
     private BlockingQueue<TestBeanUtils.EventWithKey> messages = new LinkedBlockingDeque<>();
 
     @Replaces(EventPublisher.class)
     @Bean
     public TestBeanUtils.StubTouchbaseEventPublisher stubEventsPublisher() {
-        return new TestBeanUtils.StubTouchbaseEventPublisher(messages);
+        this.stubTouchbaseEventPublisher = new TestBeanUtils.StubTouchbaseEventPublisher(messages);
+        return this.stubTouchbaseEventPublisher;
     }
 
     @Replaces(TokenAuthenticationFetcher.class)
@@ -81,33 +85,47 @@ public class BaseControllerIT {
         return new TestAuthUtils.StubJwtTokenValidator();
     }
 
-    @BeforeAll
+    @BeforeEach
     public void setup() {
         user = TestObjectFactory.Domain.createUser();
         user.setId(null);
-        userRepository.save(user).blockingGet();
+        userRepository.save(user)
+                .blockingGet();
     }
 
     @AfterEach
     public void cleanUpTest() {
-        baseMemberRepository.deleteAll().blockingAwait();
-        baseRepository.deleteAll().blockingAwait();
+        baseMemberRepository.deleteAll()
+                .blockingAwait();
+        baseRepository.deleteAll()
+                .blockingAwait();
+        userRepository.deleteAll()
+                .blockingAwait();
+        stubTouchbaseEventPublisher.reset();
     }
 
     @Test
     public void create_base_and_then_get_should_be_correct() throws InterruptedException {
-        int databaseSizeBeforeCreate = baseRepository.findAll().count().blockingGet().intValue();
+        int databaseSizeBeforeCreate = baseRepository.findAll()
+                .count()
+                .blockingGet()
+                .intValue();
 
         var baseReq = TestObjectFactory.Dto.createBaseReq();
 
         var response = client.exchange(HttpRequest.POST("/api/v1/base",
-                baseReq).bearerAuth(AUTH_TOKEN), BaseReq.class).blockingFirst();
+                baseReq)
+                .bearerAuth(AUTH_TOKEN), BaseReq.class)
+                .blockingFirst();
 
-        assertThat(response.status().getCode()).isEqualTo(HttpStatus.CREATED.getCode());
+        assertThat(response.status()
+                .getCode()).isEqualTo(HttpStatus.CREATED.getCode());
 
         var result =
-                client.retrieve(HttpRequest.GET("/api/v1/base").bearerAuth(AUTH_TOKEN),
-                        Argument.of(ListReq.class, Base.class)).blockingFirst();
+                client.retrieve(HttpRequest.GET("/api/v1/base")
+                                .bearerAuth(AUTH_TOKEN),
+                        Argument.of(ListReq.class, Base.class))
+                        .blockingFirst();
 
         var expectedResult = TestObjectFactory.Domain.createBase();
 
@@ -115,21 +133,29 @@ public class BaseControllerIT {
 
         assertThat(bodyOfMessage.getKey()).isEqualTo("upsert-chat-entity");
 
-        var event = (ChatEntityEventData) bodyOfMessage.getEvent().getData();
+        var event = (ChatEntityEventData) bodyOfMessage.getEvent()
+                .getData();
 
-        assertThat(event.getEntity()).usingRecursiveComparison().ignoringFieldsMatchingRegexes(
-                "(.*?)createdAt", "(.*?)updatedAt", "(.*?)id", "chats", "members").isEqualTo(expectedResult);
+        assertThat(event.getEntity()).usingRecursiveComparison()
+                .ignoringFieldsMatchingRegexes(
+                        "(.*?)createdAt", "(.*?)updatedAt", "(.*?)id", "chats", "members")
+                .isEqualTo(expectedResult);
 
         assertThat(result.getList()).hasSize(databaseSizeBeforeCreate + 1);
 
-        Base resultBase = (Base) result.getList().get(0);
+        Base resultBase = (Base) result.getList()
+                .get(0);
 
-        assertThat(resultBase).usingRecursiveComparison().ignoringFieldsMatchingRegexes(
-                "(.*?)createdAt", "(.*?)updatedAt", "(.*?)id", "members").isEqualTo(expectedResult);
+        assertThat(resultBase).usingRecursiveComparison()
+                .ignoringFieldsMatchingRegexes(
+                        "(.*?)createdAt", "(.*?)updatedAt", "(.*?)id", "members")
+                .isEqualTo(expectedResult);
 
         var members = (HashSet) resultBase.getMembers();
-        var member = (BaseMember) members.iterator().next();
-        assertThat(member.getUser()).usingRecursiveComparison().isEqualTo(user);
+        var member = (BaseMember) members.iterator()
+                .next();
+        assertThat(member.getUser()).usingRecursiveComparison()
+                .isEqualTo(user);
     }
 
     @Test
@@ -142,8 +168,91 @@ public class BaseControllerIT {
 
         assertThatThrownBy(() ->
                 client.exchange(HttpRequest.POST("/api/v1/base?",
-                        baseReq), BaseReq.class).blockingFirst()).isInstanceOf(
-                HttpClientResponseException.class).hasMessage("Unauthorized");
+                        baseReq), BaseReq.class)
+                        .blockingFirst()).isInstanceOf(
+                HttpClientResponseException.class)
+                .hasMessage("Unauthorized");
+    }
+
+    @Test
+    public void leave_base_as_member_works() throws InterruptedException {
+        var admin = user;
+        var newMember = TestObjectFactory.Domain.createNewUser();
+        newMember.setId(null);
+
+        userRepository.save(newMember).blockingGet();
+
+        var base = TestObjectFactory.Domain.createBase();
+        base.setId(null);
+        base.setCreator(admin);
+        base.addMember(newMember, Role.MEMBER);
+
+        baseRepository.save(base)
+                .blockingGet();
+
+        var response = client.exchange(HttpRequest.DELETE("/api/v1/base/" + base.getId() +
+                        "/member/me")
+                .bearerAuth(AUTH_TOKEN_2), BaseReq.class)
+                .blockingFirst();
+
+        assertThat(response.status()
+                .getCode()).isEqualTo(HttpStatus.OK.getCode());
+
+        var bodyOfMessage = messages.poll(2, TimeUnit.SECONDS);
+
+        assertThat(bodyOfMessage.getKey()).isEqualTo("modify-chat-member");
+    }
+
+    @Test
+    public void kick_member_as_admin_works() throws InterruptedException {
+        var admin = user;
+        var newMember = TestObjectFactory.Domain.createNewUser();
+        newMember.setId(null);
+
+        userRepository.save(newMember).blockingGet();
+
+        var base = TestObjectFactory.Domain.createBase();
+        base.setId(null);
+        base.setCreator(admin);
+        base.addMember(newMember, Role.MEMBER);
+
+        baseRepository.save(base)
+                .blockingGet();
+
+        var response = client.exchange(HttpRequest.DELETE("/api/v1/base/" + base.getId() +
+                        "/member/" + newMember.getAuthKey())
+                .bearerAuth(AUTH_TOKEN), BaseReq.class)
+                .blockingFirst();
+
+        assertThat(response.status()
+                .getCode()).isEqualTo(HttpStatus.OK.getCode());
+
+        var bodyOfMessage = messages.poll(2, TimeUnit.SECONDS);
+
+        assertThat(bodyOfMessage.getKey()).isEqualTo("modify-chat-member");
+    }
+
+    @Test
+    public void kick_member_as_not_as_admin_fails() {
+        var admin = user;
+        var newMember = TestObjectFactory.Domain.createNewUser();
+        newMember.setId(null);
+
+        userRepository.save(newMember).blockingGet();
+
+        var base = TestObjectFactory.Domain.createBase();
+        base.setId(null);
+        base.setCreator(admin);
+        base.addMember(newMember, Role.MEMBER);
+
+        baseRepository.save(base)
+                .blockingGet();
+
+        assertThatThrownBy(() -> client.exchange(HttpRequest.DELETE("/api/v1/base/" + base.getId() +
+                "/member/" + newMember.getAuthKey())
+                .bearerAuth(AUTH_TOKEN_2), BaseReq.class)
+                .blockingFirst()).isInstanceOf(HttpClientResponseException.class).hasMessage(
+                        "Forbidden");
     }
 
     //    @Test

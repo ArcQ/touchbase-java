@@ -1,11 +1,15 @@
 package com.kf.touchbase.rest;
 
+import com.kf.touchbase.exception.AuthorizationException;
 import com.kf.touchbase.mappers.BaseMapper;
 import com.kf.touchbase.models.domain.Role;
 import com.kf.touchbase.models.domain.event.ChatEntityEventData;
+import com.kf.touchbase.models.domain.event.EventAction;
+import com.kf.touchbase.models.domain.event.ModifyMemberEventData;
 import com.kf.touchbase.models.domain.postgres.Base;
 import com.kf.touchbase.models.dto.BaseReq;
 import com.kf.touchbase.models.dto.ListRes;
+import com.kf.touchbase.repository.BaseMemberRepository;
 import com.kf.touchbase.repository.BaseRepository;
 import com.kf.touchbase.repository.UserRepository;
 import com.kf.touchbase.services.TouchbaseEventPublisher;
@@ -17,8 +21,10 @@ import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.authentication.AuthenticationException;
 import io.micronaut.security.rules.SecurityRule;
+import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
@@ -32,6 +38,7 @@ public class BaseController {
     private final UserRepository userRepository;
     private final BaseMapper baseMapper;
     private final TouchbaseEventPublisher touchbaseEventPublisher;
+    private final BaseMemberRepository baseMemberRepository;
 
     @Get("/")
     @Produces(MediaType.APPLICATION_JSON)
@@ -66,6 +73,39 @@ public class BaseController {
     public Maybe<Base> getBaseIfOwn(Authentication authentication, UUID baseId) {
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
                 .flatMapMaybe((authKey) -> baseRepository.findIfMember(baseId, authKey));
+    }
+
+    @Delete("/{baseId}/member/me")
+    @Operation(summary = "Leave a base",
+            description = "must be a member of base")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Completable leaveBase(Authentication authentication, UUID baseId) {
+        return AuthUtils.getAuthKeyFromAuthRx(authentication)
+                .flatMapMaybe((authKey) -> baseMemberRepository.findByUserAuthKeyAndBaseId(authKey,
+                        baseId))
+                .switchIfEmpty(Single.error(AuthorizationException::new))
+                .doOnSuccess((member) -> touchbaseEventPublisher.publishEvent(new ModifyMemberEventData(member, EventAction.DELETE)))
+                .flatMapCompletable(baseMemberRepository::delete);
+    }
+
+    @Delete("/{baseId}/member/{memberAuthKey}")
+    @Operation(summary = "Kick a member out of a base",
+            description = "must be one of the base admins")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Completable kickMemberOut(
+            Authentication authentication,
+            UUID baseId,
+            String memberAuthKey) {
+        return AuthUtils.getAuthKeyFromAuthRx(authentication)
+                .flatMapMaybe(
+                        (authKey) -> baseMemberRepository.findByUserAuthKeyAndBaseIdAndRole(authKey,
+                                baseId, Role.ADMIN))
+                .switchIfEmpty(Single.error(AuthorizationException::new))
+                .zipWith(baseMemberRepository.findByUserAuthKeyAndBaseId(memberAuthKey, baseId)
+                                .switchIfEmpty(Single.error(IllegalArgumentException::new)),
+                        (admin, member) -> member)
+                .doOnSuccess((member) -> touchbaseEventPublisher.publishEvent(new ModifyMemberEventData(member, EventAction.DELETE)))
+                .flatMapCompletable(baseMemberRepository::delete);
     }
 
     //    @Patch("/{baseId}")

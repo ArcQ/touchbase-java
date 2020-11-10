@@ -1,6 +1,8 @@
 package com.kf.touchbase.rest;
 
 import com.kf.touchbase.models.domain.Success;
+import com.kf.touchbase.models.domain.event.EventAction;
+import com.kf.touchbase.models.domain.event.ModifyMemberEventData;
 import com.kf.touchbase.models.domain.postgres.BaseJoin;
 import com.kf.touchbase.models.domain.postgres.BaseMember;
 import com.kf.touchbase.models.dto.BaseJoinListRes;
@@ -8,6 +10,7 @@ import com.kf.touchbase.models.dto.BaseJoinReq;
 import com.kf.touchbase.repository.BaseJoinRepository;
 import com.kf.touchbase.repository.BaseRepository;
 import com.kf.touchbase.services.BaseJoinServiceImpl;
+import com.kf.touchbase.services.TouchbaseEventPublisher;
 import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
@@ -30,6 +33,7 @@ public class BaseJoinController {
     private final BaseJoinServiceImpl baseJoinService;
     private final BaseJoinRepository baseJoinRepository;
     private final BaseRepository baseRepository;
+    private final TouchbaseEventPublisher touchbaseEventPublisher;
 
     @Get
     @Produces(MediaType.APPLICATION_JSON)
@@ -63,8 +67,13 @@ public class BaseJoinController {
         return AuthUtils.getAuthKeyFromAuthRx(authentication)
                 .flatMap((authKey) -> baseJoinService.acceptBaseJoin(authKey,
                         baseJoinId))
-                .flatMap((baseMember) -> Single.just(
-                        HttpResponse.created(baseMember)));
+                .flatMap((baseMember) -> {
+                    touchbaseEventPublisher.publishEvent(
+                            new ModifyMemberEventData(baseMember,
+                                    EventAction.ADD));
+                    return Single.just(
+                            HttpResponse.created(baseMember));
+                });
     }
 
     @Delete("/{baseJoinId}")
