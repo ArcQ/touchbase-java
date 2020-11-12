@@ -15,3 +15,4 @@ create table base_join
             references tb_user (auth_key)
 );
 
+CREATE INDEX base_join_idx ON base_join (base_id, joining_user_auth_key);

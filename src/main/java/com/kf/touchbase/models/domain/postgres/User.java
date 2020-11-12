@@ -1,5 +1,6 @@
 package com.kf.touchbase.models.domain.postgres;
 
+import com.kf.touchbase.models.domain.Role;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
@@ -46,6 +47,9 @@ public class User extends TouchBasePostgresDomain implements Serializable {
     private String lastName;
 
     private String imageUrl;
+
+    @Transient
+    private Role role;
 
     public User merge(User user) {
         if (user.getUsername() != null) {

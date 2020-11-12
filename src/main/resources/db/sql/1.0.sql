@@ -17,6 +17,8 @@ create table tb_user
             references tb_user (auth_key)
 );
 
+CREATE INDEX tb_auth_key_idx ON tb_user (auth_key);
+
 create table base
 (
     id         uuid    not null
@@ -32,6 +34,8 @@ create table base
         constraint fk_base_user_creator_auth_key
             references tb_user (auth_key)
 );
+
+CREATE INDEX base_creator_auth_key_idx ON base (creator_auth_key);
 
 create table base_member
 (
@@ -51,3 +55,6 @@ create table base_member
         constraint fk_base_member_tb_user_member_auth_key
             references tb_user (auth_key)
 );
+
+CREATE INDEX base_member_creator_auth_key_base_id_role_idx ON base_member (member_auth_key, base_id, role);
+CREATE INDEX base_member_creator_auth_key_base_id_idx ON base_member (member_auth_key, base_id);

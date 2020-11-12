@@ -81,6 +81,7 @@ dependencies {
     implementation group: 'com.vladmihalcea', name: 'hibernate-types-52', version: '2.9.13'
 
     implementation 'io.micronaut.sql:micronaut-jdbc-hikari'
+    implementation 'com.kinoroy.expo.push:expo-push-sdk:0.1.4'
 
     implementation "org.apache.commons:commons-lang3:3.10"
     implementation "javax.annotation:javax.annotation-api"

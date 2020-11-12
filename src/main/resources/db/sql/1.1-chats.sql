@@ -13,3 +13,5 @@ create table chat
         constraint fk_chat_creator_auth_key
             references tb_user (auth_key)
 );
+
+CREATE INDEX chat_chat_id_creator_auth_key_chat_id ON chat (creator_auth_key, chat_id, base_id);

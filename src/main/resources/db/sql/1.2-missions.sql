@@ -28,4 +28,5 @@ create table mission
             references base
 );
 
-
+CREATE INDEX mission_user_auth_key_base_idx ON mission (base, user_auth_key);
+CREATE INDEX mission_idx ON mission (base);

@@ -1,4 +1,4 @@
-package com.kf.touchbase.services;
+package com.kf.touchbase.workers;
 
 import com.kf.touchbase.models.domain.MissionTemplate;
 import com.kf.touchbase.models.domain.postgres.Mission;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Singleton
 @Slf4j
-public class MissionCommandImpl {
+public class MissionJobsImpl {
 
     BaseMemberRepository baseMemberRepository;
     MissionRepository missionRepository;
