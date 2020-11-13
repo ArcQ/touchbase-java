@@ -23,7 +23,7 @@ public class MissionJobsImpl {
     MissionRepository missionRepository;
 
    private List<MissionTemplate> generateMissionTemplates(User user) {
-       return Collections.singletonList(new MissionTemplate());
+       return Collections.singletonList();
    }
 
     //twice a week

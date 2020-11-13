@@ -21,11 +21,16 @@ import java.util.UUID;
 public class Mission {
     @CreationTimestamp
     protected LocalDateTime createdAt;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private UUID id;
+
     private LocalDateTime startedAt;
+
+    private LocalDateTime expiresAt;
+
     @ManyToOne
     @JoinColumn(name = "user_auth_key", referencedColumnName = "auth_key")
     private User assignedUser;
@@ -36,4 +41,8 @@ public class Mission {
 
     @Embedded
     private MissionTemplate storedMissionTemplate;
+
+    @ManyToOne
+    @JoinColumn(name = "mission_actions", referencedColumnName = "auth_key")
+    private MissionActions missionActions;
 }
