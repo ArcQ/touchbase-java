@@ -12,12 +12,12 @@ import javax.persistence.*;
 @Data
 @SuperBuilder(toBuilder = true)
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-//@Entity
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(name = "missionType")
-public class MissionActions extends TouchBasePostgresDomain{
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "missionType")
+public class MissionAction extends TouchBasePostgresDomain{
 
     @Enumerated(EnumType.STRING)
     MissionType missionType;

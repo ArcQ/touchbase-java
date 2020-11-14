@@ -22,5 +22,5 @@ public class NewsArticle extends TouchBasePostgresDomain {
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "json")
-    NewsArticle data;
+    NewsArticleDetail data;
 }

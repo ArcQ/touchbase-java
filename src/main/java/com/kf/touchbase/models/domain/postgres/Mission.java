@@ -1,6 +1,5 @@
 package com.kf.touchbase.models.domain.postgres;
 
-import com.kf.touchbase.models.domain.MissionTemplate;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -10,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -39,10 +39,10 @@ public class Mission {
     @JoinColumn(name = "base")
     private Base assignedBase;
 
-    @Embedded
-    private MissionTemplate storedMissionTemplate;
-
     @ManyToOne
-    @JoinColumn(name = "mission_actions", referencedColumnName = "auth_key")
-    private MissionActions missionActions;
+    private MissionTemplate missionTemplate;
+
+    @OneToMany
+    @JoinColumn(name = "mission_id", referencedColumnName = "id")
+    private List<MissionAction> missionActions;
 }

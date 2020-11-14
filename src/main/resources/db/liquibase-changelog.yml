@@ -5,3 +5,15 @@ databaseChangeLog:
   - includeAll:
       path: seed/dev
       relativeToChangelogFile: true
+  - includeAll:
+      path: seed/dev
+      relativeToChangelogFile: true
+#  - changeSet:
+#    id: Fill missions
+#    changes:
+#      - loadData:
+#          encoding: UTF-8
+#          file: data/mission_templates.csv
+#          schemaName: mission
+#          separator: ','
+#          tableName: mission

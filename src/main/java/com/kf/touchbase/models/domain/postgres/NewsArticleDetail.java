@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewsArticleMeta {
+public class NewsArticleDetail {
 
     String sourceId;
 

@@ -6,11 +6,20 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+import java.util.UUID;
+
 @Data
 @SuperBuilder(toBuilder = true)
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class QuestionActions extends MissionActions {
-    String answer;
+public class QuestionMissionTemplateDetail extends MissionTemplateDetail {
+
+    public static class Question {
+        UUID id;
+        String displayText;
+    }
+
+    List<Question> questions;
 }
