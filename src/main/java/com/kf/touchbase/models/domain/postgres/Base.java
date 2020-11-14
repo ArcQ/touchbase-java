@@ -39,7 +39,7 @@ public class Base extends TouchBasePostgresDomain {
     @OneToMany(mappedBy = "base", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"id", "base", "createdAt"})
     @Builder.Default
-    private Set<BaseMember> members = new LinkedHashSet();
+    private Set<BaseMember> members = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "base", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"id", "base"})

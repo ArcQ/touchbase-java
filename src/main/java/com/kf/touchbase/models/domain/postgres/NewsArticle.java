@@ -8,6 +8,7 @@ import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import java.time.LocalDateTime;
 
 @Data
 @SuperBuilder(toBuilder = true)
@@ -18,9 +19,11 @@ import javax.persistence.Entity;
 @EqualsAndHashCode(callSuper = true)
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class NewsArticle extends TouchBasePostgresDomain {
-    String query;
+    String topic;
 
     @Type(type = "jsonb")
     @Column(columnDefinition = "json")
     NewsArticleDetail data;
+
+    LocalDateTime expiresAt;
 }

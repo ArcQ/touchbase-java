@@ -4,9 +4,12 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
 
+import java.util.UUID;
+
 @Value
 @ToString
 @EqualsAndHashCode
 public class ProgressReq {
-    int value;
+    UUID baseId;
+    Integer value;
 }

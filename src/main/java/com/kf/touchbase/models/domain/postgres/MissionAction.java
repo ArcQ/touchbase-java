@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -17,9 +18,9 @@ import javax.persistence.*;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "missionType")
+@Accessors(chain = true)
 public class MissionAction extends TouchBasePostgresDomain{
 
     @Enumerated(EnumType.STRING)
     MissionType missionType;
-
 }

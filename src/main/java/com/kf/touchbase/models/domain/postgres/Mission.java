@@ -1,9 +1,6 @@
 package com.kf.touchbase.models.domain.postgres;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -45,4 +42,11 @@ public class Mission {
     @OneToMany
     @JoinColumn(name = "mission_id", referencedColumnName = "id")
     private List<MissionAction> missionActions;
+
+    @Builder.Default
+    private Boolean isComplete = false;
+
+    private Integer progress;
+
+    private Integer pointsRequired;
 }

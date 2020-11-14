@@ -22,4 +22,14 @@ public class QuestionMissionTemplateDetail extends MissionTemplateDetail {
     }
 
     List<Question> questions;
+
+    @Override
+    int getComp() {
+        return 100;
+    }
+
+    @Override
+    int setProgress() {
+        return 100;
+    }
 }

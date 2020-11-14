@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Type;
 
@@ -17,6 +18,7 @@ import java.util.UUID;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
+@Accessors(chain = true)
 public class MissionTemplate {
 
     @Id

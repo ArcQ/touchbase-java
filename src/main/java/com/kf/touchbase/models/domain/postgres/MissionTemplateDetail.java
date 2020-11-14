@@ -11,4 +11,9 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
-public class MissionTemplateDetail {}
+public abstract class MissionTemplateDetail {
+
+    abstract int getComp();
+
+    abstract int setProgress();
+}

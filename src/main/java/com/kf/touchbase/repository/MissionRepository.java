@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface MissionRepository extends RxJavaCrudRepository<Mission, UUID> {
 
     Flowable<Mission> findAllByUserAuthKey(String authKey);
+
+    Flowable<Mission> findAllByUserAuthKeyByBaseId(String authKey, UUID baseId);
 }
