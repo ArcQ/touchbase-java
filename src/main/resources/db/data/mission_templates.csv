@@ -1,2 +1,2 @@
-name, description, score_reward, mission_type,
-Question Time!,
+name, description, score_reward, mission_type, difficulty,
+Question Time!, 

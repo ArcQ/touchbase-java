@@ -1,13 +1,14 @@
 package com.kf.touchbase.models.domain.postgres;
 
 import com.kf.touchbase.models.domain.MissionType;
+import io.micronaut.data.annotation.TypeDef;
+import io.micronaut.data.model.DataType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -35,7 +36,10 @@ public class MissionTemplate {
     @Enumerated(EnumType.STRING)
     private MissionType missionType;
 
-    @Type(type = "jsonb")
-    @Column(columnDefinition = "jsonb")
+    @Enumerated(EnumType.STRING)
+    private Integer difficulty;
+
+    @TypeDef(type = DataType.JSON)
+    MissionTemplateDetail missionTemplateDetail;
     private MissionTemplateDetail detail;
 }

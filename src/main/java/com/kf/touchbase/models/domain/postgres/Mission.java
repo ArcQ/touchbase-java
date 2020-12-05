@@ -46,6 +46,9 @@ public class Mission {
     @Builder.Default
     private Boolean isComplete = false;
 
+    @Builder.Default
+    private Boolean isStarted = false;
+
     private Integer progress;
 
     private Integer pointsRequired;

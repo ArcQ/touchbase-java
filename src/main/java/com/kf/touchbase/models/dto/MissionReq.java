@@ -1,7 +1,8 @@
 package com.kf.touchbase.models.dto;
 
-import com.kf.touchbase.models.domain.MissionType;
 import lombok.*;
+
+import java.util.UUID;
 
 @Data
 @ToString
@@ -9,8 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MissionReq {
-    private String name;
-    private String description;
-    private Double scoreReward;
-    private MissionType missionType;
+    UUID id;
+    //todo requires validation here where isStarted must not be false and value must be positive
+    Integer value;
 }

@@ -6,7 +6,12 @@ paths:
   /api/v1/baseJoin:
     get:
       operationId: getOwnBaseJoins
-      parameters: []
+      parameters:
+      - name: isCreated
+        in: query
+        required: true
+        schema:
+          type: boolean
       responses:
         default:
           description: getOwnBaseJoins default response
@@ -63,6 +68,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Success'
+  /api/v1/push/send:
+    post:
+      operationId: sendPush
+      parameters: []
+      requestBody: {}
+      responses:
+        default:
+          description: sendPush default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Object'
+  /api/v1/push/token/:
+    post:
+      operationId: postToken
+      parameters: []
+      requestBody: {}
+      responses:
+        default:
+          description: postToken default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpoPushToken'
+  /api/v1/news:
+    get:
+      operationId: getNews
+      parameters:
+      - name: topic
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: getNews default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRes_NewsArticle_'
   /api/v1/mission/me:
     get:
       description: Not Implemented Yet
@@ -74,9 +119,25 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Mission'
+                $ref: '#/components/schemas/ListRes_Mission_'
+  /api/v1/mission/base/{baseId}:
+    get:
+      description: Not Implemented Yet
+      operationId: getOwnActiveMissionsByBase
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        default:
+          description: getOwnActiveMissionsByBase default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRes_Mission_'
   /api/v1/mission/progress:
     post:
       description: Not Implemented Yet
@@ -97,7 +158,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Mission'
+                $ref: '#/components/schemas/ListRes_Mission_'
   /api/v1/base:
     get:
       operationId: getOwnBases
@@ -142,6 +203,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Base'
+  /api/v1/base/{baseId}/member/me:
+    delete:
+      summary: Leave a base
+      description: must be a member of base
+      operationId: leaveBase
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        default:
+          description: leaveBase default response
+  /api/v1/base/{baseId}/member/{memberAuthKey}:
+    delete:
+      summary: Kick a member out of a base
+      description: must be one of the base admins
+      operationId: kickMemberOut
+      parameters:
+      - name: baseId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: memberAuthKey
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: kickMemberOut default response
   /api/v1/upload/signed-url:
     get:
       operationId: upload
@@ -262,6 +358,13 @@ components:
             type: string
           imageUrl:
             type: string
+          role:
+            $ref: '#/components/schemas/Role'
+    Role:
+      type: string
+      enum:
+      - MEMBER
+      - ADMIN
     BaseJoin:
       allOf:
       - $ref: '#/components/schemas/TouchBasePostgresDomain'
@@ -306,11 +409,6 @@ components:
             $ref: '#/components/schemas/User'
           role:
             $ref: '#/components/schemas/Role'
-    Role:
-      type: string
-      enum:
-      - MEMBER
-      - ADMIN
     Chat:
       allOf:
       - $ref: '#/components/schemas/TouchBasePostgresDomain'
@@ -340,6 +438,73 @@ components:
       properties:
         status:
           type: string
+    Object:
+      type: object
+    ExpoPushToken:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: true
+        user:
+          $ref: '#/components/schemas/User'
+        token:
+          type: string
+        deviceId:
+          type: string
+        isValid:
+          type: boolean
+        expiresAt:
+          type: string
+          format: date-time
+    ListRes_NewsArticle_:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewsArticle'
+    NewsArticle:
+      allOf:
+      - $ref: '#/components/schemas/TouchBasePostgresDomain'
+      - type: object
+        properties:
+          topic:
+            type: string
+          data:
+            $ref: '#/components/schemas/NewsArticleDetail'
+          expiresAt:
+            type: string
+            format: date-time
+    NewsArticleDetail:
+      type: object
+      properties:
+        sourceId:
+          type: string
+        sourceName:
+          type: string
+        author:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+        urlToImage:
+          type: string
+        publishedAt:
+          type: string
+        content:
+          type: string
+    ListRes_Mission_:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mission'
     Mission:
       type: object
       properties:
@@ -353,15 +518,34 @@ components:
         startedAt:
           type: string
           format: date-time
+        expiresAt:
+          type: string
+          format: date-time
         assignedUser:
           $ref: '#/components/schemas/User'
         assignedBase:
           $ref: '#/components/schemas/Base'
-        storedMissionTemplate:
+        missionTemplate:
           $ref: '#/components/schemas/MissionTemplate'
+        missionActions:
+          type: array
+          items:
+            $ref: '#/components/schemas/MissionAction'
+        isComplete:
+          type: boolean
+        progress:
+          type: integer
+          format: int32
+        pointsRequired:
+          type: integer
+          format: int32
     MissionTemplate:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
+          nullable: true
         name:
           type: string
         description:
@@ -371,15 +555,27 @@ components:
           format: double
         missionType:
           $ref: '#/components/schemas/MissionType'
+        detail:
+          $ref: '#/components/schemas/MissionTemplateDetail'
     MissionType:
       type: string
       enum:
-      - PERIODIC
-      - WEEKLY
-      - ONE_TIME
+      - QUESTION
+    MissionTemplateDetail:
+      type: object
+    MissionAction:
+      allOf:
+      - $ref: '#/components/schemas/TouchBasePostgresDomain'
+      - type: object
+        properties:
+          missionType:
+            $ref: '#/components/schemas/MissionType'
     ProgressReq:
       type: object
       properties:
+        baseId:
+          type: string
+          format: uuid
         value:
           type: integer
           format: int32

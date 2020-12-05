@@ -5,6 +5,7 @@ create table news_article
             primary key,
     created_at timestamp,
     updated_at timestamp,
+    expires_at timestamp,
     topic varchar(255),
     data jsonb,
     creator_auth_key varchar(255)
@@ -12,4 +13,4 @@ create table news_article
             references tb_user (auth_key)
 );
 
-CREATE INDEX news_article_query_idx ON news_article (query);
+CREATE INDEX news_article_query_idx ON news_article (topic);

@@ -21,6 +21,8 @@ public class QuestionMissionTemplateDetail extends MissionTemplateDetail {
         String displayText;
     }
 
+    Integer difficulty;
+
     List<Question> questions;
 
     @Override
