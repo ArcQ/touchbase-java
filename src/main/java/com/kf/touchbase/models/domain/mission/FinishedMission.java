@@ -1,12 +1,15 @@
-package com.kf.touchbase.models.domain.postgres;
+package com.kf.touchbase.models.domain.mission;
 
+import com.kf.touchbase.models.domain.postgres.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-import java.time.ZonedDateTime;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
 
 @Data
 @SuperBuilder(toBuilder = true)
@@ -15,6 +18,9 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 //@Entity
 public class FinishedMission extends Mission {
-    ZonedDateTime finishedAt;
+    LocalDateTime finishedAt;
     boolean isCompleted;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    User user;
 }

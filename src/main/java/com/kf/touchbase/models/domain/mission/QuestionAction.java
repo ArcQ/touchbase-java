@@ -1,4 +1,4 @@
-package com.kf.touchbase.models.domain.postgres;
+package com.kf.touchbase.models.domain.mission;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

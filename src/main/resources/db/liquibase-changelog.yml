@@ -8,6 +8,9 @@ databaseChangeLog:
   - includeAll:
       path: seed/dev
       relativeToChangelogFile: true
+  - includeAll:
+      path: data
+      relativeToChangelogFile: true
 #  - changeSet:
 #    id: Fill missions
 #    changes:

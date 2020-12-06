@@ -1,10 +1,10 @@
 package com.kf.touchbase.rest;
 
-import com.kf.touchbase.models.domain.postgres.Mission;
+import com.kf.touchbase.models.domain.mission.Mission;
 import com.kf.touchbase.models.dto.ListRes;
 import com.kf.touchbase.models.dto.MissionReq;
 import com.kf.touchbase.repository.BaseRepository;
-import com.kf.touchbase.repository.MissionRepository;
+import com.kf.touchbase.repository.mission.MissionRepository;
 import com.kf.touchbase.utils.AuthUtils;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
@@ -16,7 +16,6 @@ import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -49,20 +48,6 @@ public class MissionController {
                 .toFlowable()
                 .flatMap((authKey) -> missionRepository.findAllByUserAuthKeyByBaseId(authKey,
                         baseId))
-                .toList()
-                .flatMap(ListRes::toSingle);
-    }
-
-    @Get("/base/{baseId}/question/random")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "Get a question, with difficulty based off of base meta information," +
-            " right now just selects randomly")
-    public Single<Mission> getQuestionFromBase(
-            Authentication authentication,
-            UUID baseId) {
-        return AuthUtils.getAuthKeyFromAuthRx(authentication)
-                .toFlowable()
-                .flatMap((authKey) -> baseRepository.findIfMemberAdmin(baseId, authKey))
                 .toList()
                 .flatMap(ListRes::toSingle);
     }

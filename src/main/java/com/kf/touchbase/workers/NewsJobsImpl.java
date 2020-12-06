@@ -1,6 +1,6 @@
 package com.kf.touchbase.workers;
 
-import com.kf.touchbase.models.domain.postgres.MissionTemplate;
+import com.kf.touchbase.models.domain.mission.MissionTemplate;
 import com.kf.touchbase.models.domain.postgres.NewsArticle;
 import com.kf.touchbase.models.domain.postgres.User;
 import com.kf.touchbase.repository.NewsRepository;

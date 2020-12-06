@@ -1,6 +1,7 @@
 package com.kf.touchbase.testUtils;
 
 import com.kf.touchbase.models.domain.Role;
+import com.kf.touchbase.models.domain.mission.Mission;
 import com.kf.touchbase.models.domain.postgres.*;
 import com.kf.touchbase.models.dto.BaseJoinListRes;
 import com.kf.touchbase.models.dto.BaseJoinReq;

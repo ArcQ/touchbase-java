@@ -1,8 +1,6 @@
-package com.kf.touchbase.models.domain.postgres;
+package com.kf.touchbase.models.domain.mission;
 
 import com.kf.touchbase.models.domain.MissionType;
-import io.micronaut.data.annotation.TypeDef;
-import io.micronaut.data.model.DataType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -38,8 +36,4 @@ public class MissionTemplate {
 
     @Enumerated(EnumType.STRING)
     private Integer difficulty;
-
-    @TypeDef(type = DataType.JSON)
-    MissionTemplateDetail missionTemplateDetail;
-    private MissionTemplateDetail detail;
 }

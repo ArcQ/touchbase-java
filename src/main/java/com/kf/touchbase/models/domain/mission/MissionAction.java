@@ -1,6 +1,7 @@
-package com.kf.touchbase.models.domain.postgres;
+package com.kf.touchbase.models.domain.mission;
 
 import com.kf.touchbase.models.domain.MissionType;
+import com.kf.touchbase.models.domain.postgres.TouchBasePostgresDomain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "missionType")
 @Accessors(chain = true)
-public class MissionAction extends TouchBasePostgresDomain{
+public class MissionAction extends TouchBasePostgresDomain {
 
     @Enumerated(EnumType.STRING)
     MissionType missionType;

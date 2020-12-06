@@ -1,5 +1,7 @@
-package com.kf.touchbase.models.domain.postgres;
+package com.kf.touchbase.models.domain.mission;
 
+import com.kf.touchbase.models.domain.postgres.Base;
+import com.kf.touchbase.models.domain.postgres.User;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
@@ -42,6 +44,9 @@ public class Mission {
     @OneToMany
     @JoinColumn(name = "mission_id", referencedColumnName = "id")
     private List<MissionAction> missionActions;
+
+    @OneToMany
+    private List<MissionQuestion> questions;
 
     @Builder.Default
     private Boolean isComplete = false;

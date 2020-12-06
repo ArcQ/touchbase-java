@@ -1,11 +1,11 @@
 package com.kf.touchbase.workers;
 
 import com.kf.touchbase.models.domain.postgres.BaseMember;
-import com.kf.touchbase.models.domain.postgres.Mission;
-import com.kf.touchbase.models.domain.postgres.MissionTemplate;
+import com.kf.touchbase.models.domain.mission.Mission;
+import com.kf.touchbase.models.domain.mission.MissionTemplate;
 import com.kf.touchbase.repository.BaseMemberRepository;
-import com.kf.touchbase.repository.MissionRepository;
-import com.kf.touchbase.repository.MissionTemplateRepository;
+import com.kf.touchbase.repository.mission.MissionRepository;
+import com.kf.touchbase.repository.mission.MissionTemplateRepository;
 import io.micronaut.scheduling.annotation.Scheduled;
 import io.reactivex.Maybe;
 import lombok.extern.slf4j.Slf4j;

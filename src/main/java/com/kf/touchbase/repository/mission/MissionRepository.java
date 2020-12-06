@@ -1,6 +1,6 @@
-package com.kf.touchbase.repository;
+package com.kf.touchbase.repository.mission;
 
-import com.kf.touchbase.models.domain.postgres.Mission;
+import com.kf.touchbase.models.domain.mission.Mission;
 import io.micronaut.data.repository.reactive.RxJavaCrudRepository;
 import io.reactivex.Flowable;
 

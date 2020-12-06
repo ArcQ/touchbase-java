@@ -1,6 +1,6 @@
 package com.kf.touchmission.rest;
 
-import com.kf.touchbase.repository.MissionRepository;
+import com.kf.touchbase.repository.mission.MissionRepository;
 import com.kf.touchbase.repository.UserRepository;
 import com.kf.touchbase.rest.MissionController;
 import com.kf.touchbase.testUtils.TestAuthUtils;
