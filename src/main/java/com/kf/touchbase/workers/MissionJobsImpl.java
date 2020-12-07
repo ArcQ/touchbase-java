@@ -42,6 +42,12 @@ public class MissionJobsImpl {
     }
 
     //twice a week
+    // we need to modify this, do it either once a week or twice a week, where everyone shares,
+    // we'll actually generate a seed of all their missions on get go of the app, delete as weeks
+    // go on and then add more in when neccessary, but we'll just have a list of 150
+    // easy, medium hard, questions + catchup questions
+    // sthn...every person will share once a week, that will last 50 weeks
+    // a message will pop up...hey its your turn to share, and it'll be a bubble with 3 ppl
     @Scheduled(cron = "0 30 4 1/1 * ?")
     void setMissions() {
         log.info("Twice a week job: {}",

@@ -16,7 +16,7 @@ databaseChangeLog:
 #    changes:
 #      - loadData:
 #          encoding: UTF-8
-#          file: data/mission_templates.csv
+#          file: data/mission_template.csv
 #          schemaName: mission
 #          separator: ','
 #          tableName: mission

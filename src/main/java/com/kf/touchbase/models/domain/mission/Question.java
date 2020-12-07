@@ -28,7 +28,7 @@ public class Question extends TouchBasePostgresDomain {
     private QuestionType questionType;
 
     public enum QuestionType {
-        OPEN_ENDED, MULTIPLE_CHOICE
+        CATCHUP, OPEN_ENDED, MULTIPLE_CHOICE
     }
 
 }

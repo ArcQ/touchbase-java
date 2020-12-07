@@ -28,5 +28,5 @@ public class MissionQuestion {
 
     private Boolean in_progress;
 
-    private Integer order;
+    private Integer priority;
 }
