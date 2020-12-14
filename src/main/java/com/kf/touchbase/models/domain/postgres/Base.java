@@ -7,10 +7,7 @@ import io.micronaut.data.annotation.Where;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -45,6 +42,9 @@ public class Base extends TouchBasePostgresDomain {
     @JsonIgnoreProperties({"id", "base"})
     @Builder.Default
     private Set<Chat> chats = new LinkedHashSet<>();
+
+    @Enumerated(EnumType.STRING)
+    private BaseType type;
 
     public void mergeInNotNull(Base base) {
         name = (base.name == null) ? name : base.name;

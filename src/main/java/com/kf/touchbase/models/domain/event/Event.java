@@ -15,8 +15,10 @@ public class Event<T extends EventData> {
 
     T data;
 
-    public Event(T data) {
+    public Event(T data, String apiKey, String apiSecret) {
         this.publishedAt = LocalDateTime.now();
         this.data = data;
+        this.data.setApiKey(apiKey);
+        this.data.setApiSecret(apiSecret);
     }
 }

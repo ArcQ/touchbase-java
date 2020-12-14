@@ -39,3 +39,7 @@ kafka:
   producers:
     default:
       retries: 5
+
+chatpi:
+  apiKey: %{CHATPI_API_KEY}:ad1d6120-35ff-4195-ad29-f413ccaba238
+  apiSecret: %{CHATPI_API_SECRET}:2a3605f5-1653-4a34-a979-db4eac63e586
